@@ -1,0 +1,181 @@
+/* ── Root / Scene background ── */
+.root {
+    -fx-background-color: #F5F0E8;
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* ── Tab pane ── */
+.tab-pane {
+    -fx-background-color: #F5F0E8;
+}
+
+.tab-pane .tab-header-area {
+    -fx-background-color: #EDE8DC;
+    -fx-padding: 4 8 0 8;
+}
+
+.tab-pane .tab-header-background {
+    -fx-background-color: #EDE8DC;
+}
+
+.tab {
+    -fx-background-color: #D9D3C4;
+    -fx-background-radius: 6 6 0 0;
+    -fx-padding: 6 14;
+}
+
+.tab .tab-label {
+    -fx-text-fill: #1A5F3F;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.tab:selected {
+    -fx-background-color: #1A5F3F;
+    -fx-background-radius: 6 6 0 0;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: #F5F0E8;
+}
+
+.tab:hover:!selected {
+    -fx-background-color: #C8C1AE;
+}
+
+/* ── TableView ── */
+.table-view {
+    -fx-background-color: #F5F0E8;
+    -fx-border-color: #1A5F3F;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #143D29;
+    -fx-background-radius: 4 4 0 0;
+}
+
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent #1A5F3F transparent transparent;
+    -fx-border-width: 0 1 0 0;
+    -fx-size: 36px;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #F5F0E8;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 0 8;
+}
+
+.table-row-cell {
+    -fx-background-color: #F5F0E8;
+    -fx-border-color: transparent transparent #E0D9CC transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #EDE8DC;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #1A5F3F22;
+    -fx-border-color: #1A5F3F;
+}
+
+.table-row-cell:selected .text {
+    -fx-fill: #143D29;
+}
+
+.table-cell {
+    -fx-text-fill: #2B2B2B;
+    -fx-padding: 6 8;
+    -fx-font-size: 12px;
+}
+
+/* ── Placeholder label ── */
+.table-view .placeholder .label {
+    -fx-text-fill: #7A7A6A;
+    -fx-font-style: italic;
+}
+
+/* ── Scroll bars ── */
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: #1A5F3F;
+    -fx-background-radius: 4;
+}
+
+.scroll-bar:vertical .track,
+.scroll-bar:horizontal .track {
+    -fx-background-color: #E0D9CC;
+    -fx-background-radius: 4;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: #EDE8DC;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-background-color: #1A5F3F;
+}
+
+/* ── Dropdown nav menu ── */
+.menu-button {
+    -fx-background-color: #1A5F3F;
+    -fx-text-fill: #F5F0E8;
+    -fx-font-family: "Cambria";
+    -fx-font-size: 13px;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-padding: 6 14;
+}
+
+.menu-button:hover {
+    -fx-background-color: #143D29;
+}
+
+.menu-button .label {
+    -fx-text-fill: #F5F0E8;
+}
+
+.menu-button .arrow-button .arrow {
+    -fx-background-color: #F5F0E8;
+}
+
+.context-menu {
+    -fx-background-color: #F5F0E8;
+    -fx-border-color: #1A5F3F;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 2);
+}
+
+.menu-item {
+    -fx-background-color: transparent;
+    -fx-padding: 6 16;
+}
+
+.menu-item .label {
+    -fx-text-fill: #143D29;
+    -fx-font-family: "Cambria";
+    -fx-font-size: 13px;
+}
+
+.menu-item:focused,
+.menu-item:hover {
+    -fx-background-color: #1A5F3F;
+}
+
+.menu-item:focused .label,
+.menu-item:hover .label {
+    -fx-text-fill: #F5F0E8;
+}
