@@ -1,5 +1,5 @@
-package Model;
 
+Package Model;
 public class OwnerApplication
 {
   private int applicationId;
@@ -82,4 +82,8 @@ public class OwnerApplication
   public String toString() {
     return("Application ID: " + applicationId + "Client ID: "+ clientId + "Admin ID: "+ adminId + "Submission Date: " + submissionDate + "Status: "+status);
   }
+}
+
+void main()
+{
 }
