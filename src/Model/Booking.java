@@ -1,9 +1,8 @@
-package SEP2.SEP2.src.Model;
+package Model;
 
 public class Booking
 {
   private int id;
-  private Address address;
   private int numberOfRooms;
   private int numberOfBathrooms;
   private boolean balcony;
@@ -13,12 +12,11 @@ public class Booking
   private int maxNumberOfPeople;
   private int ownerId;
 
-  public Booking(int id, Address address, int numberOfRooms,
+  public Booking(int id, int numberOfRooms,
       int numberOfBathrooms, boolean balcony, int surfaceArea, int price,
       Date lastRenovated, int maxNumberOfPeople, int ownerId)
   {
     this.id = id;
-    this.address = address;
     this.numberOfRooms = numberOfRooms;
     this.numberOfBathrooms = numberOfBathrooms;
     this.balcony = balcony;
@@ -32,11 +30,6 @@ public class Booking
     public int getId()
     {
       return id;
-    }
-
-    public Address getAddress()
-    {
-      return address;
     }
 
     public int getNumberOfRooms()
@@ -78,6 +71,57 @@ public class Booking
       return ownerId;
     }
 
+  public void setId(int id)
+  {
+    this.id = id;
+  }
+
+  public void setBalcony(boolean balcony)
+  {
+    this.balcony = balcony;
+  }
+
+  public void setNumberOfBathrooms(int numberOfBathrooms)
+  {
+    this.numberOfBathrooms = numberOfBathrooms;
+  }
+
+  public boolean isBalcony()
+  {
+    return balcony;
+  }
+
+  public void setLastRenovated(Date lastRenovated)
+  {
+    this.lastRenovated = lastRenovated;
+  }
+
+  public void setMaxNumberOfPeople(int maxNumberOfPeople)
+  {
+    this.maxNumberOfPeople = maxNumberOfPeople;
+  }
+
+  public void setNumberOfRooms(int numberOfRooms)
+  {
+    this.numberOfRooms = numberOfRooms;
+  }
+
+  public void setOwnerId(int ownerId)
+  {
+    this.ownerId = ownerId;
+  }
+
+  public void setPrice(int price)
+  {
+    this.price = price;
+  }
+
+  public void setSurfaceArea(int surfaceArea)
+  {
+    this.surfaceArea = surfaceArea;
+  }
+  public String toString() {
+return("id"+ id+ "number of rooms"+ numberOfRooms+ "Balcony"+ balcony + "surface Area "+ surfaceArea + "price "+ price + "Last renovated "+ lastRenovated+ "Max number of people "+ maxNumberOfPeople + "owner Id "+ ownerId);  }
 }
 
 

@@ -1,28 +1,37 @@
-package SEP2.SEP2.src.Model;
+package Model;
 
 public class User
 {
-  private String FirstName;
-  private String LastName;
-  private String Email;
-  private String PhoneNumber;
+
   private String Username;
   private String Password;
-  private String DOB;
-  private String Gender;
-  private String Nationality;
-  private String HomeAddress;
-  private String ID;
 
-  public User(String FirstName, String LastName, String Email, String PhoneNumber, String Username, String Password, String DOB)
+  public User(String Username, String Password)
   {
-    this.FirstName = FirstName;
-    this.LastName = LastName;
-    this.Email = Email;
-    this.PhoneNumber = PhoneNumber;
     this.Username = Username;
     this.Password = Password;
-    this.DOB = DOB;
   }
 
+  public String getPassword()
+  {
+    return Password;
+  }
+
+  public String getUsername()
+  {
+    return Username;
+  }
+
+  public void setUsername(String username)
+  {
+    Username = username;
+  }
+
+  public void setPassword(String password)
+  {
+    Password = password;
+  }
+  public String toString() {
+    return ("Username: "+ Username + "Password: " + Password);
+  }
 }

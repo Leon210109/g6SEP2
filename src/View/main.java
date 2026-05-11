@@ -1,4 +1,4 @@
-package SEP2.SEP2.src.View;
+package View;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

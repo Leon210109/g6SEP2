@@ -1,0 +1,33 @@
+package Model;
+
+import java.util.ArrayList;
+
+public class OwnerApplicationManager
+{
+  private ArrayList<OwnerApplication> applications;
+
+
+  public OwnerApplicationManager(){
+    applications= new ArrayList<>();
+  }
+  public void addApplication(OwnerApplication application){
+    applications.add(application);
+  }
+  public int getSize(){
+    return applications.size();
+  }
+  public void removeApplication(int applicationId){
+    for(OwnerApplication application:applications){
+      if(application.getApplicationId()==applicationId){
+        applications.remove(applicationId);
+      }
+    }
+  }
+  public void updateListing(OwnerApplication application){
+    for(int i=0; i<applications.size();i++){
+      if(applications.get(i).getApplicationId()== application.getApplicationId()){
+        applications.set(i,application);
+      }
+    }
+  }
+}
