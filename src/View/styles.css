@@ -150,6 +150,17 @@
     -fx-background-color: #F5F0E8;
 }
 
+/* ── Hide the built-in duplicate arrow on the nav MenuButton ── */
+.nav-menu .arrow-button {
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+    -fx-padding: 0;
+}
+.nav-menu .arrow {
+    visibility: hidden;
+}
+
 .context-menu {
     -fx-background-color: #F5F0E8;
     -fx-border-color: #1A5F3F;
