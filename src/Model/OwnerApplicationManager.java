@@ -23,7 +23,7 @@ public class OwnerApplicationManager
       }
     }
   }
-  public void updateListing(OwnerApplication application){
+  public void updateApplication(OwnerApplication application){
     for(int i=0; i<applications.size();i++){
       if(applications.get(i).getApplicationId()== application.getApplicationId()){
         applications.set(i,application);
