@@ -15,25 +15,26 @@ public class Client
   private int ID;
   private User logIn;
 
-  public Client(String FirstName, String LastName,String Gender, String Nationality,String HomeAddress, String Email, int PhoneNumber,String DOB, User logIn, int ID)
+  public Client(String FirstName, String LastName, String Gender,
+      String Nationality, String HomeAddress, String Email, int PhoneNumber,
+      String DOB, User logIn, int ID)
   {
     this.ID = ID;
     this.FirstName = FirstName;
     this.LastName = LastName;
-    this.Gender=Gender;
-    this.Nationality=Nationality;
-    this.HomeAddress=HomeAddress;
+    this.Gender = Gender;
+    this.Nationality = Nationality;
+    this.HomeAddress = HomeAddress;
     this.Email = Email;
     this.PhoneNumber = PhoneNumber;
     this.DOB = DOB;
-    this.logIn=logIn;
+    this.logIn = logIn;
   }
 
-  public User getLogIn()
+  public User getUser()
   {
     return logIn;
   }
-
   public int getID()
   {
     return ID;
