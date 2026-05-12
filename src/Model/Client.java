@@ -8,7 +8,7 @@ public class Client
   private String LastName;
   private String Email;
   private int PhoneNumber;
-  private String DOB;
+  private Date  DOB;
   private String Gender;
   private String Nationality;
   private String HomeAddress;
@@ -17,7 +17,7 @@ public class Client
 
   public Client(String FirstName, String LastName, String Gender,
       String Nationality, String HomeAddress, String Email, int PhoneNumber,
-      String DOB, User logIn, int ID)
+      Date DOB, User logIn, int ID)
   {
     this.ID = ID;
     this.FirstName = FirstName;
@@ -45,7 +45,7 @@ public class Client
     return Email;
   }
 
-  public String getDOB()
+  public Date getDOB()
   {
     return DOB;
   }

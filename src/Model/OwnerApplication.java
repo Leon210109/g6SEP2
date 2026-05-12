@@ -3,24 +3,30 @@ package SEP2.SEP2.src.Model;
 public class OwnerApplication
 {
   private int applicationId;
-  private Client clientId;
-  private Admin adminId;
+  private int  clientId;
+  private int  adminId;
   private Date submissionDate;
   private String status;
-
+  private String propertyAddress;
   private String propertyRegistrationNumber;
 
-  public OwnerApplication(int appId, Client cId,Admin adId, Date d,String s,String number){
+  public String getPropertyAddress()
+  {
+    return propertyAddress;
+  }
+
+  public OwnerApplication(int appId, int cId,int adId, Date d,String s,String a,String number){
     applicationId=appId;
     clientId=cId;
     adminId=adId;
     submissionDate=d;
     status=s;
+    propertyAddress=a;
     propertyRegistrationNumber= number;
   }
 
 
-  public Admin getAdminId()
+  public int getAdminId()
   {
     return adminId;
   }
@@ -30,7 +36,7 @@ public class OwnerApplication
     return applicationId;
   }
 
-  public Client getClientId()
+  public int getClientId()
   {
     return clientId;
   }
@@ -55,15 +61,7 @@ public class OwnerApplication
     this.applicationId = applicationId;
   }
 
-  public void setClientId(Client clientId)
-  {
-    this.clientId = clientId;
-  }
 
-  public void setAdminId(Admin adminId)
-  {
-    this.adminId = adminId;
-  }
 
   public void setSubmissionDate(Date submissionDate)
   {

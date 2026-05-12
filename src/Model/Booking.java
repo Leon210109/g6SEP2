@@ -79,11 +79,21 @@ public class Booking
     return check_out_time;
   }
 
-  public String toString() {
-
-return("Start date: " + startDate +"\nEnd date: " + endDate + "\nCheck-in: " + check_in_time + "\nCheck-out: " + check_out_time + "\nNumber of people: " + number_of_people);  }
-return("id"+ id+ "number of rooms"+ numberOfRooms+ "Balcony"+ balcony + "surface Area "+ surfaceArea + "price "+ price
-    + "Last renovated "+ lastRenovated+ "Max number of people "+ maxNumberOfPeople + "owner Id "+ ownerId);
+  public int getClientId()
+  {
+    return clientId;
   }
 
+  public int getListingId()
+  {
+    return listingId;
+  }
+
+  @Override public String toString()
+  {
+    return "Booking{" + "Id=" + Id + ", clientId=" + clientId + ", listingId="
+        + listingId + ", startDate=" + startDate + ", endDate=" + endDate
+        + ", number_of_people=" + number_of_people + ", check_in_time="
+        + check_in_time + ", check_out_time=" + check_out_time + '}';
+  }
 }
