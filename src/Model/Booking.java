@@ -121,5 +121,7 @@ public class Booking
     this.surfaceArea = surfaceArea;
   }
   public String toString() {
-return("id"+ id+ "number of rooms"+ numberOfRooms+ "Balcony"+ balcony + "surface Area "+ surfaceArea + "price "+ price + "Last renovated "+ lastRenovated+ "Max number of people "+ maxNumberOfPeople + "owner Id "+ ownerId);  }
+return("id"+ id+ "number of rooms"+ numberOfRooms+ "Balcony"+ balcony + "surface Area "+ surfaceArea + "price "+ price
+    + "Last renovated "+ lastRenovated+ "Max number of people "+ maxNumberOfPeople + "owner Id "+ ownerId);
+  }
 }

@@ -10,13 +10,13 @@ public class OwnerApplicationManager
   public OwnerApplicationManager(){
     applications= new ArrayList<>();
   }
-  public void addApplication(OwnerApplication application){
+  public void addOwnerApplication(OwnerApplication application){
     applications.add(application);
   }
   public int getSize(){
     return applications.size();
   }
-  public void removeApplication(int applicationId){
+  public void removeOwnerApplication(int applicationId){
     for(OwnerApplication application:applications){
       if(application.getApplicationId()==applicationId){
         applications.remove(applicationId);
@@ -30,4 +30,6 @@ public class OwnerApplicationManager
       }
     }
   }
+
+
 }
