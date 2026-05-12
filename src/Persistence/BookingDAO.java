@@ -20,41 +20,44 @@ public class BookingDAO
               values (?,?,?,?,?,?,?)
           """;
       PreparedStatement statement=connection.prepareStatement(sql);
-      statement.setDate(1,booking.getStartDate());
-      statement.setDate(
-          2,
-          booking.getEndDate());
+      statement.setInt(1,booking.getClientId());
       statement.setInt(
+          2,
+          booking.getListingId());
+      statement.setDate(
           3,
+          java.sql.Date.valueOf(
+              LocalDate.of(
+                  booking.getStartDate().getYear(),
+                  booking.getStartDate().getMonth(),
+                  booking.getStartDate().getDay()
+              )
+          )
+      );
+
+      statement.setDate(
+          4,
+          java.sql.Date.valueOf(
+              LocalDate.of(
+                  booking.getEndDate().getYear(),
+                  booking.getEndDate().getMonth(),
+                  booking.getEndDate().getDay()
+              )
+          )
+      );
+
+      statement.setTime(
+          5,java.sql.Time.valueOf(
+          booking.getCheck_in_time()));
+
+      statement.setTime(
+          6,java.sql.Time.valueOf(
+          booking.getCheck_out_time()));
+
+      statement.setInt(
+          7,
           booking.getNumber_of_people());
 
-      statement.set(
-          4,
-          String.valueOf(
-              client.getPhoneNumber()));
-
-      statement.setString(
-          5,
-          client.getUser()
-              .getUsername());
-
-      statement.setString(
-          6,
-          client.getUser()
-              .getPassword());
-
-      statement.setDate(
-          7,
-          java.sql.Date.valueOf(
-              client.getDOB()));
-
-      statement.setString(
-          8,
-          client.getGender());
-
-      statement.setString(
-          9,
-          client.getNationality());
       statement.executeUpdate();
       connection.close();
     }

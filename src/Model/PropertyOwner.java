@@ -6,14 +6,14 @@ public class PropertyOwner
   private String LastName;
   private String Email;
   private String PhoneNumber;
-  private String DOB;
+  private Date DOB;
   private String Gender;
   private String Nationality;
-  private String ID;
+  private int ID;
   private User logIn;
   private int NumberOflistings;
 
-  public PropertyOwner(String FirstName, String LastName, String Email, String PhoneNumber, String DOB, User logIn,String gender,String nationality, String ID)
+  public PropertyOwner(String FirstName, String LastName, String Email, String PhoneNumber, Date DOB, User logIn,String gender,String nationality, int ID)
   {
     this.ID = ID;
     this.FirstName=FirstName;
@@ -47,12 +47,12 @@ public class PropertyOwner
     return Gender;
   }
 
-  public String getDOB()
+  public Date getDOB()
   {
     return DOB;
   }
 
-  public String getID()
+  public int getID()
   {
     return ID;
   }
@@ -97,7 +97,7 @@ public class PropertyOwner
     PhoneNumber = phoneNumber;
   }
 
-  public void setDOB(String DOB)
+  public void setDOB(Date DOB)
   {
     this.DOB = DOB;
   }
@@ -112,7 +112,7 @@ public class PropertyOwner
     Nationality = nationality;
   }
 
-  public void setID(String ID)
+  public void setID(int ID)
   {
     this.ID = ID;
   }
