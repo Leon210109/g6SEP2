@@ -6,6 +6,7 @@ import SEP2.SEP2.src.Model.Booking;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class BookingDAO
 {
@@ -13,10 +14,10 @@ public class BookingDAO
     try{
       Connection connection= DatabaseConnection.getConnection();
       String sql= """
-          Insert into booking(start_Date,end_Date,
+          Insert into booking(clientId,listingId,start_Date,end_Date,
           check_in_time,check_out_time,
           number_of_people)
-              values (?,?,?,?,?)
+              values (?,?,?,?,?,?,?)
           """;
       PreparedStatement statement=connection.prepareStatement(sql);
       statement.setDate(1,booking.getStartDate());
