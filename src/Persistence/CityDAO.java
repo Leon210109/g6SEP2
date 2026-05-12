@@ -1,8 +1,11 @@
 package Persistence;
 
+import Model.City;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class CityDAO
 {
@@ -21,6 +24,46 @@ public class CityDAO
     }
     catch (SQLException e)
     {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public City getCityByPostalCode(String postalCode) {
+    try {
+      Connection connection = DatabaseConnection.getConnection();
+      String sql = "SELECT * FROM city WHERE postal_code = ?";
+      PreparedStatement statement = connection.prepareStatement(sql);
+      statement.setString(1, postalCode);
+      ResultSet rs = statement.executeQuery();
+      
+      City city = null;
+      if (rs.next()) {
+        city = new City(rs.getString("name"), rs.getString("postal_code"));
+      }
+      
+      connection.close();
+      return city;
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public ArrayList<City> getAllCities() {
+    try {
+      Connection connection = DatabaseConnection.getConnection();
+      String sql = "SELECT * FROM city";
+      PreparedStatement statement = connection.prepareStatement(sql);
+      ResultSet rs = statement.executeQuery();
+      
+      ArrayList<City> cities = new ArrayList<>();
+      while (rs.next()) {
+        City city = new City(rs.getString("name"), rs.getString("postal_code"));
+        cities.add(city);
+      }
+      
+      connection.close();
+      return cities;
+    } catch (SQLException e) {
       throw new RuntimeException(e);
     }
   }

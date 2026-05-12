@@ -1,33 +1,49 @@
 package Model;
 
+import Persistence.BookingDAO;
 import java.util.ArrayList;
 
 public class BookingManager
 {
-  private ArrayList<Booking> bookings;
-
+  private BookingDAO bookingDAO;
 
   public BookingManager(){
-    bookings= new ArrayList<>();
+    bookingDAO = new BookingDAO();
   }
+
   public void addBooking(Booking booking){
-    bookings.add(booking);
+    bookingDAO.CreateBooking(booking);
   }
+
+  public Booking getBookingById(int bookingId){
+    return bookingDAO.getBookingById(bookingId);
+  }
+
+  public ArrayList<Booking> getBookingsByClientId(int clientId){
+    return bookingDAO.getBookingsByClientId(clientId);
+  }
+
+  public ArrayList<Booking> getBookingsByListingId(int listingId){
+    return bookingDAO.getBookingsByListingId(listingId);
+  }
+
+  public ArrayList<Booking> getAllBookings(){
+    return bookingDAO.getAllBookings();
+  }
+
   public int getSize(){
-    return bookings.size();
+    return bookingDAO.getAllBookings().size();
   }
-  public void removeListing(int bookingId){
-    for(Booking booking:bookings){
-      if(booking.getId()==bookingId){
-        bookings.remove(booking);
-      }
-    }
+
+  // Note: Delete and update operations would need DELETE/UPDATE SQL methods in DAO
+  // Keeping these as placeholders for now
+  public void removeBooking(int bookingId){
+    // TODO: Add deleteBooking method to BookingDAO
+    throw new UnsupportedOperationException("Delete operation not yet implemented in DAO");
   }
-  public void updateListing(Booking booking){
-    for(int i=0; i<bookings.size();i++){
-      if(bookings.get(i).getId()== booking.getId()){
-        bookings.set(i,booking);
-      }
-    }
+
+  public void updateBooking(Booking booking){
+    // TODO: Add updateBooking method to BookingDAO
+    throw new UnsupportedOperationException("Update operation not yet implemented in DAO");
   }
 }

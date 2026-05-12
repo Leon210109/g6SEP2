@@ -1,33 +1,49 @@
 package Model;
 
+import Persistence.ListingDAO;
 import java.util.ArrayList;
 
 public class ListingManager
 {
-  private ArrayList<Listing> listings;
-
+  private ListingDAO listingDAO;
 
   public ListingManager(){
-    listings= new ArrayList<>();
+    listingDAO = new ListingDAO();
   }
+
   public void addListing(Listing listing){
-    listings.add(listing);
+    listingDAO.CreateListing(listing);
   }
+
+  public Listing getListingById(int listingId){
+    return listingDAO.getListingById(listingId);
+  }
+
+  public ArrayList<Listing> getListingsByOwnerId(int ownerId){
+    return listingDAO.getListingsByOwnerId(ownerId);
+  }
+
+  public ArrayList<Listing> getAllListings(){
+    return listingDAO.getAllListings();
+  }
+
+  public ArrayList<Listing> getAvailableListings(){
+    return listingDAO.getAvailableListings();
+  }
+
   public int getSize(){
-    return listings.size();
+    return listingDAO.getAllListings().size();
   }
+
+  // Note: Delete and update operations would need DELETE/UPDATE SQL methods in DAO
+  // Keeping these as placeholders for now
   public void removeListing(int listingId){
-    for(Listing listing:listings){
-      if(listing.getId()==listingId){
-        listings.remove(listing);
-      }
-    }
+    // TODO: Add deleteListing method to ListingDAO
+    throw new UnsupportedOperationException("Delete operation not yet implemented in DAO");
   }
+
   public void updateListing(Listing listing){
-    for(int i=0; i<listings.size();i++){
-      if(listings.get(i).getId()== listing.getId()){
-        listings.set(i,listing);
-      }
-    }
+    // TODO: Add updateListing method to ListingDAO
+    throw new UnsupportedOperationException("Update operation not yet implemented in DAO");
   }
 }

@@ -1,9 +1,14 @@
 package Persistence;
 
+import Model.PropertyOwner;
+import Model.User;
+import Model.Date;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class PropertyOwnerDAO
 {
@@ -11,7 +16,7 @@ public class PropertyOwnerDAO
     try{
       Connection connection= DatabaseConnection.getConnection();
       String sql= """
-          Insert into listing(id, first_name, last_name, email, phoneNumber, 
+          Insert into propertyOwner(id, first_name, last_name, email, phoneNumber, 
           username, password, dateOfBirth, gender, nationality, numberOfListings)
               values (?,?,?,?,?,?,?,?,?,?,?)
           """;
@@ -61,6 +66,108 @@ public class PropertyOwnerDAO
     }
     catch (SQLException e)
     {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public PropertyOwner getPropertyOwnerById(int id) {
+    try {
+      Connection connection = DatabaseConnection.getConnection();
+      String sql = "SELECT * FROM propertyOwner WHERE id = ?";
+      PreparedStatement statement = connection.prepareStatement(sql);
+      statement.setInt(1, id);
+      ResultSet rs = statement.executeQuery();
+      
+      PropertyOwner owner = null;
+      if (rs.next()) {
+        User user = new User(rs.getString("username"), rs.getString("password"));
+        LocalDate dob = rs.getDate("dateOfBirth").toLocalDate();
+        Date dateOfBirth = new Date(dob.getDayOfMonth(), dob.getMonthValue(), dob.getYear());
+        
+        owner = new PropertyOwner(
+            rs.getString("first_name"),
+            rs.getString("last_name"),
+            rs.getString("email"),
+            rs.getString("phoneNumber"),
+            dateOfBirth,
+            user,
+            rs.getString("gender"),
+            rs.getString("nationality"),
+            rs.getInt("id")
+        );
+      }
+      
+      connection.close();
+      return owner;
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public PropertyOwner getPropertyOwnerByUsername(String username) {
+    try {
+      Connection connection = DatabaseConnection.getConnection();
+      String sql = "SELECT * FROM propertyOwner WHERE username = ?";
+      PreparedStatement statement = connection.prepareStatement(sql);
+      statement.setString(1, username);
+      ResultSet rs = statement.executeQuery();
+      
+      PropertyOwner owner = null;
+      if (rs.next()) {
+        User user = new User(rs.getString("username"), rs.getString("password"));
+        LocalDate dob = rs.getDate("dateOfBirth").toLocalDate();
+        Date dateOfBirth = new Date(dob.getDayOfMonth(), dob.getMonthValue(), dob.getYear());
+        
+        owner = new PropertyOwner(
+            rs.getString("first_name"),
+            rs.getString("last_name"),
+            rs.getString("email"),
+            rs.getString("phoneNumber"),
+            dateOfBirth,
+            user,
+            rs.getString("gender"),
+            rs.getString("nationality"),
+            rs.getInt("id")
+        );
+      }
+      
+      connection.close();
+      return owner;
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public ArrayList<PropertyOwner> getAllPropertyOwners() {
+    try {
+      Connection connection = DatabaseConnection.getConnection();
+      String sql = "SELECT * FROM propertyOwner";
+      PreparedStatement statement = connection.prepareStatement(sql);
+      ResultSet rs = statement.executeQuery();
+      
+      ArrayList<PropertyOwner> owners = new ArrayList<>();
+      while (rs.next()) {
+        User user = new User(rs.getString("username"), rs.getString("password"));
+        LocalDate dob = rs.getDate("dateOfBirth").toLocalDate();
+        Date dateOfBirth = new Date(dob.getDayOfMonth(), dob.getMonthValue(), dob.getYear());
+        
+        PropertyOwner owner = new PropertyOwner(
+            rs.getString("first_name"),
+            rs.getString("last_name"),
+            rs.getString("email"),
+            rs.getString("phoneNumber"),
+            dateOfBirth,
+            user,
+            rs.getString("gender"),
+            rs.getString("nationality"),
+            rs.getInt("id")
+        );
+        owners.add(owner);
+      }
+      
+      connection.close();
+      return owners;
+    } catch (SQLException e) {
       throw new RuntimeException(e);
     }
   }

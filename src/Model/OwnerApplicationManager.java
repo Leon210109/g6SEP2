@@ -1,35 +1,49 @@
 package Model;
 
+import Persistence.OwnerApplicationDAO;
 import java.util.ArrayList;
 
 public class OwnerApplicationManager
 {
-  private ArrayList<OwnerApplication> applications;
-
+  private OwnerApplicationDAO ownerApplicationDAO;
 
   public OwnerApplicationManager(){
-    applications= new ArrayList<>();
+    ownerApplicationDAO = new OwnerApplicationDAO();
   }
+
   public void addOwnerApplication(OwnerApplication application){
-    applications.add(application);
+    ownerApplicationDAO.createApplication(application);
   }
+
+  public OwnerApplication getApplicationById(int applicationId){
+    return ownerApplicationDAO.getApplicationById(applicationId);
+  }
+
+  public ArrayList<OwnerApplication> getApplicationsByClientId(int clientId){
+    return ownerApplicationDAO.getApplicationsByClientId(clientId);
+  }
+
+  public ArrayList<OwnerApplication> getApplicationsByStatus(String status){
+    return ownerApplicationDAO.getApplicationsByStatus(status);
+  }
+
+  public ArrayList<OwnerApplication> getAllApplications(){
+    return ownerApplicationDAO.getAllApplications();
+  }
+
   public int getSize(){
-    return applications.size();
+    return ownerApplicationDAO.getAllApplications().size();
   }
+
+  // Note: Delete and update operations would need DELETE/UPDATE SQL methods in DAO
+  // Keeping these as placeholders for now
   public void removeOwnerApplication(int applicationId){
-    for(OwnerApplication application:applications){
-      if(application.getApplicationId()==applicationId){
-        applications.remove(applicationId);
-      }
-    }
-  }
-  public void updateListing(OwnerApplication application){
-    for(int i=0; i<applications.size();i++){
-      if(applications.get(i).getApplicationId()== application.getApplicationId()){
-        applications.set(i,application);
-      }
-    }
+    // TODO: Add deleteApplication method to OwnerApplicationDAO
+    throw new UnsupportedOperationException("Delete operation not yet implemented in DAO");
   }
 
-
+  public void updateApplication(OwnerApplication application){
+    // TODO: Add updateApplication method to OwnerApplicationDAO
+    throw new UnsupportedOperationException("Update operation not yet implemented in DAO");
+  }
 }
