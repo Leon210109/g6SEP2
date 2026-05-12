@@ -1,6 +1,6 @@
-package SEP2.SEP2.src.Persistence;
+package Persistence;
 
-import SEP2.SEP2.src.Model.City;
+import Model.City;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

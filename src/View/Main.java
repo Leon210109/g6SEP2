@@ -1,10 +1,11 @@
-package SEP2.SEP2.src.View;
+package View;
 
-import SEP2.SEP2.src.ViewModel.AdminViewModel;
-import SEP2.SEP2.src.ViewModel.AppViewModel;
-import SEP2.SEP2.src.ViewModel.ClientViewModel;
-import SEP2.SEP2.src.ViewModel.LoginViewModel;
-import SEP2.SEP2.src.ViewModel.PropertyOwnerViewModel;
+import ViewModel.AdminViewModel;
+import ViewModel.AppViewModel;
+import ViewModel.ClientViewModel;
+import ViewModel.LoginViewModel;
+import ViewModel.PropertyOwnerViewModel;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,165 +17,192 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import java.io.File;
 
 public class Main extends Application {
-  private Stage primaryStage;
-  private final LoginViewModel loginVM = new LoginViewModel();
-  private static final String CSS_URI = new File("src/View/styles.css").toURI().toString();
 
-  @Override
-  public void start(Stage primaryStage) {
-    this.primaryStage = primaryStage;
-    primaryStage.setTitle("Booking via VIA");
-    primaryStage.setScene(buildLoginScene());
-    primaryStage.show();
-  }
+    private Stage primaryStage;
 
-  // ── Login Scene ──────────────────────────────────────────────────────────
-  private Scene buildLoginScene() {
-    Text title = new Text("Booking via VIA");
-    title.setFont(Font.font("Palatino Linotype", FontWeight.BOLD, FontPosture.ITALIC, 36));
-    title.setStyle("-fx-fill: #143D29;");
-
-    Text subtitle = new Text("Select your account type to continue");
-    subtitle.setFont(Font.font("Cambria", FontWeight.NORMAL, 15));
-    subtitle.setStyle("-fx-fill: #1A5F3F;");
-
-    ToggleGroup group = new ToggleGroup();
-
-    RadioButton clientBtn = new RadioButton("Client");
-    RadioButton ownerBtn = new RadioButton("Property Owner");
-    RadioButton adminBtn = new RadioButton("Admin");
-
-    for (RadioButton rb : new RadioButton[] { clientBtn, ownerBtn, adminBtn }) {
-      rb.setToggleGroup(group);
-      rb.setFont(Font.font("Cambria", FontWeight.NORMAL, 15));
-      rb.setStyle("-fx-text-fill: #143D29;");
+    @Override
+    public void start(Stage stage) {
+        this.primaryStage = stage;
+        primaryStage.setTitle("Booking via VIA");
+        showLoginScene();
+        primaryStage.show();
     }
-    clientBtn.setSelected(true);
 
-    group.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
-      if (newVal instanceof RadioButton rb)
-        loginVM.setSelectedUserType(rb.getText());
-    });
+    // ── Login screen ──────────────────────────────────────────────────────────
 
-    VBox radioBox = new VBox(12, clientBtn, ownerBtn, adminBtn);
-    radioBox.setAlignment(Pos.CENTER_LEFT);
-    radioBox.setPadding(new Insets(8, 0, 8, 0));
+    private void showLoginScene() {
+        LoginViewModel loginVM = new LoginViewModel();
 
-    String btnStyle = "-fx-background-color: #1A5F3F; -fx-text-fill: #F5F0E8;" +
-        "-fx-background-radius: 6; -fx-cursor: hand; -fx-padding: 8 28;";
-    String btnHoverStyle = "-fx-background-color: #143D29; -fx-text-fill: #F5F0E8;" +
-        "-fx-background-radius: 6; -fx-cursor: hand; -fx-padding: 8 28;";
+        // Title
+        Text title = new Text("Booking via VIA");
+        title.setFont(Font.font("Palatino Linotype", FontWeight.BOLD, FontPosture.ITALIC, 32));
+        title.setStyle("-fx-fill: #143D29;");
 
-    Button enterBtn = new Button("Enter");
-    enterBtn.setFont(Font.font("Cambria", FontWeight.BOLD, 15));
-    enterBtn.setStyle(btnStyle);
-    enterBtn.setOnMouseEntered(e -> enterBtn.setStyle(btnHoverStyle));
-    enterBtn.setOnMouseExited(e -> enterBtn.setStyle(btnStyle));
-    enterBtn.setOnAction(e -> primaryStage.setScene(buildMainScene(loginVM.getSelectedUserType())));
+        Text subtitle = new Text("Select your account type to continue");
+        subtitle.setFont(Font.font("Cambria", FontWeight.NORMAL, 14));
+        subtitle.setStyle("-fx-fill: #1A5F3F;");
 
-    VBox card = new VBox(18, title, subtitle, radioBox, enterBtn);
-    card.setAlignment(Pos.CENTER_LEFT);
-    card.setPadding(new Insets(40, 48, 40, 48));
-    card.setMaxWidth(440);
-    card.setStyle(
-        "-fx-background-color: #EDE8DC; -fx-background-radius: 12;" +
-            "-fx-border-color: #1A5F3F; -fx-border-radius: 12; -fx-border-width: 2;");
+        // Radio buttons
+        ToggleGroup group = new ToggleGroup();
 
-    StackPane loginRoot = new StackPane(card);
-    loginRoot.setStyle("-fx-background-color: #F5F0E8;");
+        RadioButton rbClient = new RadioButton("Client");
+        RadioButton rbOwner = new RadioButton("Property Owner");
+        RadioButton rbAdmin = new RadioButton("Admin");
 
-    Scene scene = new Scene(loginRoot, 960, 620);
-    scene.getStylesheets().add(CSS_URI);
-    return scene;
-  }
+        for (RadioButton rb : new RadioButton[] { rbClient, rbOwner, rbAdmin }) {
+            rb.setToggleGroup(group);
+            rb.setFont(Font.font("Cambria", FontWeight.NORMAL, 15));
+            rb.setStyle("-fx-text-fill: #143D29;");
+        }
+        rbClient.setSelected(true);
 
-  // ── Main Scene ───────────────────────────────────────────────────────────
-  private Scene buildMainScene(String userType) {
-    AppViewModel vm = switch (userType) {
-      case "Property Owner" -> new PropertyOwnerViewModel();
-      case "Admin" -> new AdminViewModel();
-      default -> new ClientViewModel();
-    };
+        group.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal == rbClient)
+                loginVM.setSelectedUserType("Client");
+            else if (newVal == rbOwner)
+                loginVM.setSelectedUserType("Property Owner");
+            else
+                loginVM.setSelectedUserType("Admin");
+        });
 
-    // ── Big centred label ────────────────────────────────────────
-    Text welcomeText = new Text(userType);
-    welcomeText.setFont(Font.font("Palatino Linotype", FontWeight.BOLD, FontPosture.ITALIC, 72));
-    welcomeText.setStyle("-fx-fill: #143D29;");
+        VBox radioBox = new VBox(12, rbClient, rbOwner, rbAdmin);
+        radioBox.setAlignment(Pos.CENTER_LEFT);
 
-    Text sectionLabel = new Text("  " + userType);
-    sectionLabel.setFont(Font.font("Cambria", FontWeight.NORMAL, 15));
-    sectionLabel.setStyle("-fx-fill: #1A5F3F;");
+        // Enter button
+        Button enterBtn = new Button("Enter");
+        enterBtn.setFont(Font.font("Cambria", FontWeight.BOLD, 14));
+        enterBtn.setStyle(
+                "-fx-background-color: #1A5F3F;" +
+                        "-fx-text-fill: #F5F0E8;" +
+                        "-fx-background-radius: 6;" +
+                        "-fx-padding: 8 28;" +
+                        "-fx-cursor: hand;");
+        enterBtn.setOnMouseEntered(e -> enterBtn.setStyle(
+                "-fx-background-color: #143D29;" +
+                        "-fx-text-fill: #F5F0E8;" +
+                        "-fx-background-radius: 6;" +
+                        "-fx-padding: 8 28;" +
+                        "-fx-cursor: hand;"));
+        enterBtn.setOnMouseExited(e -> enterBtn.setStyle(
+                "-fx-background-color: #1A5F3F;" +
+                        "-fx-text-fill: #F5F0E8;" +
+                        "-fx-background-radius: 6;" +
+                        "-fx-padding: 8 28;" +
+                        "-fx-cursor: hand;"));
+        enterBtn.setOnAction(e -> showMainScene(loginVM.getSelectedUserType()));
 
-    // Bind UI to ViewModel – any navigateTo / navigateHome call updates both texts
-    vm.currentSectionProperty().addListener((obs, oldVal, newVal) -> {
-      welcomeText.setText(newVal);
-      boolean isHome = newVal.equals(userType);
-      welcomeText.setFont(Font.font("Palatino Linotype", FontWeight.BOLD, FontPosture.ITALIC,
-          isHome ? 72 : 52));
-      sectionLabel.setText("  " + newVal);
-    });
+        // Card
+        VBox card = new VBox(20, title, subtitle, radioBox, enterBtn);
+        card.setAlignment(Pos.CENTER_LEFT);
+        card.setPadding(new Insets(40, 48, 40, 48));
+        card.setMaxWidth(420);
+        card.setStyle(
+                "-fx-background-color: #EDE8DC;" +
+                        "-fx-background-radius: 10;" +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 14, 0, 0, 4);");
 
-    StackPane contentArea = new StackPane(welcomeText);
-    contentArea.setStyle("-fx-background-color: #F5F0E8;");
-    contentArea.setPadding(new Insets(16));
+        StackPane loginRoot = new StackPane(card);
+        loginRoot.setStyle("-fx-background-color: #F5F0E8;");
 
-    // ── Title (home button) ──────────────────────────────────────
-    Text title = new Text("Booking via VIA");
-    title.setFont(Font.font("Palatino Linotype", FontWeight.BOLD, FontPosture.ITALIC, 28));
-    title.setStyle("-fx-fill: #143D29;");
-    title.setOnMouseEntered(e -> title.setStyle("-fx-fill: #1A5F3F; -fx-cursor: hand;"));
-    title.setOnMouseExited(e -> title.setStyle("-fx-fill: #143D29;"));
-    title.setOnMouseClicked(e -> vm.navigateHome());
-
-    HBox titleBox = new HBox(title, sectionLabel);
-    titleBox.setAlignment(Pos.CENTER_LEFT);
-
-    // ── Dropdown menu ─────────────────────────────────────────────
-    MenuButton navMenu = new MenuButton("Navigate ▾");
-    navMenu.getStyleClass().add("nav-menu");
-    navMenu.setStyle(
-        "-fx-background-color: #1A5F3F; -fx-text-fill: #F5F0E8;" +
-            "-fx-font-family: 'Cambria'; -fx-font-size: 13px;" +
-            "-fx-background-radius: 6; -fx-cursor: hand;");
-
-    if (vm instanceof ClientViewModel clientVM) {
-      for (String section : new String[] { "Bookings", "Available Listings" }) {
-        MenuItem item = new MenuItem(section);
-        item.setStyle("-fx-font-family: 'Cambria'; -fx-font-size: 13px;");
-        item.setOnAction(ev -> clientVM.navigateTo(section));
-        navMenu.getItems().add(item);
-      }
+        Scene loginScene = new Scene(loginRoot, 960, 620);
+        loginScene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        primaryStage.setScene(loginScene);
     }
-    // PropertyOwnerViewModel and AdminViewModel: no menu items yet
 
-    HBox rightBox = new HBox(8, navMenu);
-    rightBox.setAlignment(Pos.CENTER_RIGHT);
+    // ── Main screen ───────────────────────────────────────────────────────────
 
-    // ── Header bar ────────────────────────────────────────────────
-    HBox header = new HBox(titleBox, rightBox);
-    HBox.setHgrow(titleBox, Priority.ALWAYS);
-    HBox.setHgrow(rightBox, Priority.NEVER);
-    header.setAlignment(Pos.CENTER_LEFT);
-    header.setPadding(new Insets(14, 20, 12, 20));
-    header.setStyle(
-        "-fx-background-color: #F5F0E8;" +
-            "-fx-border-color: #1A5F3F;" +
-            "-fx-border-width: 0 0 3 0;");
+    private void showMainScene(String userType) {
+        AppViewModel vm = switch (userType) {
+            case "Property Owner" -> new PropertyOwnerViewModel();
+            case "Admin" -> new AdminViewModel();
+            default -> new ClientViewModel();
+        };
 
-    VBox root = new VBox(header, contentArea);
-    VBox.setVgrow(contentArea, Priority.ALWAYS);
-    root.setStyle("-fx-background-color: #F5F0E8;");
+        // ── Centre welcome text ──────────────────────────────────────
+        Text welcomeText = new Text(userType);
+        welcomeText.setFont(Font.font("Palatino Linotype", FontWeight.BOLD, 72));
+        welcomeText.setStyle("-fx-fill: #143D29;");
 
-    Scene scene = new Scene(root, 960, 620);
-    scene.getStylesheets().add(CSS_URI);
-    return scene;
-  }
+        Text sectionLabel = new Text("");
+        sectionLabel.setFont(Font.font("Cambria", FontWeight.NORMAL, 18));
+        sectionLabel.setStyle("-fx-fill: #1A5F3F;");
 
-  public static void main(String[] args) {
-    launch(args);
-  }
+        vm.currentSectionProperty().addListener((obs, oldVal, newVal) -> {
+            boolean isHome = newVal.equals(userType);
+            welcomeText.setText(isHome ? userType : newVal);
+            welcomeText.setFont(Font.font("Palatino Linotype", FontWeight.BOLD, isHome ? 72 : 48));
+            sectionLabel.setText(isHome ? "" : userType);
+        });
+
+        VBox centre = new VBox(8, welcomeText, sectionLabel);
+        centre.setAlignment(Pos.CENTER);
+
+        StackPane contentArea = new StackPane(centre);
+        contentArea.setStyle("-fx-background-color: #F5F0E8;");
+
+        // ── Header ───────────────────────────────────────────────────
+        Text title = new Text("Booking via VIA");
+        title.setFont(Font.font("Palatino Linotype", FontWeight.BOLD, FontPosture.ITALIC, 28));
+        title.setStyle("-fx-fill: #143D29;");
+        title.setOnMouseEntered(e -> title.setStyle("-fx-fill: #1A5F3F; -fx-cursor: hand;"));
+        title.setOnMouseExited(e -> title.setStyle("-fx-fill: #143D29;"));
+        title.setOnMouseClicked(e -> vm.navigateHome());
+
+        Text headerSub = new Text("  Home");
+        headerSub.setFont(Font.font("Cambria", FontWeight.NORMAL, 15));
+        headerSub.setStyle("-fx-fill: #1A5F3F;");
+        vm.currentSectionProperty().addListener(
+                (obs, oldVal, newVal) -> headerSub.setText("  " + (newVal.equals(userType) ? "Home" : newVal)));
+
+        HBox titleBox = new HBox(title, headerSub);
+        titleBox.setAlignment(Pos.CENTER_LEFT);
+
+        // ── Navigate dropdown ────────────────────────────────────────
+        MenuButton navMenu = new MenuButton("Navigate ▾");
+        navMenu.getStyleClass().add("nav-menu");
+        navMenu.setStyle(
+                "-fx-background-color: #1A5F3F;" +
+                        "-fx-text-fill: #F5F0E8;" +
+                        "-fx-font-family: 'Cambria';" +
+                        "-fx-font-size: 13px;" +
+                        "-fx-background-radius: 6;" +
+                        "-fx-cursor: hand;");
+
+        if (vm instanceof ClientViewModel clientVM) {
+            for (String section : new String[] { "Bookings", "Available Listings" }) {
+                MenuItem item = new MenuItem(section);
+                item.setStyle("-fx-font-family: 'Cambria'; -fx-font-size: 13px;");
+                item.setOnAction(e -> clientVM.navigateTo(section));
+                navMenu.getItems().add(item);
+            }
+        }
+        // Property Owner and Admin: no items yet
+
+        HBox rightBox = new HBox(navMenu);
+        rightBox.setAlignment(Pos.CENTER_RIGHT);
+
+        HBox header = new HBox(titleBox, rightBox);
+        HBox.setHgrow(titleBox, Priority.ALWAYS);
+        HBox.setHgrow(rightBox, Priority.NEVER);
+        header.setAlignment(Pos.CENTER_LEFT);
+        header.setPadding(new Insets(14, 20, 12, 20));
+        header.setStyle(
+                "-fx-background-color: #F5F0E8;" +
+                        "-fx-border-color: #1A5F3F;" +
+                        "-fx-border-width: 0 0 3 0;");
+
+        VBox root = new VBox(header, contentArea);
+        VBox.setVgrow(contentArea, Priority.ALWAYS);
+        root.setStyle("-fx-background-color: #F5F0E8;");
+
+        Scene mainScene = new Scene(root, 960, 620);
+        mainScene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        primaryStage.setScene(mainScene);
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
-

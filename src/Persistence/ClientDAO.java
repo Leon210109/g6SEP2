@@ -1,6 +1,5 @@
-package SEP2.SEP2.src.Persistence;
-import SEP2.SEP2.src.Model.Client;
-import SEP2.SEP2.src.Persistence.DatabaseConnection;
+package Persistence;
+import Model.Client;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

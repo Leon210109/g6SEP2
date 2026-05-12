@@ -1,6 +1,6 @@
-package SEP2.SEP2.src.Persistence;
+package Persistence;
 
-import SEP2.SEP2.src.Model.PropertyOwner;
+import Model.PropertyOwner;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
