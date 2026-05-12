@@ -1,5 +1,4 @@
 package Persistence;
-import Model.Client;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

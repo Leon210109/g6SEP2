@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ca35788d-7e04-4dac-9c07-82ebc2a99fde" name="Changes" comment="most recent changes from the monday the 11th session">
+      <change beforePath="$PROJECT_DIR$/src/Model/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Admin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Persistence/AdminDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Persistence/AdminDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/styles.css" afterDir="false" />
+    </list>
+    <list id="f442719a-c7ae-4ed7-87f7-1d6c44e88125" name="Changes by adhik" comment="Changes by adhik" />
+    <list id="c67eece9-3251-4eb1-a25d-2bb1afa64bfe" name="Changes by Adrian Escartin" comment="Changes by Adrian Escartin" />
+    <list id="0f70f7e3-6dd7-4a1f-aa71-b6d4b5f7b4c6" name="Changes by alex" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {}
+}</component>
+  <component name="GitHubPullRequestState"><![CDATA[{
+  "prStates": [
+    {
+      "id": {
+        "id": "PR_kwDOSaKON87alR8p",
+        "number": 2
+      },
+      "lastSeen": 1778577305135
+    }
+  ]
+}]]></component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Leon210109/g6SEP2.git&quot;,
+    &quot;accountId&quot;: &quot;caf9866e-32ac-44a8-b95a-b6ddd5b23464&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="3DZaUPknx6eJJSh4Szt6XYItTeD" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.main.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\leond\Aa VIA\g6SEP2\src\docs" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="SEP2.SEP2.src.View.main" />
+      <module name="g6SEP2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="SEP2.SEP2.src.View.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ca35788d-7e04-4dac-9c07-82ebc2a99fde" name="Changes" comment="" />
+      <created>1778492062405</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1778492062405</updated>
+    </task>
+    <task id="LOCAL-00001" summary="changes to branch linking, and new databse folder">
+      <option name="closed" value="true" />
+      <created>1778495235936</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1778495235936</updated>
+    </task>
+    <task id="LOCAL-00002" summary="most recent changes from the monday the 11th session">
+      <option name="closed" value="true" />
+      <created>1778504051879</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1778504051879</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Merge remote-tracking branch 'origin/main'" />
+    <MESSAGE value="changes to branch linking, and new databse folder" />
+    <MESSAGE value="most recent changes from the monday the 11th session" />
+    <MESSAGE value="Changes by Adrian Escartin" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changes by Adrian Escartin" />
+  </component>
+</project>

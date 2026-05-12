@@ -1,0 +1,119 @@
+Index: src/Model/Admin.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package SEP2.SEP2.src.Model;;\r\n\r\npublic class Admin\r\n{\r\n  private String ID;\r\n  private User logIn;\r\n\r\n  public Admin(String ID, User logIn)\r\n  {\r\n    this.ID = ID;\r\n    this.logIn=logIn;\r\n  }\r\n\r\n  public String getID()\r\n  {\r\n    return ID;\r\n  }\r\n\r\n  public User getLogIn()\r\n  {\r\n    return logIn;\r\n  }\r\n\r\n  public void setID(String ID)\r\n  {\r\n    this.ID = ID;\r\n  }\r\n\r\n  public void setLogIn(User logIn)\r\n  {\r\n    this.logIn = logIn;\r\n  }\r\n  public String toString()\r\n  {\r\n    return \"Username \" + logIn.getUsername() + \"\\n Password\" + logIn.getPassword() + \"\\n ID: \" + ID;\r\n  }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Model/Admin.java b/src/Model/Admin.java
+--- a/src/Model/Admin.java	(revision 0a10892e8aae830e0c633f80f33feea78f687244)
++++ b/src/Model/Admin.java	(date 1778497833811)
+@@ -1,5 +1,6 @@
+ package SEP2.SEP2.src.Model;;
+ 
++
+ public class Admin
+ {
+   private String ID;
+Index: src/Model/Client.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package SEP2.SEP2.src.Model;\r\nimport SEP2.SEP2.src.Model.User;\r\n\r\npublic class Client\r\n{\r\n  private String FirstName;\r\n  private String LastName;\r\n  private String Email;\r\n  private int PhoneNumber;\r\n  private String DOB;\r\n  private String Gender;\r\n  private String Nationality;\r\n  private String HomeAddress;\r\n  private int ID;\r\n  private User logIn;\r\n\r\n  public Client(String FirstName, String LastName,String Gender, String Nationality,String HomeAddress, String Email, int PhoneNumber,String DOB, User logIn, int ID)\r\n  {\r\n    this.ID = ID;\r\n    this.FirstName = FirstName;\r\n    this.LastName = LastName;\r\n    this.Gender=Gender;\r\n    this.Nationality=Nationality;\r\n    this.HomeAddress=HomeAddress;\r\n    this.Email = Email;\r\n    this.PhoneNumber = PhoneNumber;\r\n    this.DOB = DOB;\r\n    this.logIn=logIn;\r\n  }\r\n\r\n  public User getLogIn()\r\n  {\r\n    return logIn;\r\n  }\r\n\r\n  public int getID()\r\n  {\r\n    return ID;\r\n  }\r\n\r\n  public String getEmail()\r\n  {\r\n    return Email;\r\n  }\r\n\r\n  public String getDOB()\r\n  {\r\n    return DOB;\r\n  }\r\n\r\n  public String getFirstName()\r\n  {\r\n    return FirstName;\r\n  }\r\n\r\n  public String getGender()\r\n  {\r\n    return Gender;\r\n  }\r\n\r\n  public String getLastName()\r\n  {\r\n    return LastName;\r\n  }\r\n\r\n  public String getHomeAddress()\r\n  {\r\n    return HomeAddress;\r\n  }\r\n\r\n  public String getNationality()\r\n  {\r\n    return Nationality;\r\n  }\r\n\r\n  public int getPhoneNumber()\r\n  {\r\n    return PhoneNumber;\r\n  }\r\n  public String toString()\r\n  {\r\n    return \"Name: \" + LastName + \" \" + FirstName + \"\\nUsername \" + logIn.getUsername() + \"\\nPassword \" + logIn.getPassword() + \"\\n Email \" + Email + \"\\n Phone number \" + PhoneNumber +\"\\nGender \" + Gender + \"\\nDate of birth \" + DOB + \"\\nNationality \" + Nationality + \"\\nHome address \" + HomeAddress + \"\\nID \" + ID;\r\n  }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Model/Client.java b/src/Model/Client.java
+--- a/src/Model/Client.java	(revision fd894afeaaea796ed792b9ccfa45fcb562e8cb67)
++++ b/src/Model/Client.java	(date 1778497903044)
+@@ -1,6 +1,7 @@
+ package SEP2.SEP2.src.Model;
+ import SEP2.SEP2.src.Model.User;
+ 
++
+ public class Client
+ {
+   private String FirstName;
+Index: src/Model/Booking.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package SEP2.SEP2.src.Model;\r\n\r\npublic class Booking\r\n{\r\n  private int id;\r\n  private int numberOfRooms;\r\n  private int numberOfBathrooms;\r\n  private boolean balcony;\r\n  private int surfaceArea;\r\n  private int price;\r\n  private Date lastRenovated;\r\n  private int maxNumberOfPeople;\r\n  private int ownerId;\r\n\r\n  public Booking(int id, int numberOfRooms,\r\n      int numberOfBathrooms, boolean balcony, int surfaceArea, int price,\r\n      Date lastRenovated, int maxNumberOfPeople, int ownerId)\r\n  {\r\n    this.id = id;\r\n    this.numberOfRooms = numberOfRooms;\r\n    this.numberOfBathrooms = numberOfBathrooms;\r\n    this.balcony = balcony;\r\n    this.surfaceArea = surfaceArea;\r\n    this.price = price;\r\n    this.lastRenovated = lastRenovated;\r\n    this.maxNumberOfPeople = maxNumberOfPeople;\r\n    this.ownerId = ownerId;\r\n  }\r\n\r\n    public int getId()\r\n    {\r\n      return id;\r\n    }\r\n\r\n    public int getNumberOfRooms()\r\n    {\r\n      return numberOfRooms;\r\n    }\r\n\r\n    public int getNumberOfBathrooms()\r\n    {\r\n      return numberOfBathrooms;\r\n    }\r\n\r\n    public boolean hasBalcony()\r\n    {\r\n      return balcony;\r\n    }\r\n\r\n    public int getSurfaceArea()\r\n    {\r\n      return surfaceArea;\r\n    }\r\n\r\n    public int getPrice()\r\n    {\r\n      return price;\r\n    }\r\n\r\n    public Date getLastRenovated()\r\n    {\r\n      return lastRenovated;\r\n    }\r\n\r\n    public int getMaxNumberOfPeople()\r\n    {\r\n      return maxNumberOfPeople;\r\n    }\r\n    public int getOwnerId()\r\n    {\r\n      return ownerId;\r\n    }\r\n\r\n  public void setId(int id)\r\n  {\r\n    this.id = id;\r\n  }\r\n\r\n  public void setBalcony(boolean balcony)\r\n  {\r\n    this.balcony = balcony;\r\n  }\r\n\r\n  public void setNumberOfBathrooms(int numberOfBathrooms)\r\n  {\r\n    this.numberOfBathrooms = numberOfBathrooms;\r\n  }\r\n\r\n  public boolean isBalcony()\r\n  {\r\n    return balcony;\r\n  }\r\n\r\n  public void setLastRenovated(Date lastRenovated)\r\n  {\r\n    this.lastRenovated = lastRenovated;\r\n  }\r\n\r\n  public void setMaxNumberOfPeople(int maxNumberOfPeople)\r\n  {\r\n    this.maxNumberOfPeople = maxNumberOfPeople;\r\n  }\r\n\r\n  public void setNumberOfRooms(int numberOfRooms)\r\n  {\r\n    this.numberOfRooms = numberOfRooms;\r\n  }\r\n\r\n  public void setOwnerId(int ownerId)\r\n  {\r\n    this.ownerId = ownerId;\r\n  }\r\n\r\n  public void setPrice(int price)\r\n  {\r\n    this.price = price;\r\n  }\r\n\r\n  public void setSurfaceArea(int surfaceArea)\r\n  {\r\n    this.surfaceArea = surfaceArea;\r\n  }\r\n  public String toString() {\r\nreturn(\"id\"+ id+ \"number of rooms\"+ numberOfRooms+ \"Balcony\"+ balcony + \"surface Area \"+ surfaceArea + \"price \"+ price + \"Last renovated \"+ lastRenovated+ \"Max number of people \"+ maxNumberOfPeople + \"owner Id \"+ ownerId);  }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Model/Booking.java b/src/Model/Booking.java
+--- a/src/Model/Booking.java	(revision fd894afeaaea796ed792b9ccfa45fcb562e8cb67)
++++ b/src/Model/Booking.java	(date 1778498319614)
+@@ -121,5 +121,7 @@
+     this.surfaceArea = surfaceArea;
+   }
+   public String toString() {
+-return("id"+ id+ "number of rooms"+ numberOfRooms+ "Balcony"+ balcony + "surface Area "+ surfaceArea + "price "+ price + "Last renovated "+ lastRenovated+ "Max number of people "+ maxNumberOfPeople + "owner Id "+ ownerId);  }
++return("id"+ id+ "number of rooms"+ numberOfRooms+ "Balcony"+ balcony + "surface Area "+ surfaceArea + "price "+ price
++    + "Last renovated "+ lastRenovated+ "Max number of people "+ maxNumberOfPeople + "owner Id "+ ownerId);
++  }
+ }
+Index: src/Model/Address.java
+===================================================================
+diff --git a/src/Model/Address.java b/src/Model/Address.java
+deleted file mode 100644
+--- a/src/Model/Address.java	(revision 0a10892e8aae830e0c633f80f33feea78f687244)
++++ /dev/null	(revision 0a10892e8aae830e0c633f80f33feea78f687244)
+@@ -1,58 +0,0 @@
+-package Model;
+-
+-public class Address
+-{
+-  private String city;
+-  private String street;
+-  private String postalCode;
+-  private String country;
+-  private String region;
+-  private int StreetNumber;
+-  private int floor;
+-  private int roomNumber;
+-
+-
+-  public Address( String city, String street, String postalCode, String country, String region, int StreetNumber, int floor, int roomNumber)
+-  {
+-    this.city = city;
+-    this.street = street;
+-    this.postalCode = postalCode;
+-    this.country = country;
+-    this.region = region;
+-    this.StreetNumber = StreetNumber;
+-    this.floor = floor;
+-    this.roomNumber = roomNumber;
+-  }
+-  public String getCity()
+-  {
+-    return city;
+-  }
+-
+-  public String getCountry()
+-  {
+-    return country;
+-  }
+-
+-  public String getPostalCode()
+-  {
+-    return postalCode;
+-  }
+-  public String getStreet(){
+-    return street;
+-  }
+-  public String getRegion(){
+-    return region;
+-  }
+-  public int getStreetNumber(){
+-    return StreetNumber;
+-  }
+-  public int getFloor()
+-  {
+-    return floor;
+-  }
+-  public int getRoomNumber()
+-  {
+-    return roomNumber;
+-  }
+-
+-}
