@@ -1,4 +1,4 @@
-package Model;
+package SEP2.SEP2.src.Model;
 
 import java.util.ArrayList;
 
@@ -23,24 +23,10 @@ public class UserManager
     }
     return null;
   }
-  public void registerClient(String userName,String password,int id, String firstname,String lastname,String gender,
-      String nationality,String homeaddress,String email,int phonenumber,String dob){
-    if(findUserName(userName)){
+  public void registerClient(User user,Client client){
+    if(findUserName(user.getUsername())){
       throw new IllegalArgumentException("UserName already exists");
     }
-    User user= new User(userName,password);
-    Client client= new Client(
-        id,
-        firstname,
-        lastname,
-        gender,
-        nationality,
-        homeaddress,
-        email,
-        phonenumber,
-        dob,
-        user
-    );
     users.add(user);
     clients.add(client);
   }
@@ -54,3 +40,4 @@ public class UserManager
   }
 
 }
+

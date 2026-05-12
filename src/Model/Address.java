@@ -1,4 +1,4 @@
-package SEP2.SEP2.src.Model;
+package Model;
 
 public class Address
 {

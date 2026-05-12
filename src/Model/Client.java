@@ -1,4 +1,5 @@
-package Model;
+package SEP2.SEP2.src.Model;
+import SEP2.SEP2.src.Model.User;
 
 public class Client
 {
