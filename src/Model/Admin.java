@@ -2,26 +2,29 @@ package SEP2.SEP2.src.Model;;
 
 public class Admin
 {
-  private String ID;
+  private int ID;
   private User logIn;
+  private String adminName;
 
-  public Admin(String ID, User logIn)
+  public Admin(int ID, User logIn, String adminName
+  )
   {
     this.ID = ID;
     this.logIn=logIn;
+    this.adminName = adminName;
   }
 
-  public String getID()
+  public int getID()
   {
     return ID;
   }
 
-  public User getLogIn()
+  public User getUser()
   {
     return logIn;
   }
 
-  public void setID(String ID)
+  public void setID(int ID)
   {
     this.ID = ID;
   }
@@ -30,8 +33,16 @@ public class Admin
   {
     this.logIn = logIn;
   }
+  public String getAdminName()
+  {
+    return adminName;
+  }
+  public void setAdminName(String adminName)
+  {
+    this.adminName=adminName;
+  }
   public String toString()
   {
-    return "Username " + logIn.getUsername() + "\n Password" + logIn.getPassword() + "\n ID: " + ID;
+    return "Username " + logIn.getUsername() + "\n Password" + logIn.getPassword() + "\n ID: " + ID + adminName  + "AdminName";
   }
 }

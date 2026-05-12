@@ -3,14 +3,14 @@ package SEP2.SEP2.src.Model;
 public class City
 {
   private String name;
-  private int postalCode;
+  private String postalCode;
 
-  public City(String name, int postalCode) {
+  public City(String name, String postalCode) {
     this.name = name;
     this.postalCode = postalCode;
   }
 
-  public int getPostalCode()
+  public String getPostalCode()
   {
     return postalCode;
   }
@@ -25,7 +25,7 @@ public class City
     this.name = name;
   }
 
-  public void setPostalCode(int postalCode)
+  public void setPostalCode(String postalCode)
   {
     this.postalCode = postalCode;
   }

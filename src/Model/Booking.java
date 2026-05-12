@@ -1,125 +1,84 @@
 package SEP2.SEP2.src.Model;
 
+import java.time.LocalTime;
+
 public class Booking
 {
-  private int id;
-  private int numberOfRooms;
-  private int numberOfBathrooms;
-  private boolean balcony;
-  private int surfaceArea;
-  private int price;
-  private Date lastRenovated;
-  private int maxNumberOfPeople;
-  private int ownerId;
+  private int Id;
+  private int clientId;
+  private int listingId;
+  private Date startDate;
+  private Date endDate;
+  private int number_of_people;
+  private LocalTime check_in_time;
+  private LocalTime check_out_time;
 
-  public Booking(int id, int numberOfRooms,
-      int numberOfBathrooms, boolean balcony, int surfaceArea, int price,
-      Date lastRenovated, int maxNumberOfPeople, int ownerId)
+  public Booking(int clientId,int listingId,Date startDate, Date endDate, int number_of_people,
+      LocalTime check_in_time, LocalTime check_out_time)
   {
-    this.id = id;
-    this.numberOfRooms = numberOfRooms;
-    this.numberOfBathrooms = numberOfBathrooms;
-    this.balcony = balcony;
-    this.surfaceArea = surfaceArea;
-    this.price = price;
-    this.lastRenovated = lastRenovated;
-    this.maxNumberOfPeople = maxNumberOfPeople;
-    this.ownerId = ownerId;
+    this.clientId=clientId;
+    this.listingId=listingId;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.number_of_people = number_of_people;
+    this.check_in_time = check_in_time;
+    this.check_out_time = check_out_time;
   }
 
-    public int getId()
-    {
-      return id;
-    }
-
-    public int getNumberOfRooms()
-    {
-      return numberOfRooms;
-    }
-
-    public int getNumberOfBathrooms()
-    {
-      return numberOfBathrooms;
-    }
-
-    public boolean hasBalcony()
-    {
-      return balcony;
-    }
-
-    public int getSurfaceArea()
-    {
-      return surfaceArea;
-    }
-
-    public int getPrice()
-    {
-      return price;
-    }
-
-    public Date getLastRenovated()
-    {
-      return lastRenovated;
-    }
-
-    public int getMaxNumberOfPeople()
-    {
-      return maxNumberOfPeople;
-    }
-    public int getOwnerId()
-    {
-      return ownerId;
-    }
-
-  public void setId(int id)
+  public int getId()
   {
-    this.id = id;
+    return Id;
+  }
+  public void setStartDate(Date startDate)
+  {
+    this.startDate = startDate;
   }
 
-  public void setBalcony(boolean balcony)
+  public void setEndDate(Date endDate)
   {
-    this.balcony = balcony;
+    this.endDate = endDate;
   }
 
-  public void setNumberOfBathrooms(int numberOfBathrooms)
+  public void setNumber_of_people(int number_of_people)
   {
-    this.numberOfBathrooms = numberOfBathrooms;
+    this.number_of_people = number_of_people;
   }
 
-  public boolean isBalcony()
+  public void setCheck_in_time(LocalTime check_in_time)
   {
-    return balcony;
+    this.check_in_time = check_in_time;
   }
 
-  public void setLastRenovated(Date lastRenovated)
+  public void setCheck_out_time(LocalTime check_out_time)
   {
-    this.lastRenovated = lastRenovated;
+    this.check_out_time = check_out_time;
   }
 
-  public void setMaxNumberOfPeople(int maxNumberOfPeople)
+  public Date getStartDate()
   {
-    this.maxNumberOfPeople = maxNumberOfPeople;
+    return startDate;
   }
 
-  public void setNumberOfRooms(int numberOfRooms)
+  public Date getEndDate()
   {
-    this.numberOfRooms = numberOfRooms;
+    return endDate;
   }
 
-  public void setOwnerId(int ownerId)
+  public int getNumber_of_people()
   {
-    this.ownerId = ownerId;
+    return number_of_people;
   }
 
-  public void setPrice(int price)
+  public LocalTime getCheck_in_time()
   {
-    this.price = price;
+    return check_in_time;
   }
 
-  public void setSurfaceArea(int surfaceArea)
+  public LocalTime getCheck_out_time()
   {
-    this.surfaceArea = surfaceArea;
+    return check_out_time;
   }
+
   public String toString() {
-return("id"+ id+ "number of rooms"+ numberOfRooms+ "Balcony"+ balcony + "surface Area "+ surfaceArea + "price "+ price + "Last renovated "+ lastRenovated+ "Max number of people "+ maxNumberOfPeople + "owner Id "+ ownerId);  }
+return("Start date: " + startDate +"\nEnd date: " + endDate + "\nCheck-in: " + check_in_time + "\nCheck-out: " + check_out_time + "\nNumber of people: " + number_of_people);  }
 }
