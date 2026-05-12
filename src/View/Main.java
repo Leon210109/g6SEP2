@@ -1,4 +1,4 @@
-package SEP2.SEP2.src.View;
+package View;
 
 import ViewModel.AdminViewModel;
 import ViewModel.AppViewModel;
