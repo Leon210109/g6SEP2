@@ -1,7 +1,5 @@
 package SEP2.SEP2.src.Model;
 
-import java.util.ArrayList;
-
 public class ModelManager implements Model
 {
   private UserManager userManager;
@@ -16,97 +14,62 @@ public class ModelManager implements Model
     bookingManager = new BookingManager();
     ownerApplicationManager = new OwnerApplicationManager();
   }
-  // related to user method
-
+    // this one for user manager methods
   @Override
-  public void addUser(User user)
-  {
+   public void registerClient(User user,Client client){
+    userManager.registerClient(user,client);
+   }
+   @Override
+   public void addUser(User user){
     userManager.addUser(user);
-  }
-
-  @Override
-  public void registerClient(User user,
-      Client client)
-  {
-    userManager.registerClient(user, client);
-  }
-
-  @Override
-  public User login(String username,
-      String password)
-  {
-    return userManager.login(username,
-        password);
-  }
-
-
-
-  //this is for listings
-
-  @Override
-  public void addListing(Listing listing)
-  {
+   }
+   @Override
+   public User login(String username, String password){
+    return userManager.login(username,password);
+   }
+   @Override
+   public void addListing(Listing listing){
     listingManager.addListing(listing);
-  }
-
-  @Override
-  public void removeListing(int listingId)
-  {
+   }
+   @Override
+    public void removeListing(int listingId){
     listingManager.removeListing(listingId);
-  }
-
+    }
+    @Override
+    public void updateListing(Listing listing)
+    {
+      listingManager.updateListing(listing);
+    }
+    // booking methods
   @Override
-  public void updateListing(Listing listing)
-  {
-    listingManager.updateListing(listing);
-  }
-
-
-
-  //this one for booking
-
-  @Override
-  public void addBooking(Booking booking)
-  {
+  public void addBooking(Booking booking){
     bookingManager.addBooking(booking);
   }
-
   @Override
   public void removeBooking(int bookingId)
   {
-    bookingManager.removeBooking(bookingId);
+    bookingManager.removeListing(bookingId);
   }
-
   @Override
   public void updateBooking(Booking booking)
   {
-    bookingManager.updateBooking(booking);
+    bookingManager.updateListing(booking);
   }
-
-  // for application
-
+  // owner application methods
   @Override
-  public void addOwnerApplication(
-      OwnerApplication application)
+  public void addOwnerApplication(OwnerApplication ownerApplication)
   {
-    ownerApplicationManager
-        .addApplication(application);
+    ownerApplicationManager.addOwnerApplication(ownerApplication);
+  }
+  @Override
+  public void removeOwnerApplication(int applicationId)
+  {
+    ownerApplicationManager.removeOwnerApplication(applicationId);
+  }
+  @Override
+  public void updateOwnerApplication(OwnerApplication ownerApplication){
+    ownerApplicationManager.updateListing(ownerApplication);
   }
 
-  @Override
-  public void removeOwnerApplication(
-      int applicationId)
-  {
-    ownerApplicationManager
-        .removeApplication(applicationId);
-  }
-
-  @Override
-  public void updateOwnerApplication(
-      OwnerApplication application)
-  {
-    ownerApplicationManager
-        .updateApplication(application);
-  }
 
 }

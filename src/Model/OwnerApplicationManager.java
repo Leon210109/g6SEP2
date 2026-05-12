@@ -10,24 +10,26 @@ public class OwnerApplicationManager
   public OwnerApplicationManager(){
     applications= new ArrayList<>();
   }
-  public void addApplication(OwnerApplication application){
+  public void addOwnerApplication(OwnerApplication application){
     applications.add(application);
   }
   public int getSize(){
     return applications.size();
   }
-  public void removeApplication(int applicationId){
+  public void removeOwnerApplication(int applicationId){
     for(OwnerApplication application:applications){
       if(application.getApplicationId()==applicationId){
         applications.remove(applicationId);
       }
     }
   }
-  public void updateApplication(OwnerApplication application){
+  public void updateListing(OwnerApplication application){
     for(int i=0; i<applications.size();i++){
       if(applications.get(i).getApplicationId()== application.getApplicationId()){
         applications.set(i,application);
       }
     }
   }
+
+
 }

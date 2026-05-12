@@ -80,5 +80,10 @@ public class Booking
   }
 
   public String toString() {
+
 return("Start date: " + startDate +"\nEnd date: " + endDate + "\nCheck-in: " + check_in_time + "\nCheck-out: " + check_out_time + "\nNumber of people: " + number_of_people);  }
+return("id"+ id+ "number of rooms"+ numberOfRooms+ "Balcony"+ balcony + "surface Area "+ surfaceArea + "price "+ price
+    + "Last renovated "+ lastRenovated+ "Max number of people "+ maxNumberOfPeople + "owner Id "+ ownerId);
+  }
+
 }

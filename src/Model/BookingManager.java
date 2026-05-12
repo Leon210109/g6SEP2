@@ -16,14 +16,14 @@ public class BookingManager
   public int getSize(){
     return bookings.size();
   }
-  public void removeBooking(int bookingId){
+  public void removeListing(int bookingId){
     for(Booking booking:bookings){
       if(booking.getId()==bookingId){
         bookings.remove(booking);
       }
     }
   }
-  public void updateBooking(Booking booking){
+  public void updateListing(Booking booking){
     for(int i=0; i<bookings.size();i++){
       if(bookings.get(i).getId()== booking.getId()){
         bookings.set(i,booking);
