@@ -1,75 +1,123 @@
 package Model;
 
+import Persistence.BookingDAO;
+import Persistence.ClientDAO;
+import Persistence.ListingDAO;
+import Persistence.OwnerApplicationDAO;
+
+import java.util.ArrayList;
+
 public class ModelManager implements Model
 {
-  private UserManager userManager;
-  private ListingManager listingManager;
-  private BookingManager bookingManager;
-  private OwnerApplicationManager ownerApplicationManager;
+  private ClientDAO clientDAO;
+  private ListingDAO listingDAO;
+  private BookingDAO bookingDAO;
+  private OwnerApplicationDAO ownerApplicationDAO;
 
   public ModelManager()
   {
-    userManager = new UserManager();
-    listingManager = new ListingManager();
-    bookingManager = new BookingManager();
-    ownerApplicationManager = new OwnerApplicationManager();
+    clientDAO = new ClientDAO();
+    listingDAO = new ListingDAO();
+    bookingDAO = new BookingDAO();
+    ownerApplicationDAO = new OwnerApplicationDAO();
   }
-    // this one for user manager methods
+
+  // ───────────────── CLIENT METHODS ─────────────────
+
   @Override
-   public void registerClient(User user,Client client){
-    userManager.registerClient(user,client);
-   }
-   @Override
-   public void addUser(User user){
-    userManager.addUser(user);
-   }
-   @Override
-   public User login(String username, String password){
-    return userManager.login(username,password);
-   }
-   @Override
-   public void addListing(Listing listing){
-    listingManager.addListing(listing);
-   }
-   @Override
-    public void removeListing(int listingId){
-    listingManager.removeListing(listingId);
-    }
-    @Override
-    public void updateListing(Listing listing)
-    {
-      listingManager.updateListing(listing);
-    }
-    // booking methods
-  @Override
-  public void addBooking(Booking booking){
-    bookingManager.addBooking(booking);
+  public void registerClient(User user, Client client)
+  {
+    clientDAO.createClient(client);
   }
+
+  @Override
+  public User login(String username, String password)
+  {
+    return clientDAO.login(username, password);
+  }
+
+  // ───────────────── LISTING METHODS ─────────────────
+
+  @Override
+  public void addListing(Listing listing)
+  {
+    listingDAO.CreateListing(listing);
+  }
+
+  @Override
+  public void removeListing(int listingId)
+  {
+    listingDAO.deleteListing(listingId);
+  }
+
+  @Override
+  public void updateListing(Listing listing)
+  {
+    listingDAO.updateListing(listing);
+  }
+
+  @Override
+  public ArrayList<Listing> getAllListings()
+  {
+    return listingDAO.getAllListings();
+  }
+
+  // ───────────────── BOOKING METHODS ─────────────────
+
+  @Override
+  public void addBooking(Booking booking)
+  {
+    bookingDAO.CreateBooking(booking);
+  }
+
   @Override
   public void removeBooking(int bookingId)
   {
-    bookingManager.removeListing(bookingId);
+    bookingDAO.deleteBooking(bookingId);
   }
+
   @Override
   public void updateBooking(Booking booking)
   {
-    bookingManager.updateListing(booking);
+    bookingDAO.updateBooking(booking);
   }
-  // owner application methods
+
   @Override
-  public void addOwnerApplication(OwnerApplication ownerApplication)
+  public ArrayList<Booking> getAllBookings()
   {
-    ownerApplicationManager.addOwnerApplication(ownerApplication);
+    return bookingDAO.getAllBookings();
   }
+
+  // ───────────────── OWNER APPLICATION METHODS ─────────────────
+
+  @Override
+  public void addOwnerApplication(
+      OwnerApplication ownerApplication)
+  {
+    ownerApplicationDAO
+        .createApplication(ownerApplication);
+  }
+
   @Override
   public void removeOwnerApplication(int applicationId)
   {
-    ownerApplicationManager.removeOwnerApplication(applicationId);
+    ownerApplicationDAO
+        .deleteOwnerApplication(applicationId);
   }
+
   @Override
-  public void updateOwnerApplication(OwnerApplication ownerApplication){
-    ownerApplicationManager.updateListing(ownerApplication);
+  public void updateOwnerApplication(
+      OwnerApplication ownerApplication)
+  {
+    ownerApplicationDAO
+        .updateOwnerApplication(ownerApplication);
   }
 
-
+  @Override
+  public ArrayList<OwnerApplication>
+  getAllOwnerApplications()
+  {
+    return ownerApplicationDAO
+        .getAllApplications();
+  }
 }

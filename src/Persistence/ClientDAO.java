@@ -193,5 +193,15 @@ public class ClientDAO
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
+
+  }
+
+  public User login(String username, String password)
+  {
+    Client client = getClientByUsername(username);
+    if (client != null && client.getUser().getPassword().equals(password)) {
+      return client.getUser();
+    }
+    return null;
   }
 }

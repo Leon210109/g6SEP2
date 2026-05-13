@@ -218,4 +218,102 @@ public class BookingDAO
       throw new RuntimeException(e);
     }
   }
+  public void updateBooking(Booking booking)
+  {
+    try
+    {
+      Connection connection =
+          DatabaseConnection.getConnection();
+
+      String sql = """
+        UPDATE booking
+        SET start_date = ?,
+            end_date = ?,
+            number_of_people = ?,
+            check_in_time = ?,
+            check_out_time = ?
+            
+        WHERE bookingId = ?
+        """;
+
+      PreparedStatement statement =
+          connection.prepareStatement(sql);
+
+      statement.setDate(
+          1,
+          java.sql.Date.valueOf(
+              java.time.LocalDate.of(
+                  booking.getStartDate().getYear(),
+                  booking.getStartDate().getMonth(),
+                  booking.getStartDate().getDay()
+              )
+          )
+      );
+
+      statement.setDate(
+          2,
+          java.sql.Date.valueOf(
+              java.time.LocalDate.of(
+                  booking.getEndDate().getYear(),
+                  booking.getEndDate().getMonth(),
+                  booking.getEndDate().getDay()
+              )
+          )
+      );
+
+      statement.setInt(
+          3,
+          booking.getNumber_of_people());
+
+      statement.setTime(
+          4,
+          java.sql.Time.valueOf(
+              booking.getCheck_in_time()
+          )
+      );
+
+      statement.setTime(
+          5,
+          java.sql.Time.valueOf(
+              booking.getCheck_out_time()
+          )
+      );
+
+      statement.setInt(
+          6,
+          booking.getId());
+
+      statement.executeUpdate();
+
+      connection.close();
+    }
+    catch (SQLException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
+  public void deleteBooking(int bookingId)
+  {
+    try
+    {
+      Connection connection =
+          DatabaseConnection.getConnection();
+
+      String sql =
+          "DELETE FROM booking WHERE bookingId = ?";
+
+      PreparedStatement statement =
+          connection.prepareStatement(sql);
+
+      statement.setInt(1, bookingId);
+
+      statement.executeUpdate();
+
+      connection.close();
+    }
+    catch (SQLException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
 }

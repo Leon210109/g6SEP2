@@ -170,4 +170,116 @@ public class OwnerApplicationDAO
       throw new RuntimeException(e);
     }
   }
+  public void updateOwnerApplication(
+      OwnerApplication ownerApplication)
+  {
+    try
+    {
+      Connection connection =
+          DatabaseConnection.getConnection();
+
+      String sql = """
+        UPDATE ownerApplication
+        SET clientId = ?,
+            adminId = ?,
+            submissionDate = ?,
+            status = ?,
+            propertyAddress = ?,
+            propertyRegistrationNumber = ?
+            
+        WHERE applicationId = ?
+        """;
+
+      PreparedStatement statement =
+          connection.prepareStatement(sql);
+
+      statement.setInt(
+          1,
+          ownerApplication
+              .getClientId()
+
+      );
+
+      statement.setInt(
+          2,
+          ownerApplication
+              .getAdminId()
+      );
+
+      statement.setDate(
+          3,
+          java.sql.Date.valueOf(
+              java.time.LocalDate.of(
+                  ownerApplication
+                      .getSubmissionDate()
+                      .getYear(),
+
+                  ownerApplication
+                      .getSubmissionDate()
+                      .getMonth(),
+
+                  ownerApplication
+                      .getSubmissionDate()
+                      .getDay()
+              )
+          )
+      );
+
+      statement.setString(
+          4,
+          ownerApplication.getStatus()
+      );
+
+      statement.setString(
+          5,
+          ownerApplication.getPropertyAddress()
+      );
+
+      statement.setString(
+          6,
+          ownerApplication
+              .getPropertyRegistrationNumber()
+      );
+
+      statement.setInt(
+          7,
+          ownerApplication.getApplicationId()
+      );
+
+      statement.executeUpdate();
+
+      connection.close();
+    }
+    catch (SQLException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
+  public void deleteOwnerApplication(
+      int applicationId)
+  {
+    try
+    {
+      Connection connection =
+          DatabaseConnection.getConnection();
+
+      String sql = """
+        DELETE FROM ownerApplication
+        WHERE applicationId = ?
+        """;
+
+      PreparedStatement statement =
+          connection.prepareStatement(sql);
+
+      statement.setInt(1, applicationId);
+
+      statement.executeUpdate();
+
+      connection.close();
+    }
+    catch (SQLException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
 }

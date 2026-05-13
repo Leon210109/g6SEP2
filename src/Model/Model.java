@@ -1,22 +1,16 @@
 package Model;
 
+import java.util.ArrayList;
+
 public interface Model
 {
-  // ------------------------------------------------
-  // USER METHODS
-  // ------------------------------------------------
+  // ───────────────── CLIENT METHODS ─────────────────
 
-  void registerClient(User user,
-      Client client);
+  void registerClient(User user, Client client);
 
-  void addUser(User user);
+  User login(String username, String password);
 
-  User login(String username,
-      String password);
-
-  // ------------------------------------------------
-  // LISTING METHODS
-  // ------------------------------------------------
+  // ───────────────── LISTING METHODS ─────────────────
 
   void addListing(Listing listing);
 
@@ -24,9 +18,9 @@ public interface Model
 
   void updateListing(Listing listing);
 
-  // ------------------------------------------------
-  // BOOKING METHODS
-  // ------------------------------------------------
+  ArrayList<Listing> getAllListings();
+
+  // ───────────────── BOOKING METHODS ─────────────────
 
   void addBooking(Booking booking);
 
@@ -34,16 +28,18 @@ public interface Model
 
   void updateBooking(Booking booking);
 
-  // ------------------------------------------------
-  // OWNER APPLICATION METHODS
-  // ------------------------------------------------
+  ArrayList<Booking> getAllBookings();
+
+  // ───────────────── OWNER APPLICATION METHODS ─────────────────
 
   void addOwnerApplication(
       OwnerApplication ownerApplication);
 
-  void removeOwnerApplication(
-      int applicationId);
+  void removeOwnerApplication(int applicationId);
 
   void updateOwnerApplication(
       OwnerApplication ownerApplication);
+
+  ArrayList<OwnerApplication>
+  getAllOwnerApplications();
 }
