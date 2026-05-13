@@ -13,8 +13,10 @@ public class TestDatabase
     ClientDAO clientDAO= new ClientDAO();
 
     User user= new User("testuser","qwerty");
+    String username= user.getUsername();
+    String password=user.getPassword();
     Date dob= new Date(1,1,2000);
-    Client client= new Client("John","Doe","male","danish","Horsens","abc@gmail.com",36230725,dob,user,1243);
+    Client client= new Client("John","Doe","abc@gmail.com","3623072500",username,password,dob,"male","danish");
     clientDAO.createClient(client);
 
     ArrayList<Client> clients= clientDAO.getAllClients();
