@@ -1,5 +1,7 @@
 package Model;
 
+
+
 public class ModelManager implements Model
 {
   private UserManager userManager;
@@ -16,13 +18,18 @@ public class ModelManager implements Model
   }
     // this one for user manager methods
   @Override
-   public void registerClient(User user,Client client){
-    userManager.registerClient(user,client);
-   }
-   @Override
-   public void addUser(User user){
-    userManager.addUser(user);
-   }
+   public void registerClient(User user, Client client) {
+    // UserManager.registerClient only needs the Client (User is embedded in Client)
+    userManager.registerClient(client);
+  }
+
+  @Override
+  public void addUser(User user) {
+    // No generic addUser in UserManager — register based on role
+    // This is a no-op placeholder; use registerClient/registerPropertyOwner instead
+    throw new UnsupportedOperationException("Use registerClient or registerPropertyOwner instead");
+  }
+
    @Override
    public User login(String username, String password){
     return userManager.login(username,password);
@@ -46,14 +53,13 @@ public class ModelManager implements Model
     bookingManager.addBooking(booking);
   }
   @Override
-  public void removeBooking(int bookingId)
-  {
-    bookingManager.removeListing(bookingId);
+  public void removeBooking(int bookingId) {
+    bookingManager.removeBooking(bookingId);
   }
+
   @Override
-  public void updateBooking(Booking booking)
-  {
-    bookingManager.updateListing(booking);
+  public void updateBooking(Booking booking) {
+    bookingManager.updateBooking(booking);
   }
   // owner application methods
   @Override
@@ -67,9 +73,8 @@ public class ModelManager implements Model
     ownerApplicationManager.removeOwnerApplication(applicationId);
   }
   @Override
-  public void updateOwnerApplication(OwnerApplication ownerApplication){
-    ownerApplicationManager.updateListing(ownerApplication);
+  public void updateOwnerApplication(OwnerApplication ownerApplication) {
+    ownerApplicationManager.updateApplication(ownerApplication);
   }
-
 
 }
