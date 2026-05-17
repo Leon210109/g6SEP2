@@ -20,10 +20,10 @@ public class Client
        String username,String password, Date DOB, String gender, String nationality)
   {
     this.ID = ID;
-    this.FirstName = FirstName;
-    this.LastName = LastName;
-    this.Email = Email;
-    this.PhoneNumber = PhoneNumber;
+    this.FirstName = firstName;
+    this.LastName = lastName;
+    this.Email = email;
+    this.PhoneNumber = phoneNumber;
     this.username=username;
     this.password=password;
     this.DOB = DOB;
