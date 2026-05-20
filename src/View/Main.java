@@ -1,10 +1,6 @@
 package View;
 
-import ViewModel.AdminViewModel;
-import ViewModel.AppViewModel;
-import ViewModel.ClientViewModel;
 import ViewModel.LoginViewModel;
-import ViewModel.PropertyOwnerViewModel;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
