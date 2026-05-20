@@ -1,0 +1,171 @@
+Index: src/Model/OwnerApplicationManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package SEP2.SEP2.src.Model;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class OwnerApplicationManager\r\n{\r\n  private ArrayList<OwnerApplication> applications;\r\n\r\n\r\n  public OwnerApplicationManager(){\r\n    applications= new ArrayList<>();\r\n  }\r\n  public void addApplication(OwnerApplication application){\r\n    applications.add(application);\r\n  }\r\n  public int getSize(){\r\n    return applications.size();\r\n  }\r\n  public void removeApplication(int applicationId){\r\n    for(OwnerApplication application:applications){\r\n      if(application.getApplicationId()==applicationId){\r\n        applications.remove(applicationId);\r\n      }\r\n    }\r\n  }\r\n  public void updateListing(OwnerApplication application){\r\n    for(int i=0; i<applications.size();i++){\r\n      if(applications.get(i).getApplicationId()== application.getApplicationId()){\r\n        applications.set(i,application);\r\n      }\r\n    }\r\n  }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Model/OwnerApplicationManager.java b/src/Model/OwnerApplicationManager.java
+--- a/src/Model/OwnerApplicationManager.java	(revision 0a10892e8aae830e0c633f80f33feea78f687244)
++++ b/src/Model/OwnerApplicationManager.java	(date 1778498668032)
+@@ -10,13 +10,13 @@
+   public OwnerApplicationManager(){
+     applications= new ArrayList<>();
+   }
+-  public void addApplication(OwnerApplication application){
++  public void addOwnerApplication(OwnerApplication application){
+     applications.add(application);
+   }
+   public int getSize(){
+     return applications.size();
+   }
+-  public void removeApplication(int applicationId){
++  public void removeOwnerApplication(int applicationId){
+     for(OwnerApplication application:applications){
+       if(application.getApplicationId()==applicationId){
+         applications.remove(applicationId);
+Index: src/Model/Model.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package SEP2.SEP2.src.Model;\r\n\r\npublic interface Model\r\n{\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Model/Model.java b/src/Model/Model.java
+--- a/src/Model/Model.java	(revision 0a10892e8aae830e0c633f80f33feea78f687244)
++++ b/src/Model/Model.java	(date 1778498610284)
+@@ -2,5 +2,48 @@
+ 
+ public interface Model
+ {
++  // ------------------------------------------------
++  // USER METHODS
++  // ------------------------------------------------
++
++  void registerClient(User user,
++      Client client);
++
++  void addUser(User user);
++
++  User login(String username,
++      String password);
++
++  // ------------------------------------------------
++  // LISTING METHODS
++  // ------------------------------------------------
++
++  void addListing(Listing listing);
++
++  void removeListing(int listingId);
++
++  void updateListing(Listing listing);
++
++  // ------------------------------------------------
++  // BOOKING METHODS
++  // ------------------------------------------------
++
++  void addBooking(Booking booking);
++
++  void removeBooking(int bookingId);
+ 
++  void updateBooking(Booking booking);
++
++  // ------------------------------------------------
++  // OWNER APPLICATION METHODS
++  // ------------------------------------------------
++
++  void addOwnerApplication(
++      OwnerApplication ownerApplication);
++
++  void removeOwnerApplication(
++      int applicationId);
++
++  void updateOwnerApplication(
++      OwnerApplication ownerApplication);
+ }
+Index: src/Model/ModelManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Model/ModelManager.java b/src/Model/ModelManager.java
+new file mode 100644
+--- /dev/null	(date 1778498560290)
++++ b/src/Model/ModelManager.java	(date 1778498560290)
+@@ -0,0 +1,75 @@
++package SEP2.SEP2.src.Model;
++
++public class ModelManager implements Model
++{
++  private UserManager userManager;
++  private ListingManager listingManager;
++  private BookingManager bookingManager;
++  private OwnerApplicationManager ownerApplicationManager;
++
++  public ModelManager()
++  {
++    userManager = new UserManager();
++    listingManager = new ListingManager();
++    bookingManager = new BookingManager();
++    ownerApplicationManager = new OwnerApplicationManager();
++  }
++    // this one for user manager methods
++  @Override
++   public void registerClient(User user,Client client){
++    userManager.registerClient(user,client);
++   }
++   @Override
++   public void addUser(User user){
++    userManager.addUser(user);
++   }
++   @Override
++   public User login(String username, String password){
++    return userManager.login(username,password);
++   }
++   @Override
++   public void addListing(Listing listing){
++    listingManager.addListing(listing);
++   }
++   @Override
++    public void removeListing(int listingId){
++    listingManager.removeListing(listingId);
++    }
++    @Override
++    public void updateListing(Listing listing)
++    {
++      listingManager.updateListing(listing);
++    }
++    // booking methods
++  @Override
++  public void addBooking(Booking booking){
++    bookingManager.addBooking(booking);
++  }
++  @Override
++  public void removeBooking(int bookingId)
++  {
++    bookingManager.removeListing(bookingId);
++  }
++  @Override
++  public void updateBooking(Booking booking)
++  {
++    bookingManager.updateListing(booking);
++  }
++  // owner application methods
++  @Override
++  public void addOwnerApplication(OwnerApplication ownerApplication)
++  {
++    ownerApplicationManager.addOwnerApplication(ownerApplication);
++  }
++  @Override
++  public void removeOwnerApplication(int applicationId)
++  {
++    ownerApplicationManager.removeOwnerApplication(applicationId);
++  }
++  @Override
++  public void updateOwnerApplication(OwnerApplication ownerApplication){
++    ownerApplicationManager.updateListing(ownerApplication);
++  }
++
++
++}
+\ No newline at end of file
