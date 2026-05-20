@@ -249,4 +249,117 @@ public class ListingDAO
       throw new RuntimeException(e);
     }
   }
+  public void updateListing(Listing listing)
+  {
+    try
+    {
+      Connection connection =
+          DatabaseConnection.getConnection();
+
+      String sql = """
+        UPDATE listing
+        SET numberOfRooms = ?,
+            numberOfBathrooms = ?,
+            balcony = ?,
+            surfaceArea = ?,
+            price = ?,
+            maxNumberOfPeople = ?,
+            street = ?,
+            country = ?,
+            region = ?,
+            streetNumber = ?,
+            floor = ?,
+            roomNumber = ?
+            
+        WHERE listingId = ?
+        """;
+
+      PreparedStatement statement =
+          connection.prepareStatement(sql);
+
+      statement.setInt(
+          1,
+          listing.getNumberOfRooms());
+
+      statement.setInt(
+          2,
+          listing.getNumberOfBathrooms());
+
+      statement.setBoolean(
+          3,
+          listing.isBalcony());
+
+      statement.setFloat(
+          4,
+          listing.getSurfaceArea());
+
+      statement.setInt(
+          5,
+          listing.getPrice());
+
+      statement.setInt(
+          6,
+          listing.getMaxNumberOfPeople());
+
+      statement.setString(
+          7,
+          listing.getStreet());
+
+      statement.setString(
+          8,
+          listing.getCountry());
+
+      statement.setString(
+          9,
+          listing.getRegion());
+
+      statement.setInt(
+          10,
+          listing.getStreetNumber());
+
+      statement.setInt(
+          11,
+          listing.getFloor());
+
+      statement.setInt(
+          12,
+          listing.getRoomNumber());
+
+      statement.setInt(
+          13,
+          listing.getId());
+
+      statement.executeUpdate();
+
+      connection.close();
+    }
+    catch (SQLException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
+  public void deleteListing(int listingId)
+  {
+    try
+    {
+      Connection connection =
+          DatabaseConnection.getConnection();
+
+      String sql =
+          "DELETE FROM listing WHERE listingId = ?";
+
+      PreparedStatement statement =
+          connection.prepareStatement(sql);
+
+      statement.setInt(1, listingId);
+
+      statement.executeUpdate();
+
+      connection.close();
+    }
+    catch (SQLException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
 }
