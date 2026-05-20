@@ -7,48 +7,85 @@ import Persistence.OwnerApplicationDAO;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+
 import java.util.ArrayList;
 
-public class ModelManager implements RentalModel
+public class ModelManager
+    implements RentalModel
 {
   private ClientDAO clientDAO;
   private ListingDAO listingDAO;
   private BookingDAO bookingDAO;
-  private OwnerApplicationDAO ownerApplicationDAO;
-  private PropertyChangeSupport support;
+  private OwnerApplicationDAO
+      ownerApplicationDAO;
+
+  private PropertyChangeSupport
+      support;
 
   public ModelManager()
   {
-    clientDAO = new ClientDAO();
-    listingDAO = new ListingDAO();
-    bookingDAO = new BookingDAO();
-    ownerApplicationDAO = new OwnerApplicationDAO();
-    support= new PropertyChangeSupport(this);
+    clientDAO =
+        new ClientDAO();
+
+    listingDAO =
+        new ListingDAO();
+
+    bookingDAO =
+        new BookingDAO();
+
+    ownerApplicationDAO =
+        new OwnerApplicationDAO();
+
+    support =
+        new PropertyChangeSupport(this);
   }
 
   // ───────────────── CLIENT METHODS ─────────────────
 
   @Override
-  public void registerClient(Client client)
+  public void registerClient(
+      Client client)
   {
     clientDAO.createClient(client);
-    support.firePropertyChange("Client registered",null,client);
+
+    support.firePropertyChange(
+        "ClientRegistered",
+        null,
+        client);
   }
 
   @Override
-  public User login(String username, String password)
+  public void login(
+      String username,
+      String password)
   {
-    return clientDAO.login(username, password);
-    /* todo check whether it is admin or client or propertyOwner*/
+    User user =
+        clientDAO.login(
+            username,
+            password);
 
+    support.firePropertyChange(
+        "LOGIN_SUCCESS",
+        null,
+        user);
+
+    /*
+      Later:
+      determine whether
+      Admin / Client /
+      PropertyOwner
+    */
   }
 
   // ───────────────── LISTING METHODS ─────────────────
 
   @Override
-  public void addListing(Listing listing)
+  public void addListing(
+      Listing listing)
   {
-    listingDAO.CreateListing(listing);
+    listingDAO.CreateListing(
+        listing);
+
     support.firePropertyChange(
         "ListingAdded",
         null,
@@ -56,9 +93,12 @@ public class ModelManager implements RentalModel
   }
 
   @Override
-  public void removeListing(int listingId)
+  public void removeListing(
+      int listingId)
   {
-    listingDAO.deleteListing(listingId);
+    listingDAO.deleteListing(
+        listingId);
+
     support.firePropertyChange(
         "ListingRemoved",
         null,
@@ -66,9 +106,12 @@ public class ModelManager implements RentalModel
   }
 
   @Override
-  public void updateListing(Listing listing)
+  public void updateListing(
+      Listing listing)
   {
-    listingDAO.updateListing(listing);
+    listingDAO.updateListing(
+        listing);
+
     support.firePropertyChange(
         "ListingUpdated",
         null,
@@ -76,31 +119,51 @@ public class ModelManager implements RentalModel
   }
 
   @Override
-  public ArrayList<Listing> getAllListings()
+  public void getAllListings()
   {
-    return listingDAO.getAllListings();
+    ArrayList<Listing> listings =
+        listingDAO.getAllListings();
+
+    support.firePropertyChange(
+        "GET_ALL_LISTINGS",
+        null,
+        listings);
   }
 
   // ───────────────── BOOKING METHODS ─────────────────
 
   @Override
-  public void addBooking(Booking booking)
+  public void addBooking(
+      Booking booking)
   {
-    bookingDAO.CreateBooking(booking);
-    support.firePropertyChange("Booking created",null,booking);
+    bookingDAO.CreateBooking(
+        booking);
+
+    support.firePropertyChange(
+        "BookingAdded",
+        null,
+        booking);
   }
 
   @Override
-  public void removeBooking(int bookingId)
+  public void removeBooking(
+      int bookingId)
   {
-    bookingDAO.deleteBooking(bookingId);
-    support.firePropertyChange("Booking removed",null,bookingId);
+    bookingDAO.deleteBooking(
+        bookingId);
+
+    support.firePropertyChange(
+        "BookingRemoved",
+        null,
+        bookingId);
   }
 
   @Override
-  public void updateBooking(Booking booking)
+  public void updateBooking(
+      Booking booking)
   {
-    bookingDAO.updateBooking(booking);
+    bookingDAO.updateBooking(
+        booking);
 
     support.firePropertyChange(
         "BookingUpdated",
@@ -109,9 +172,15 @@ public class ModelManager implements RentalModel
   }
 
   @Override
-  public ArrayList<Booking> getAllBookings()
+  public void getAllBookings()
   {
-    return bookingDAO.getAllBookings();
+    ArrayList<Booking> bookings =
+        bookingDAO.getAllBookings();
+
+    support.firePropertyChange(
+        "GET_ALL_BOOKINGS",
+        null,
+        bookings);
   }
 
   // ───────────────── OWNER APPLICATION METHODS ─────────────────
@@ -121,7 +190,9 @@ public class ModelManager implements RentalModel
       OwnerApplication ownerApplication)
   {
     ownerApplicationDAO
-        .createApplication(ownerApplication);
+        .createApplication(
+            ownerApplication);
+
     support.firePropertyChange(
         "OwnerApplicationAdded",
         null,
@@ -129,10 +200,13 @@ public class ModelManager implements RentalModel
   }
 
   @Override
-  public void removeOwnerApplication(int applicationId)
+  public void removeOwnerApplication(
+      int applicationId)
   {
     ownerApplicationDAO
-        .deleteOwnerApplication(applicationId);
+        .deleteOwnerApplication(
+            applicationId);
+
     support.firePropertyChange(
         "OwnerApplicationRemoved",
         null,
@@ -144,25 +218,44 @@ public class ModelManager implements RentalModel
       OwnerApplication ownerApplication)
   {
     ownerApplicationDAO
-        .updateOwnerApplication(ownerApplication);
-    support.firePropertyChange("OwnerApplication updated",null,ownerApplication);
+        .updateOwnerApplication(
+            ownerApplication);
+
+    support.firePropertyChange(
+        "OwnerApplicationUpdated",
+        null,
+        ownerApplication);
   }
 
   @Override
-  public ArrayList<OwnerApplication>
-  getAllOwnerApplications()
+  public void getAllOwnerApplications()
   {
-    return ownerApplicationDAO
-        .getAllApplications();
+    ArrayList<OwnerApplication>
+        applications =
+        ownerApplicationDAO
+            .getAllApplications();
+
+    support.firePropertyChange(
+        "GET_ALL_OWNER_APPLICATIONS",
+        null,
+        applications);
   }
+
+  // ───────────────── LISTENERS ─────────────────
+
   @Override
-  public void addPropertyChangeListener(PropertyChangeListener listener)
+  public void addPropertyChangeListener(
+      PropertyChangeListener listener)
   {
-    support.addPropertyChangeListener(listener);
+    support.addPropertyChangeListener(
+        listener);
   }
+
   @Override
-  public void removePropertyChangeListener(PropertyChangeListener listener)
+  public void removePropertyChangeListener(
+      PropertyChangeListener listener)
   {
-    support.removePropertyChangeListener(listener);
+    support.removePropertyChangeListener(
+        listener);
   }
 }

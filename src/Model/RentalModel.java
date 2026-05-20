@@ -9,7 +9,7 @@ public interface RentalModel
 
   void registerClient( Client client);
 
-  User login(String username, String password);
+  void login(String username, String password);
 
   // ───────────────── LISTING METHODS ─────────────────
 
@@ -19,7 +19,7 @@ public interface RentalModel
 
   void updateListing(Listing listing);
 
-  ArrayList<Listing> getAllListings();
+  void getAllListings();
 
   // ───────────────── BOOKING METHODS ─────────────────
 
@@ -29,7 +29,7 @@ public interface RentalModel
 
   void updateBooking(Booking booking);
 
-  ArrayList<Booking> getAllBookings();
+  void getAllBookings();
 
   // ───────────────── OWNER APPLICATION METHODS ─────────────────
 
@@ -41,8 +41,7 @@ public interface RentalModel
   void updateOwnerApplication(
       OwnerApplication ownerApplication);
 
-  ArrayList<OwnerApplication>
-  getAllOwnerApplications();
+ void  getAllOwnerApplications();
 
 
   // property change listener
