@@ -19,7 +19,7 @@ public class Server
   public void startServer()
   {
     try{
-      serverSocket= new ServerSocket(1234); //posts=gressql is in same port
+      serverSocket= new ServerSocket(5432);
       System.out.println("Server started");
       while(true)
       {

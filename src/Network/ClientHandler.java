@@ -18,9 +18,10 @@ import java.io.PrintWriter;
 
 import java.net.Socket;
 
+import java.util.ArrayList;
+
 public class ClientHandler
-    implements Runnable,
-    PropertyChangeListener
+    implements Runnable, PropertyChangeListener
 {
   private Socket socket;
 
@@ -59,7 +60,7 @@ public class ClientHandler
       System.out.println(
           "Client connected");
     }
-    catch(IOException e)
+    catch (IOException e)
     {
       e.printStackTrace();
     }
@@ -87,7 +88,7 @@ public class ClientHandler
         processRequest(request);
       }
     }
-    catch(Exception e)
+    catch (Exception e)
     {
       System.out.println(
           "Client disconnected");
@@ -98,8 +99,6 @@ public class ClientHandler
     }
   }
 
-  // ───────────────── PROCESS REQUEST ─────────────────
-
   private void processRequest(
       Request request)
   {
@@ -107,8 +106,6 @@ public class ClientHandler
     {
       switch(request.getRequestType())
       {
-        // ───────── CLIENT ─────────
-
         case Login:
           handleLogin(request);
           break;
@@ -117,79 +114,37 @@ public class ClientHandler
           handleRegisterClient(request);
           break;
 
-        // ───────── LISTINGS ─────────
-
-        case Add_Listing:
-          handleAddListing(request);
-          break;
-
-        case Remove_Listing:
-          handleRemoveListing(request);
-          break;
-
-        case Update_Listing:
-          handleUpdateListing(request);
-          break;
-
         case Get_All_Listings:
           handleGetAllListings();
           break;
 
-        // ───────── BOOKINGS ─────────
-
         case Make_Booking:
-          handleAddBooking(request);
+          handleMakeBooking(request);
           break;
 
         case Remove_Booking:
           handleRemoveBooking(request);
           break;
 
-        case Update_Booking:
-          handleUpdateBooking(request);
-          break;
-
-        case Get_All_Booking:
-          handleGetAllBookings();
-          break;
-
-        // ───────── OWNER APPLICATIONS ─────────
-
-        case Add_Owner_Application:
-          handleAddOwnerApplication(request);
-          break;
-
-        case Remove_Owner_Application:
-          handleRemoveOwnerApplication(request);
-          break;
-
-        case Update_Owner_Application:
-          handleUpdateOwnerApplication(request);
-          break;
-
-        case Get_All_Owner_Applications:
-          handleGetAllOwnerApplications();
-          break;
-
         default:
           sendResponse(
               new Response(
                   false,
-                  "ERROR",
-                  "Unknown request"));
+                  "Unknown request",
+                  null));
       }
     }
-    catch(Exception e)
+    catch (Exception e)
     {
       sendResponse(
           new Response(
               false,
-              "ERROR",
-              e.getMessage()));
+              e.getMessage(),
+              null));
     }
   }
 
-  // ───────────────── CLIENT METHODS ─────────────────
+  // ───────────────── LOGIN ─────────────────
 
   private void handleLogin(
       Request request)
@@ -200,76 +155,64 @@ public class ClientHandler
     String password =
         (String) request.getArgs()[1];
 
-    model.login(
-        username,
-        password);
+    User user =
+        model.login(
+            username,
+            password);
+
+    sendResponse(
+        new Response(
+            true,
+            "Login successful",
+            user));
   }
+
+  // ───────────────── REGISTER CLIENT ─────────────────
 
   private void handleRegisterClient(
       Request request)
   {
     Client client =
-        gson.fromJson(
-            gson.toJson(
-                request.getArgs()[0]),
-            Client.class);
+        (Client) request.getArgs()[0];
 
     model.registerClient(client);
+
+    sendResponse(
+        new Response(
+            true,
+            "Client registered",
+            null));
   }
 
-  // ───────────────── LISTING METHODS ─────────────────
-
-  private void handleAddListing(
-      Request request)
-  {
-    Listing listing =
-        gson.fromJson(
-            gson.toJson(
-                request.getArgs()[0]),
-            Listing.class);
-
-    model.addListing(listing);
-  }
-
-  private void handleRemoveListing(
-      Request request)
-  {
-    int listingId =
-        ((Double) request.getArgs()[0])
-            .intValue();
-
-    model.removeListing(listingId);
-  }
-
-  private void handleUpdateListing(
-      Request request)
-  {
-    Listing listing =
-        gson.fromJson(
-            gson.toJson(
-                request.getArgs()[0]),
-            Listing.class);
-
-    model.updateListing(listing);
-  }
+  // ───────────────── GET LISTINGS ─────────────────
 
   private void handleGetAllListings()
   {
-    model.getAllListings();
+    ArrayList<Listing> listings =
+        model.getAllListings();
+
+    sendResponse(
+        new Response(
+            true,
+            "Listings loaded",
+            listings));
   }
 
-  // ───────────────── BOOKING METHODS ─────────────────
+  // ───────────────── BOOKING ─────────────────
 
-  private void handleAddBooking(
+  private void handleMakeBooking(
       Request request)
   {
     Booking booking =
-        gson.fromJson(
-            gson.toJson(
-                request.getArgs()[0]),
-            Booking.class);
+        (Booking) request.getArgs()[0];
 
     model.addBooking(booking);
+
+    sendResponse(
+        new Response(
+            true,
+            "Booking created",
+            null));
   }
 
   private void handleRemoveBooking(
@@ -280,82 +223,12 @@ public class ClientHandler
             .intValue();
 
     model.removeBooking(bookingId);
-  }
 
-  private void handleUpdateBooking(
-      Request request)
-  {
-    Booking booking =
-        gson.fromJson(
-            gson.toJson(
-                request.getArgs()[0]),
-            Booking.class);
-
-    model.updateBooking(booking);
-  }
-
-  private void handleGetAllBookings()
-  {
-    model.getAllBookings();
-  }
-
-  // ───────────────── OWNER APPLICATION METHODS ─────────────────
-
-  private void handleAddOwnerApplication(
-      Request request)
-  {
-    OwnerApplication ownerApplication =
-        gson.fromJson(
-            gson.toJson(
-                request.getArgs()[0]),
-            OwnerApplication.class);
-
-    model.addOwnerApplication(
-        ownerApplication);
-  }
-
-  private void handleRemoveOwnerApplication(
-      Request request)
-  {
-    int applicationId =
-        ((Double) request.getArgs()[0])
-            .intValue();
-
-    model.removeOwnerApplication(
-        applicationId);
-  }
-
-  private void handleUpdateOwnerApplication(
-      Request request)
-  {
-    OwnerApplication ownerApplication =
-        gson.fromJson(
-            gson.toJson(
-                request.getArgs()[0]),
-            OwnerApplication.class);
-
-    model.updateOwnerApplication(
-        ownerApplication);
-  }
-
-  private void handleGetAllOwnerApplications()
-  {
-    model.getAllOwnerApplications();
-  }
-
-  // ───────────────── MODEL EVENTS ─────────────────
-
-  @Override
-  public void propertyChange(
-      PropertyChangeEvent evt)
-  {
-    Response response =
+    sendResponse(
         new Response(
             true,
-            evt.getPropertyName(),
-            evt.getNewValue());
-
-    sendResponse(response);
+            "Booking removed",
+            null));
   }
 
   // ───────────────── SEND RESPONSE ─────────────────
@@ -371,6 +244,21 @@ public class ClientHandler
     System.out.println(
         "Sent JSON: "
             + json);
+  }
+
+  // ───────────────── REALTIME EVENTS ─────────────────
+
+  @Override
+  public void propertyChange(
+      PropertyChangeEvent evt)
+  {
+    Response response =
+        new Response(
+            true,
+            evt.getPropertyName(),
+            evt.getNewValue());
+
+    sendResponse(response);
   }
 
   // ───────────────── CLOSE CONNECTION ─────────────────
@@ -402,7 +290,7 @@ public class ClientHandler
       System.out.println(
           "Connection closed");
     }
-    catch(IOException e)
+    catch (IOException e)
     {
       e.printStackTrace();
     }
