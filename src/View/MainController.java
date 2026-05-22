@@ -78,14 +78,8 @@ public class MainController {
                 item.setOnAction(e -> ownerVM.navigateTo(section));
                 navMenu.getItems().add(item);
             }
-        } else if (vm instanceof AdminViewModel adminVM) {
-            for (String section : new String[] { "All Listings", "All Bookings" }) {
-                MenuItem item = new MenuItem(section);
-                item.setStyle("-fx-font-family: 'Cambria'; -fx-font-size: 13px;");
-                item.setOnAction(e -> adminVM.navigateTo(section));
-                navMenu.getItems().add(item);
-            }
         }
+        // Admin: no nav items yet
 
         // React to section changes
         vm.currentSectionProperty().addListener((obs, oldVal, newVal) -> {
@@ -144,12 +138,6 @@ public class MainController {
             fxmlFile = switch (section) {
                 case "My Listings" -> "MyListingsView.fxml";
                 case "My Bookings" -> "MyBookingsView.fxml";
-                default -> null;
-            };
-        } else if (vm instanceof AdminViewModel) {
-            fxmlFile = switch (section) {
-                case "All Listings" -> "AdminListingsView.fxml";
-                case "All Bookings" -> "AdminBookingsView.fxml";
                 default -> null;
             };
         }

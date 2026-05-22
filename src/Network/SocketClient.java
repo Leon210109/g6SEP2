@@ -5,27 +5,22 @@ import Shared.RequestType;
 import Shared.Response;
 import com.google.gson.Gson;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class SocketClient implements Runnable
+public class SocketClient
 {
   private Socket socket;
   private Gson gson;
   private BufferedReader in;
   private PrintWriter out;
-  private PropertyChangeSupport support;
-  private boolean running;
 
   public SocketClient(Gson gson)
   {
     this.gson = gson;
-    support= new PropertyChangeSupport(this);
   }
   public void connect()
   {
@@ -35,59 +30,37 @@ public class SocketClient implements Runnable
       in= new BufferedReader(new InputStreamReader(socket.getInputStream()));
       out=new PrintWriter(socket.getOutputStream(),true);
 
-      running=true;
-      new Thread(this).start();
-      System.out.println("Connect ed to server");
+      System.out.println("Connected to server");
     }
     catch (IOException e)
     {
       e.printStackTrace();
     }
   }
-  public void sendRequest(Request request)
+  public Response sendRequest(Request request)
   {
-     // here first we send request coming from the client model manager
+    try
+    {   // here first we send request coming from the client model manager
       String json = gson.toJson(request);
       // send it to server
       out.println(json);
 
       System.out.println("request has been sent to server from SocketClient");
-  }
-  @Override
-  public void run()
-  {
-    try
-    {
-      String message;
-      while(running && (message=in.readLine())!=null)
-      {
-        System.out.println("Received json: "+message);
+      // wait for server response
+      String responseJson = in.readLine();
 
-        Response response=gson.fromJson(message, Response.class);
-        support.firePropertyChange(response.getMessage(),null,response.getObject());
-      }
+      // convert json back to response object
+      return gson.fromJson(responseJson, Response.class);
     }
-    catch(Exception e){
+    catch (IOException e)
+    {
       e.printStackTrace();
     }
+    return new Response(false,"Communication error",null);
   }
 
-  public void addPropertyChangeListener(
-      PropertyChangeListener listener)
-  {
-    support.addPropertyChangeListener(
-        listener);
-  }
-
-  public void removePropertyChangeListener(
-      PropertyChangeListener listener)
-  {
-    support.removePropertyChangeListener(
-        listener);
-  }
   public void disconnect()
   {
-    running=false;
     try
     {
       if (socket != null)
