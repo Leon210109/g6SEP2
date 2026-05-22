@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      alignment="TOP_CENTER" spacing="20"
+      style="-fx-background-color: #F5F0E8;">
+    <padding>
+        <Insets top="40" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Text text="All Bookings"
+          style="-fx-fill: #143D29;
+                 -fx-font-family: 'Palatino Linotype';
+                 -fx-font-size: 48px;
+                 -fx-font-weight: bold;"/>
+
+    <Text text="All bookings made by every client"
+          style="-fx-fill: #1A5F3F;
+                 -fx-font-family: 'Cambria';
+                 -fx-font-size: 16px;"/>
+
+    <Label text="All client bookings will appear here"
+           style="-fx-text-fill: #8B7355;
+                  -fx-padding: 40px;
+                  -fx-font-family: 'Cambria';
+                  -fx-font-size: 14px;"/>
+</VBox>
