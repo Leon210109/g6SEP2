@@ -124,10 +124,8 @@ CREATE TABLE tenancy_application (
 -- Cities
 INSERT INTO city (postal_code, name) VALUES
 ('1000',     'Copenhagen'),
-('8700',     'Horsens'),
-('2800',     'Madrid'),
-('110001',   'Delhi'),
-('100-0001', 'Tokyo');
+('1054',     'Copenhagen'),
+('8700',     'Horsens');
 
 -- Property owners
 INSERT INTO propertyOwner
@@ -137,32 +135,23 @@ VALUES
     ('Aisha',  'Khan',   'aisha.khan@email.com',    '2345678901', 'aishak',   'secure321', '1992-11-22', 'Female', 'Pakistani',2),
     ('Lars',   'Jensen', 'lars.jensen@email.com',   '3456789012', 'ljensen',  'denmark77', '1975-03-09', 'Male',   'Danish',   6),
     ('Yuki',   'Tanaka', 'yuki.tanaka@email.com',   '4567890123', 'yukit',    'tokyo999',  '1988-07-18', 'Female', 'Japanese', 3),
-    ('Amara',  'Okafor', 'amara.okafor@email.com',  '5678901234', 'amarao',   'naija22',   '1990-01-30', 'Female', 'Nigerian', 5),
-    ('Test',   'Owner',  'testowner@example.com',   '1234567893', 'testowner','password123','1980-03-25','Female', 'Denmark',  0),
-    ('Jane',   'Property','jane.property@example.com','1234567894','jane_owner','owner123', '1975-11-30', 'Female', 'Germany',  3),
-    ('Bob',    'Landlord','bob.landlord@example.com','1234567895', 'bob_owner','bob2024',   '1988-07-15', 'Male',   'France',   1);
+    ('Amara',  'Okafor', 'amara.okafor@email.com',  '5678901234', 'amarao',   'naija22',   '1990-01-30', 'Female', 'Nigerian', 5);
 
 -- Admins
 INSERT INTO admin (adminName, username, password) VALUES
-    ('Michael Scott',        'mich',       'pass11'),
-    ('Sophia Andersen',      'soph',       'pass12'),
-    ('Ahmed Hassan',         'ahm',        'pass13'),
-    ('Test Admin',           'testadmin',  'admin123'),
-    ('System Administrator', 'admin',      'admin2024'),
-    ('Super Admin',          'superadmin', 'super123');
+    ('Michael Scott',   'mich', 'pass11'),
+    ('Sophia Andersen', 'soph', 'pass12'),
+    ('Ahmed Hassan',    'ahm',  'pass13');
 
 -- Clients
 INSERT INTO client
     (firstName, lastName, email, phoneNumber, username, password, dateOfBirth, gender, nationality)
 VALUES
-    ('Emily',  'Johnson',  'emily.johnson@email.com',  '6789012345', 'emilyj',   'hello123',   '1998-04-12', 'Female', 'American'),
-    ('Ravi',   'Patel',    'ravi.patel@email.com',     '7890123456', 'ravip',    'india456',   '1995-09-25', 'Male',   'Indian'),
-    ('Chen',   'Wei',      'chen.wei@email.com',       '8901234567', 'chenw',    'china789',   '2000-02-15', 'Male',   'Chinese'),
-    ('Fatima', 'Al-Farsi', 'fatima.farsi@email.com',   '9012345678', 'fatimaf',  'oman321',    '1997-06-20', 'Female', 'Omani'),
-    ('Lucas',  'Silva',    'lucas.silva@email.com',    '0123456789', 'lucass',   'brazil11',   '1993-12-08', 'Male',   'Brazilian'),
-    ('Test',   'Client',   'testclient@example.com',   '1234567890', 'testclient','password123','1990-01-15','Male',   'USA'),
-    ('John',   'Doe',      'john.doe@example.com',     '1234567891', 'john_doe', 'client123',  '1985-05-20', 'Male',   'Canada'),
-    ('Alice',  'Smith',    'alice.smith@example.com',  '1234567892', 'alice',    'alice2024',  '1992-08-10', 'Female', 'UK');
+    ('Emily',  'Johnson',  'emily.johnson@email.com',  '6789012345', 'emilyj',  'hello123', '1998-04-12', 'Female', 'American'),
+    ('Ravi',   'Patel',    'ravi.patel@email.com',     '7890123456', 'ravip',   'india456', '1995-09-25', 'Male',   'Indian'),
+    ('Chen',   'Wei',      'chen.wei@email.com',       '8901234567', 'chenw',   'china789', '2000-02-15', 'Male',   'Chinese'),
+    ('Fatima', 'Al-Farsi', 'fatima.farsi@email.com',   '9012345678', 'fatimaf', 'oman321',  '1997-06-20', 'Female', 'Omani'),
+    ('Lucas',  'Silva',    'lucas.silva@email.com',    '0123456789', 'lucass',  'brazil11', '1993-12-08', 'Male',   'Brazilian');
 
 -- Owner applications
 INSERT INTO ownerApplication
@@ -173,23 +162,17 @@ VALUES
     (3, 3, '2026-03-05', 'Rejected', '88 Pearl Road, Beijing',     'REG-BEI-003'),
     (4, 1, '2026-03-20', 'Approved', '7 Desert Avenue, Muscat',    'REG-MUS-004');
 
--- Listings (ownerId references propertyOwner rows 1-5 above)
+-- Listings
 INSERT INTO listing
     (ownerId, number_of_rooms, number_of_bathrooms, has_balcony, surface_area, price,
      last_Renovated, max_number_of_people, country, region, street, room_number, floor,
      postal_code, check_in_time, check_out_time, listing_type)
 VALUES
-    (1, 3, 2, TRUE,  120, 1500, '2023-06-15', 5,  'Spain',  'Catalonia',   'La Rambla Street',    'A12', 1, '2800',     '14:00:00', '11:00:00', 'SHORT_TERM'),
-    (3, 2, 1, FALSE,  80,  900, '2022-09-10', 3,  'Denmark','Midtjylland', 'Sondergade',          'B5',  2, '8700',     '15:00:00', '11:00:00', 'SHORT_TERM'),
-    (4, 4, 3, TRUE,  200, 2500, '2024-01-22', 8,  'Japan',  'Tokyo',       'Shibuya Road',        'C21', 3, '100-0001', '15:00:00', '10:00:00', 'SHORT_TERM'),
-    (5, 1, 1, FALSE,  45,  600, '2021-11-05', 2,  'Brazil', 'Sao Paulo',   'Palm Street',         'D9',  0, NULL,       '13:00:00', '11:00:00', 'SHORT_TERM'),
-    (2, 5, 4, TRUE,  300, 4000, '2025-02-18', 10, 'Nigeria','Lagos',       'Victoria Island Ave', 'E30', 5, NULL,       '16:00:00', '12:00:00', 'LONG_TERM');
+    (1, 3, 2, TRUE, 95, 6800, '2022-08-15', 4, 'Denmark', 'Copenhagen', 'Niels Juels Gade', '12A', 3, '1054', '15:00:00', '11:00:00', 'SHORT_TERM'),
+    (2, 2, 1, TRUE, 71, 6295, '2025-04-03', 2, 'Denmark', 'Horsens',    'Sundvej',          '2',   3, '8700', '15:00:00', '11:00:00', 'LONG_TERM');
 
--- Bookings
+-- Bookings (listing 1 is SHORT_TERM; listing 2 is LONG_TERM and uses tenancy_application)
 INSERT INTO Booking
     (clientId, listingId, start_Date, end_Date, check_in_time, check_out_time, number_of_people)
 VALUES
-    (1, 1, '2026-06-01', '2026-06-07', '14:00:00', '11:00:00', 2),
-    (2, 3, '2026-07-10', '2026-07-20', '15:00:00', '10:00:00', 4),
-    (3, 2, '2026-08-05', '2026-08-12', '13:30:00', '11:30:00', 1),
-    (4, 5, '2026-09-01', '2026-09-15', '16:00:00', '12:00:00', 6);
+    (1, 1, '2026-06-01', '2026-06-07', '15:00:00', '11:00:00', 2);
