@@ -282,4 +282,22 @@ public class OwnerApplicationDAO
       throw new RuntimeException(e);
     }
   }
+
+  public void updateApplicationStatus(int applicationId, String status)
+  {
+    try
+    {
+      Connection connection = DatabaseConnection.getConnection();
+      String sql = "UPDATE sep2.ownerApplication SET status = ? WHERE applicationId = ?";
+      PreparedStatement statement = connection.prepareStatement(sql);
+      statement.setString(1, status);
+      statement.setInt(2, applicationId);
+      statement.executeUpdate();
+      connection.close();
+    }
+    catch (SQLException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
 }

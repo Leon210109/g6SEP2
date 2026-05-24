@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class ListingDAO
@@ -19,8 +20,9 @@ public class ListingDAO
       Connection connection= DatabaseConnection.getConnection();
       String sql= """
           Insert into sep2.listing(ownerId, number_of_rooms, number_of_bathrooms, has_balcony, surface_area,
-          price, last_Renovated, max_number_of_people, country, region, street, room_number,postal_code,floor)
-              values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+          price, last_Renovated, max_number_of_people, country, region, street, room_number,postal_code,floor,
+          check_in_time, check_out_time)
+              values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
           """;
       PreparedStatement statement=connection.prepareStatement(sql);
       statement.setInt(
@@ -70,6 +72,8 @@ public class ListingDAO
           13,
           listing.getPostalcode());
       statement.setInt(14,listing.getFloor());
+      statement.setTime(15, java.sql.Time.valueOf(listing.getCheckInTime()));
+      statement.setTime(16, java.sql.Time.valueOf(listing.getCheckOutTime()));
 
       statement.executeUpdate();
       connection.close();
@@ -92,7 +96,7 @@ public class ListingDAO
       if (rs.next()) {
         LocalDate renovatedLocalDate = rs.getDate("last_Renovated").toLocalDate();
         Date lastRenovated = new Date(renovatedLocalDate.getDayOfMonth(), renovatedLocalDate.getMonthValue(), renovatedLocalDate.getYear());
-        Listing listing1 = new Listing(
+        listing = new Listing(
             rs.getInt("id"),
             rs.getString("street"),
             rs.getString("country"),
@@ -110,7 +114,11 @@ public class ListingDAO
             rs.getString("postal_code")
         );
         
-
+        // Load check-in and check-out times
+        LocalTime checkInTime = rs.getTime("check_in_time").toLocalTime();
+        LocalTime checkOutTime = rs.getTime("check_out_time").toLocalTime();
+        listing.setCheckInTime(checkInTime);
+        listing.setCheckOutTime(checkOutTime);
       }
       
       connection.close();
@@ -152,6 +160,13 @@ public class ListingDAO
             rs.getInt("max_number_of_people"),
             rs.getString("postal_code")
         );
+        
+        // Load check-in and check-out times
+        LocalTime checkInTime = rs.getTime("check_in_time").toLocalTime();
+        LocalTime checkOutTime = rs.getTime("check_out_time").toLocalTime();
+        listing.setCheckInTime(checkInTime);
+        listing.setCheckOutTime(checkOutTime);
+        
         listings.add(listing);
       }
       
@@ -192,6 +207,13 @@ public class ListingDAO
             rs.getInt("max_number_of_people"),
             rs.getString("postal_code")
         );
+        
+        // Load check-in and check-out times
+        LocalTime checkInTime = rs.getTime("check_in_time").toLocalTime();
+        LocalTime checkOutTime = rs.getTime("check_out_time").toLocalTime();
+        listing.setCheckInTime(checkInTime);
+        listing.setCheckOutTime(checkOutTime);
+        
         listings.add(listing);
       }
       
@@ -233,6 +255,13 @@ public class ListingDAO
             rs.getInt("max_number_of_people"),
             rs.getString("postal_code")
         );
+        
+        // Load check-in and check-out times
+        LocalTime checkInTime = rs.getTime("check_in_time").toLocalTime();
+        LocalTime checkOutTime = rs.getTime("check_out_time").toLocalTime();
+        listing.setCheckInTime(checkInTime);
+        listing.setCheckOutTime(checkOutTime);
+        
         listings.add(listing);
       }
       
@@ -251,75 +280,51 @@ public class ListingDAO
 
       String sql = """
         UPDATE sep2.listing
-        SET numberOfRooms = ?,
-            numberOfBathrooms = ?,
-            balcony = ?,
-            surfaceArea = ?,
+        SET number_of_rooms = ?,
+            number_of_bathrooms = ?,
+            has_balcony = ?,
+            surface_area = ?,
             price = ?,
-            last_renovated=?,
-            maxNumberOfPeople = ?,
+            last_Renovated = ?,
+            max_number_of_people = ?,
             street = ?,
             country = ?,
             region = ?,
             floor = ?,
-            roomNumber = ?,
-            postal_code=?,
-            ownerid=?
-            
+            room_number = ?,
+            postal_code = ?,
+            check_in_time = ?,
+            check_out_time = ?
         WHERE id = ?
         """;
 
       PreparedStatement statement =
           connection.prepareStatement(sql);
 
-      statement.setInt(
-          1,
-          listing.getNumberOfRooms());
+      statement.setInt(1, listing.getNumberOfRooms());
+      statement.setInt(2, listing.getNumberOfBathrooms());
+      statement.setBoolean(3, listing.isBalcony());
+      statement.setFloat(4, listing.getSurfaceArea());
+      statement.setInt(5, listing.getPrice());
+      statement.setDate(6, java.sql.Date.valueOf(
+          java.time.LocalDate.of(
+              listing.getLastRenovated().getYear(),
+              listing.getLastRenovated().getMonth(),
+              listing.getLastRenovated().getDay()
+          )
+      ));
+      statement.setInt(7, listing.getMaxNumberOfPeople());
+      statement.setString(8, listing.getStreet());
+      statement.setString(9, listing.getCountry());
+      statement.setString(10, listing.getRegion());
+      statement.setInt(11, listing.getFloor());
+      statement.setString(12, listing.getRoomNumber());
+      statement.setString(13, listing.getPostalcode());
+      statement.setTime(14, java.sql.Time.valueOf(listing.getCheckInTime()));
+      statement.setTime(15, java.sql.Time.valueOf(listing.getCheckOutTime()));
+      statement.setInt(16, listing.getId());
 
-      statement.setInt(
-          2,
-          listing.getNumberOfBathrooms());
-
-      statement.setBoolean(
-          3,
-          listing.isBalcony());
-
-      statement.setFloat(
-          4,
-          listing.getSurfaceArea());
-
-      statement.setInt(
-          5,
-          listing.getPrice());
-
-      statement.setInt(
-          6,
-          listing.getMaxNumberOfPeople());
-
-      statement.setString(
-          7,
-          listing.getStreet());
-
-      statement.setString(
-          8,
-          listing.getCountry());
-
-      statement.setString(
-          9,
-          listing.getRegion());
-
-      statement.setInt(
-          11,
-          listing.getFloor());
-
-      statement.setString(
-          12,
-          listing.getRoomNumber());
-      statement.setString(13,listing.getPostalcode());
-      statement.setInt(14,listing.getOwnerId());
-
-     statement.executeUpdate();
-
+      statement.executeUpdate();
       connection.close();
     }
     catch (SQLException e)
@@ -335,7 +340,7 @@ public class ListingDAO
           DatabaseConnection.getConnection();
 
       String sql =
-          "DELETE FROM sep2.listing WHERE listingId = ?";
+          "DELETE FROM sep2.listing WHERE id = ?";
 
       PreparedStatement statement =
           connection.prepareStatement(sql);

@@ -54,8 +54,11 @@ public class ImageConverter {
             String jpgPath = webpFile.getAbsolutePath().replaceAll("\\.webp$", ".jpg");
             File jpgFile = new File(jpgPath);
             
-            // Skip if JPG already exists
+            // Skip conversion if JPG already exists, but delete the WebP
             if (jpgFile.exists()) {
+                if (webpFile.delete()) {
+                    System.out.println("Deleted redundant WebP (JPG exists): " + webpFile.getName());
+                }
                 continue;
             }
             
@@ -74,6 +77,13 @@ public class ImageConverter {
                 if (exitCode == 0 && jpgFile.exists()) {
                     convertedCount++;
                     System.out.println("Converted: " + webpFile.getName() + " -> " + jpgFile.getName());
+                    
+                    // Delete the original WebP file after successful conversion
+                    if (webpFile.delete()) {
+                        System.out.println("Deleted original WebP: " + webpFile.getName());
+                    } else {
+                        System.err.println("Warning: Could not delete WebP file: " + webpFile.getName());
+                    }
                 } else {
                     System.err.println("Failed to convert: " + webpFile.getName());
                 }

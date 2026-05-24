@@ -1,10 +1,13 @@
 package View;
 
+import Model.Client;
 import Model.Listing;
 import Model.PropertyOwner;
 import Util.ImageConverter;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -39,10 +42,12 @@ public class ListingDetailController {
 
     private Listing listing;
     private PropertyOwner owner;
+    private Client client;
 
-    public void setListing(Listing listing, PropertyOwner owner) {
+    public void setListing(Listing listing, PropertyOwner owner, Client client) {
         this.listing = listing;
         this.owner = owner;
+        this.client = client;
         populateDetails();
     }
 
@@ -72,6 +77,15 @@ public class ListingDetailController {
             ownerNameLabel.setText("N/A");
             ownerEmailLabel.setText("N/A");
             ownerPhoneLabel.setText("N/A");
+        }
+        
+        // Show/hide book button based on whether client is logged in
+        if (client == null) {
+            bookButton.setVisible(false);
+            bookButton.setManaged(false);
+        } else {
+            bookButton.setVisible(true);
+            bookButton.setManaged(true);
         }
 
         // Load images
@@ -208,11 +222,35 @@ public class ListingDetailController {
 
     @FXML
     private void handleBook() {
-        // TODO: Implement booking functionality
-        System.out.println("Booking property: " + listing.getStreet());
-        // For now, just show a message or close
-        bookButton.setText("Booking feature coming soon!");
-        bookButton.setDisable(true);
+        if (client == null) {
+            System.err.println("Cannot book: Client not logged in");
+            bookButton.setText("Please log in to book");
+            bookButton.setDisable(true);
+            return;
+        }
+        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("BookingDialogView.fxml"));
+            Parent root = loader.load();
+            
+            BookingDialogController controller = loader.getController();
+            controller.setBookingInfo(listing, client);
+            controller.setOnSuccess(() -> {
+                // Close the detail view after successful booking
+                handleClose();
+            });
+            
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setTitle("Book Property");
+            dialogStage.setScene(new Scene(root));
+            dialogStage.setResizable(false);
+            dialogStage.show();
+            
+        } catch (Exception e) {
+            System.err.println("Error opening booking dialog: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML

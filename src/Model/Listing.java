@@ -1,5 +1,7 @@
 package Model;
 
+import java.time.LocalTime;
+
 public class Listing
 {
   private int id;
@@ -18,6 +20,8 @@ public class Listing
   private String postal_code;
   private int floor;
   private String roomNumber;
+  private LocalTime checkInTime;
+  private LocalTime checkOutTime;
 
   @Override public String toString()
   {
@@ -52,6 +56,8 @@ public class Listing
     this.ownerId = ownerId;
     this.maxNumberOfPeople = maxNumberOfPeople;
     this.isBooked = false;
+    this.checkInTime = LocalTime.of(15, 0); // Default 3:00 PM
+    this.checkOutTime = LocalTime.of(11, 0); // Default 11:00 AM
   }
   public Listing(int numberOfRooms,int numberOfBathrooms, boolean balcony
       , float surfaceArea, int price, Date lastRenovated,
@@ -73,7 +79,8 @@ public class Listing
     this.ownerId = ownerId;
     this.maxNumberOfPeople = maxNumberOfPeople;
     this.isBooked = false;
-
+    this.checkInTime = LocalTime.of(15, 0); // Default 3:00 PM
+    this.checkOutTime = LocalTime.of(11, 0); // Default 11:00 AM
   }
 
   public boolean isBalcony()
@@ -234,6 +241,31 @@ public class Listing
   public void setRoomNumber(String roomNumber)
   {
     this.roomNumber = roomNumber;
+  }
+
+  public void setPostalcode(String postalcode)
+  {
+    this.postal_code = postalcode;
+  }
+
+  public LocalTime getCheckInTime()
+  {
+    return checkInTime;
+  }
+
+  public void setCheckInTime(LocalTime checkInTime)
+  {
+    this.checkInTime = checkInTime;
+  }
+
+  public LocalTime getCheckOutTime()
+  {
+    return checkOutTime;
+  }
+
+  public void setCheckOutTime(LocalTime checkOutTime)
+  {
+    this.checkOutTime = checkOutTime;
   }
 }
 

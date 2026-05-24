@@ -17,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -35,6 +36,9 @@ public class MyListingsController {
     
     @FXML
     private Label statusLabel;
+    
+    @FXML
+    private Button newListingBtn;
 
     private final ListingDAO listingDAO = new ListingDAO();
     private PropertyOwner propertyOwner;
@@ -149,7 +153,22 @@ public class MyListingsController {
             "-fx-font-weight: bold;"
         );
 
-        // View Details button
+        // Action buttons
+        HBox buttonBox = new HBox(10);
+        buttonBox.setAlignment(javafx.geometry.Pos.CENTER);
+        
+        Button editButton = new Button("Edit");
+        editButton.setStyle(
+            "-fx-background-color: #8B7355;" +
+            "-fx-text-fill: white;" +
+            "-fx-font-family: 'Cambria';" +
+            "-fx-font-size: 12px;" +
+            "-fx-background-radius: 5;" +
+            "-fx-padding: 6 14;" +
+            "-fx-cursor: hand;"
+        );
+        editButton.setOnAction(e -> openEditListing(listing));
+        
         Button viewButton = new Button("View Details");
         viewButton.setStyle(
             "-fx-background-color: #1A5F3F;" +
@@ -157,21 +176,58 @@ public class MyListingsController {
             "-fx-font-family: 'Cambria';" +
             "-fx-font-size: 12px;" +
             "-fx-background-radius: 5;" +
-            "-fx-padding: 6 20;" +
+            "-fx-padding: 6 14;" +
             "-fx-cursor: hand;"
         );
         viewButton.setOnAction(e -> openListingDetails(listing));
 
-        card.getChildren().addAll(imageView, streetText, locationText, detailsText, viewButton);
+        Button deleteButton = new Button("Delete");
+        deleteButton.setStyle(
+            "-fx-background-color: #B22222;" +
+            "-fx-text-fill: white;" +
+            "-fx-font-family: 'Cambria';" +
+            "-fx-font-size: 12px;" +
+            "-fx-background-radius: 5;" +
+            "-fx-padding: 6 14;" +
+            "-fx-cursor: hand;"
+        );
+        deleteButton.setOnAction(e -> handleDeleteListing(listing, card));
         
-        // Click anywhere on card to open details
+        buttonBox.getChildren().addAll(editButton, viewButton, deleteButton);
+
+        card.getChildren().addAll(imageView, streetText, locationText, detailsText, buttonBox);
+        
+        // Click anywhere on card to open details (but not on buttons)
         card.setOnMouseClicked(e -> {
-            if (e.getTarget() != viewButton) {
+            if (e.getTarget() != viewButton && e.getTarget() != editButton && e.getTarget() != deleteButton) {
                 openListingDetails(listing);
             }
         });
 
         return card;
+    }
+
+    private void handleDeleteListing(Listing listing, VBox card) {
+        javafx.scene.control.Alert confirm = new javafx.scene.control.Alert(
+            javafx.scene.control.Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete Listing");
+        confirm.setHeaderText("Delete \"" + listing.getStreet() + "\"?");
+        confirm.setContentText("This will permanently delete the listing and cannot be undone.");
+        confirm.showAndWait().ifPresent(response -> {
+            if (response == javafx.scene.control.ButtonType.OK) {
+                try {
+                    listingDAO.deleteListing(listing.getId());
+                    listingsTilePane.getChildren().remove(card);
+                    int remaining = listingsTilePane.getChildren().size();
+                    statusLabel.setText(remaining == 0
+                        ? "You don't have any listings yet. Create your first listing!"
+                        : remaining + " listing(s) found");
+                } catch (Exception e) {
+                    statusLabel.setText("Error deleting listing: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void loadListingImage(ImageView imageView, String streetName) {
@@ -208,13 +264,44 @@ public class MyListingsController {
         }
     }
 
+    @FXML
+    public void handleNewListing() {
+        System.out.println("DEBUG: New Listing button clicked!");
+        System.out.println("DEBUG: PropertyOwner = " + propertyOwner);
+        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateListingView.fxml"));
+            System.out.println("DEBUG: About to load FXML...");
+            Parent root = loader.load();
+            System.out.println("DEBUG: FXML loaded successfully!");
+            
+            CreateListingController controller = loader.getController();
+            controller.setPropertyOwner(propertyOwner);
+            controller.setOnSuccess(() -> loadListings()); // Reload listings after creation
+            
+            Stage createStage = new Stage();
+            createStage.initModality(Modality.APPLICATION_MODAL);
+            createStage.setTitle("Create New Listing");
+            createStage.setScene(new Scene(root));
+            createStage.show();
+            
+        } catch (IOException e) {
+            System.err.println("ERROR: Failed to load CreateListingView.fxml");
+            statusLabel.setText("Error opening create listing form: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("ERROR: Unexpected exception");
+            e.printStackTrace();
+        }
+    }
+
     private void openListingDetails(Listing listing) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ListingDetailView.fxml"));
             Parent root = loader.load();
             
             ListingDetailController controller = loader.getController();
-            controller.setListing(listing, propertyOwner);
+            controller.setListing(listing, propertyOwner, null); // PropertyOwner viewing their own listing
             
             Stage detailStage = new Stage();
             detailStage.initModality(Modality.APPLICATION_MODAL);
@@ -225,6 +312,27 @@ public class MyListingsController {
             
         } catch (IOException e) {
             statusLabel.setText("Error opening details: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void openEditListing(Listing listing) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("EditListingView.fxml"));
+            Parent root = loader.load();
+            
+            EditListingController controller = loader.getController();
+            controller.setListing(listing, propertyOwner);
+            controller.setOnSuccess(() -> loadListings()); // Reload listings after update
+            
+            Stage editStage = new Stage();
+            editStage.initModality(Modality.APPLICATION_MODAL);
+            editStage.setTitle("Edit Listing - " + listing.getStreet());
+            editStage.setScene(new Scene(root));
+            editStage.show();
+            
+        } catch (IOException e) {
+            statusLabel.setText("Error opening edit form: " + e.getMessage());
             e.printStackTrace();
         }
     }

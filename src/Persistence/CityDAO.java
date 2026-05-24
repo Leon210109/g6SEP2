@@ -31,7 +31,7 @@ public class CityDAO
   public City getCityByPostalCode(String postalCode) {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM city WHERE postal_code = ?";
+      String sql = "SELECT * FROM sep2.city WHERE postal_code = ?";
       PreparedStatement statement = connection.prepareStatement(sql);
       statement.setString(1, postalCode);
       ResultSet rs = statement.executeQuery();
@@ -46,6 +46,14 @@ public class CityDAO
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  /**
+   * Convenience method to create city with postal code and name
+   */
+  public void createCity(String postalCode, String cityName) {
+    City city = new City(cityName, postalCode);
+    createCity(city);
   }
 
   public ArrayList<City> getAllCities() {

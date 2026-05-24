@@ -1,7 +1,10 @@
 package View;
 
+import Model.Client;
 import Model.Listing;
 import Model.PropertyOwner;
+import Persistence.BookingDAO;
+import Persistence.FavoriteDAO;
 import Persistence.ListingDAO;
 import Persistence.PropertyOwnerDAO;
 import Util.ImageConverter;
@@ -12,10 +15,13 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -25,6 +31,8 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class BrowseListingsController {
 
@@ -37,35 +45,93 @@ public class BrowseListingsController {
     @FXML
     private Label statusLabel;
 
+    @FXML
+    private TextField searchField;
+
+    @FXML
+    private ComboBox<String> maxPriceFilter;
+
+    @FXML
+    private ComboBox<String> minRoomsFilter;
+
     private final ListingDAO listingDAO = new ListingDAO();
     private final PropertyOwnerDAO ownerDAO = new PropertyOwnerDAO();
+    private final BookingDAO bookingDAO = new BookingDAO();
+    private final FavoriteDAO favoriteDAO = new FavoriteDAO();
+    private Client client;
+    private List<Listing> allAvailableListings = new ArrayList<>();
+
+    public void setClient(Client client) {
+        this.client = client;
+        loadListings();
+    }
 
     @FXML
     private void initialize() {
-        loadListings();
+        // Populate filter options
+        maxPriceFilter.getItems().addAll("3000", "5000", "8000", "12000", "20000");
+        minRoomsFilter.getItems().addAll("1", "2", "3", "4", "5");
+
+        // Live search as user types
+        searchField.textProperty().addListener((obs, oldVal, newVal) -> applyFilters());
+        maxPriceFilter.valueProperty().addListener((obs, oldVal, newVal) -> applyFilters());
+        minRoomsFilter.valueProperty().addListener((obs, oldVal, newVal) -> applyFilters());
+
+    }
+
+    @FXML
+    private void handleClearFilters() {
+        searchField.clear();
+        maxPriceFilter.setValue(null);
+        minRoomsFilter.setValue(null);
     }
 
     private void loadListings() {
         try {
-            ArrayList<Listing> listings = listingDAO.getAllListings();
+            ArrayList<Listing> allListings = listingDAO.getAllListings();
             
-            if (listings.isEmpty()) {
+            if (allListings.isEmpty()) {
                 statusLabel.setText("No listings available at the moment.");
                 return;
             }
 
-            listingsTilePane.getChildren().clear();
-            
-            for (Listing listing : listings) {
-                VBox listingCard = createListingCard(listing);
-                listingsTilePane.getChildren().add(listingCard);
-            }
-            
-            statusLabel.setText(listings.size() + " listing(s) found");
+            allAvailableListings = allListings.stream()
+                .filter(l -> bookingDAO.getBookingsByListingId(l.getId()).isEmpty())
+                .collect(Collectors.toList());
+
+            applyFilters();
             
         } catch (Exception e) {
             statusLabel.setText("Error loading listings: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    private void applyFilters() {
+        String search = searchField != null && searchField.getText() != null
+            ? searchField.getText().trim().toLowerCase() : "";
+        String maxPriceStr = maxPriceFilter != null ? maxPriceFilter.getValue() : null;
+        String minRoomsStr = minRoomsFilter != null ? minRoomsFilter.getValue() : null;
+
+        List<Listing> filtered = allAvailableListings.stream()
+            .filter(l -> search.isEmpty()
+                || l.getStreet().toLowerCase().contains(search)
+                || l.getRegion().toLowerCase().contains(search))
+            .filter(l -> maxPriceStr == null
+                || l.getPrice() <= Integer.parseInt(maxPriceStr))
+            .filter(l -> minRoomsStr == null
+                || l.getNumberOfRooms() >= Integer.parseInt(minRoomsStr))
+            .collect(Collectors.toList());
+
+        listingsTilePane.getChildren().clear();
+        for (Listing listing : filtered) {
+            listingsTilePane.getChildren().add(createListingCard(listing));
+        }
+
+        if (filtered.isEmpty()) {
+            statusLabel.setText("No listings match your filters.");
+        } else {
+            statusLabel.setText(filtered.size() + " listing(s) found");
         }
     }
 
@@ -145,6 +211,35 @@ public class BrowseListingsController {
             "-fx-font-weight: bold;"
         );
 
+        // Buttons row
+        HBox buttonRow = new HBox(8);
+        buttonRow.setAlignment(Pos.CENTER);
+
+        // Heart / favourite toggle (only when logged in as client)
+        if (client != null) {
+            boolean[] fav = { favoriteDAO.isFavorite(client.getID(), listing.getId()) };
+            Button heartBtn = new Button(fav[0] ? "\u2665 Saved" : "\u2661 Save");
+            heartBtn.setStyle(fav[0]
+                ? "-fx-background-color: #B22222; -fx-text-fill: white; -fx-font-family: 'Cambria'; -fx-font-size: 12px; -fx-background-radius: 5; -fx-padding: 6 14; -fx-cursor: hand;"
+                : "-fx-background-color: #F5F0E8; -fx-text-fill: #B22222; -fx-font-family: 'Cambria'; -fx-font-size: 12px; -fx-background-radius: 5; -fx-border-color: #B22222; -fx-border-radius: 5; -fx-padding: 6 14; -fx-cursor: hand;"
+            );
+            heartBtn.setOnAction(e -> {
+                e.consume();
+                if (fav[0]) {
+                    favoriteDAO.removeFavorite(client.getID(), listing.getId());
+                    fav[0] = false;
+                    heartBtn.setText("\u2661 Save");
+                    heartBtn.setStyle("-fx-background-color: #F5F0E8; -fx-text-fill: #B22222; -fx-font-family: 'Cambria'; -fx-font-size: 12px; -fx-background-radius: 5; -fx-border-color: #B22222; -fx-border-radius: 5; -fx-padding: 6 14; -fx-cursor: hand;");
+                } else {
+                    favoriteDAO.addFavorite(client.getID(), listing.getId());
+                    fav[0] = true;
+                    heartBtn.setText("\u2665 Saved");
+                    heartBtn.setStyle("-fx-background-color: #B22222; -fx-text-fill: white; -fx-font-family: 'Cambria'; -fx-font-size: 12px; -fx-background-radius: 5; -fx-padding: 6 14; -fx-cursor: hand;");
+                }
+            });
+            buttonRow.getChildren().add(heartBtn);
+        }
+
         // View Details button
         Button viewButton = new Button("View Details");
         viewButton.setStyle(
@@ -156,13 +251,14 @@ public class BrowseListingsController {
             "-fx-padding: 6 20;" +
             "-fx-cursor: hand;"
         );
-        viewButton.setOnAction(e -> openListingDetails(listing));
+        viewButton.setOnAction(e -> { e.consume(); openListingDetails(listing); });
+        buttonRow.getChildren().add(viewButton);
 
-        card.getChildren().addAll(imageView, streetText, locationText, detailsText, viewButton);
-        
-        // Click anywhere on card to open details
+        card.getChildren().addAll(imageView, streetText, locationText, detailsText, buttonRow);
+
+        // Click anywhere on card (but not a button) to open details
         card.setOnMouseClicked(e -> {
-            if (e.getTarget() != viewButton) {
+            if (!(e.getTarget() instanceof Button)) {
                 openListingDetails(listing);
             }
         });
@@ -213,7 +309,7 @@ public class BrowseListingsController {
             Parent root = loader.load();
             
             ListingDetailController controller = loader.getController();
-            controller.setListing(listing, owner);
+            controller.setListing(listing, owner, client);
             
             Stage detailStage = new Stage();
             detailStage.initModality(Modality.APPLICATION_MODAL);

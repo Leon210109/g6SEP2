@@ -67,7 +67,7 @@ public class MainController {
 
         // Populate nav menu items per user type
         if (vm instanceof ClientViewModel clientVM) {
-            for (String section : new String[] { "Bookings", "Available Listings" }) {
+            for (String section : new String[] { "Bookings", "Available Listings", "My Favourites" }) {
                 MenuItem item = new MenuItem(section);
                 item.setStyle("-fx-font-family: 'Cambria'; -fx-font-size: 13px;");
                 item.setOnAction(e -> clientVM.navigateTo(section));
@@ -80,8 +80,14 @@ public class MainController {
                 item.setOnAction(e -> ownerVM.navigateTo(section));
                 navMenu.getItems().add(item);
             }
+        } else if (vm instanceof AdminViewModel adminVM) {
+            for (String section : new String[] { "Owner Applications", "Manage Listings" }) {
+                MenuItem item = new MenuItem(section);
+                item.setStyle("-fx-font-family: 'Cambria'; -fx-font-size: 13px;");
+                item.setOnAction(e -> adminVM.navigateTo(section));
+                navMenu.getItems().add(item);
+            }
         }
-        // Admin: no nav items yet
 
         // React to section changes
         vm.currentSectionProperty().addListener((obs, oldVal, newVal) -> {
@@ -99,8 +105,16 @@ public class MainController {
             backToLoginBtn.setVisible(isHome);
             backToLoginBtn.setManaged(isHome);
 
-            contentArea.getChildren().setAll(isHome ? homeView : loadSectionView(newVal));
+            if (isHome) {
+                buildHomeView();
+                contentArea.getChildren().setAll(homeView);
+            } else {
+                contentArea.getChildren().setAll(loadSectionView(newVal));
+            }
         });
+
+        // Build initial home view (adds Apply button for clients, etc.)
+        buildHomeView();
     }
 
     // ── Event handlers ────────────────────────────────────────────────────────
@@ -140,12 +154,19 @@ public class MainController {
             fxmlFile = switch (section) {
                 case "Available Listings" -> "BrowseListingsView.fxml";
                 case "Bookings" -> "MyBookingsView.fxml";
+                case "My Favourites" -> "MyFavoritesView.fxml";
                 default -> null;
             };
         } else if (vm instanceof PropertyOwnerViewModel) {
             fxmlFile = switch (section) {
                 case "My Listings" -> "MyListingsView.fxml";
                 case "My Bookings" -> "MyBookingsView.fxml";
+                default -> null;
+            };
+        } else if (vm instanceof AdminViewModel) {
+            fxmlFile = switch (section) {
+                case "Owner Applications" -> "AdminView.fxml";
+                case "Manage Listings" -> "AdminListingsView.fxml";
                 default -> null;
             };
         }
@@ -155,19 +176,65 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent root = loader.load();
             
-            // Pass user data to controller if needed
             Object controller = loader.getController();
             if (controller instanceof MyListingsController && currentUser instanceof Model.PropertyOwner) {
                 ((MyListingsController) controller).setPropertyOwner((Model.PropertyOwner) currentUser);
-            } else if (controller instanceof MyListingsController && currentUser == null) {
-                // Admin bypass - no user object, can't show listings
-                // This is okay for dev testing
+            } else if (controller instanceof BrowseListingsController && currentUser instanceof Model.Client) {
+                ((BrowseListingsController) controller).setClient((Model.Client) currentUser);
+            } else if (controller instanceof MyBookingsController && currentUser instanceof Model.Client) {
+                ((MyBookingsController) controller).setClient((Model.Client) currentUser);
+            } else if (controller instanceof MyFavoritesController && currentUser instanceof Model.Client) {
+                ((MyFavoritesController) controller).setClient((Model.Client) currentUser);
+            } else if (controller instanceof AdminController && currentUser instanceof Model.Admin) {
+                ((AdminController) controller).setAdmin((Model.Admin) currentUser);
+            } else if (controller instanceof AdminListingsController && currentUser instanceof Model.Admin) {
+                ((AdminListingsController) controller).setAdmin((Model.Admin) currentUser);
             }
             
             return root;
         } catch (IOException e) {
             e.printStackTrace();
             return homeView;
+        }
+    }
+
+    // ── Home view builder (adds Apply button for Clients) ────────────────────
+
+    private void buildHomeView() {
+        homeView.getChildren().clear();
+        homeView.getChildren().addAll(welcomeText, sectionLabel);
+
+        if (currentUser instanceof Model.Client client) {
+            javafx.scene.control.Button applyBtn = new javafx.scene.control.Button("Apply as Property Owner");
+            applyBtn.setStyle(
+                "-fx-background-color: #1A5F3F;" +
+                "-fx-text-fill: white;" +
+                "-fx-font-family: 'Cambria';" +
+                "-fx-font-size: 14px;" +
+                "-fx-font-weight: bold;" +
+                "-fx-background-radius: 8;" +
+                "-fx-padding: 12 28;" +
+                "-fx-cursor: hand;"
+            );
+            applyBtn.setOnAction(e -> openOwnerApplicationForm(client));
+            homeView.getChildren().add(applyBtn);
+        }
+    }
+
+    private void openOwnerApplicationForm(Model.Client client) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerApplicationFormView.fxml"));
+            Parent root = loader.load();
+            OwnerApplicationFormController ctrl = loader.getController();
+            ctrl.setClient(client);
+
+            javafx.stage.Stage stage = new javafx.stage.Stage();
+            stage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            stage.setTitle("Apply as Property Owner");
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

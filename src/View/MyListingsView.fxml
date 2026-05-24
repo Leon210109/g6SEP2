@@ -28,6 +28,23 @@
               style="-fx-fill: #8B7355;
                      -fx-font-family: 'Cambria';
                      -fx-font-size: 14px;"/>
+        
+        <!-- New Listing Button -->
+        <Button fx:id="newListingBtn" 
+                text="+ New Listing"
+                onAction="#handleNewListing"
+                style="-fx-background-color: #1A5F3F;
+                       -fx-text-fill: white;
+                       -fx-font-family: 'Cambria';
+                       -fx-font-size: 14px;
+                       -fx-font-weight: bold;
+                       -fx-background-radius: 8;
+                       -fx-padding: 12 24;
+                       -fx-cursor: hand;">
+            <VBox.margin>
+                <Insets top="10"/>
+            </VBox.margin>
+        </Button>
     </VBox>
 
     <!-- Scrollable Listings Container -->
