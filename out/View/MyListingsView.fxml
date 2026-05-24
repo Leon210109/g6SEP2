@@ -1,31 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
 <VBox xmlns:fx="http://javafx.com/fxml/1"
-      alignment="TOP_CENTER" spacing="20"
+      fx:controller="View.MyListingsController"
+      spacing="20"
       style="-fx-background-color: #F5F0E8;">
+    
     <padding>
-        <Insets top="40" right="20" bottom="20" left="20"/>
+        <Insets top="30" right="40" bottom="30" left="40"/>
     </padding>
 
-    <Text text="My Listings"
-          style="-fx-fill: #143D29;
-                 -fx-font-family: 'Palatino Linotype';
-                 -fx-font-size: 48px;
-                 -fx-font-weight: bold;"/>
+    <!-- Header Section -->
+    <VBox spacing="10">
+        <Text text="My Listings"
+              style="-fx-fill: #143D29;
+                     -fx-font-family: 'Palatino Linotype';
+                     -fx-font-size: 36px;
+                     -fx-font-weight: bold;"/>
+        <Text text="Manage your properties available for rent"
+              style="-fx-fill: #8B7355;
+                     -fx-font-family: 'Cambria';
+                     -fx-font-size: 14px;"/>
+        
+        <!-- New Listing Button -->
+        <Button fx:id="newListingBtn" 
+                text="+ New Listing"
+                onAction="#handleNewListing"
+                style="-fx-background-color: #1A5F3F;
+                       -fx-text-fill: white;
+                       -fx-font-family: 'Cambria';
+                       -fx-font-size: 14px;
+                       -fx-font-weight: bold;
+                       -fx-background-radius: 8;
+                       -fx-padding: 12 24;
+                       -fx-cursor: hand;">
+            <VBox.margin>
+                <Insets top="10"/>
+            </VBox.margin>
+        </Button>
+    </VBox>
 
-    <Text text="Properties available for booking"
-          style="-fx-fill: #1A5F3F;
-                 -fx-font-family: 'Cambria';
-                 -fx-font-size: 16px;"/>
+    <!-- Scrollable Listings Container -->
+    <ScrollPane fx:id="listingsScrollPane" 
+                fitToWidth="true"
+                VBox.vgrow="ALWAYS"
+                style="-fx-background: #F5F0E8; -fx-background-color: transparent;">
+        
+        <TilePane fx:id="listingsTilePane"
+                  hgap="20" vgap="20"
+                  prefColumns="3"
+                  style="-fx-background-color: #F5F0E8;">
+            
+            <!-- Listing cards will be added dynamically here -->
+            
+        </TilePane>
+    </ScrollPane>
 
-    <Label text="Your available listings will appear here"
+    <!-- Status Label -->
+    <Label fx:id="statusLabel" 
+           text="Loading your listings..."
            style="-fx-text-fill: #8B7355;
-                  -fx-padding: 40px;
                   -fx-font-family: 'Cambria';
-                  -fx-font-size: 14px;"/>
+                  -fx-font-size: 13px;"/>
+
 </VBox>

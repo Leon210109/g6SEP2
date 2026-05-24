@@ -3,6 +3,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "DatabaseDiagnostic",
+            "request": "launch",
+            "mainClass": "Persistence.DatabaseDiagnostic",
+            "projectName": "g6SEP2_40ed679c"
+        },
+        {
+            "type": "java",
+            "name": "TestDatabase",
+            "request": "launch",
+            "mainClass": "Persistence.TestDatabase",
+            "projectName": "g6SEP2_40ed679c"
+        },
+        {
+            "type": "java",
             "name": "Run Main (JavaFX)",
             "request": "launch",
             "mainClass": "View.Main",

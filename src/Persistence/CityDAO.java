@@ -13,7 +13,7 @@ public class CityDAO
     try{
       Connection connection= DatabaseConnection.getConnection();
       String sql= """
-          Insert into city(postal_code,name)
+          Insert into sep2.city(postal_code,name)
           values(?,?)          
           """;
       PreparedStatement statement=connection.prepareStatement(sql);
@@ -31,7 +31,7 @@ public class CityDAO
   public City getCityByPostalCode(String postalCode) {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM city WHERE postal_code = ?";
+      String sql = "SELECT * FROM sep2.city WHERE postal_code = ?";
       PreparedStatement statement = connection.prepareStatement(sql);
       statement.setString(1, postalCode);
       ResultSet rs = statement.executeQuery();
@@ -48,10 +48,18 @@ public class CityDAO
     }
   }
 
+  /**
+   * Convenience method to create city with postal code and name
+   */
+  public void createCity(String postalCode, String cityName) {
+    City city = new City(cityName, postalCode);
+    createCity(city);
+  }
+
   public ArrayList<City> getAllCities() {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM city";
+      String sql = "SELECT * FROM sep2.city";
       PreparedStatement statement = connection.prepareStatement(sql);
       ResultSet rs = statement.executeQuery();
       
