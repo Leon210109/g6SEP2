@@ -91,8 +91,8 @@ public class LoginController {
                     // Clear password from memory
                     viewModel.clearFields();
                     
-                    // Navigate to main view
-                    navigateToMainView(result.getUserType());
+                    // Navigate to main view with user object
+                    navigateToMainView(result);
                 } else {
                     // Show error message
                     viewModel.setErrorMessage(result.getErrorMessage());
@@ -136,7 +136,9 @@ public class LoginController {
 
         popupController.setOnEnter(userType -> {
             try {
-                navigateToMainView(userType);
+                // Create a mock AuthenticationResult for dev bypass
+                AuthenticationResult mockResult = new AuthenticationResult(true, userType, null, null);
+                navigateToMainView(mockResult);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -146,13 +148,13 @@ public class LoginController {
     }
     
     /**
-     * Navigate to the main application view with the specified user type
+     * Navigate to the main application view with authentication result
      */
-    private void navigateToMainView(String userType) throws IOException {
+    private void navigateToMainView(AuthenticationResult result) throws IOException {
         FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("MainView.fxml"));
         Parent mainRoot = mainLoader.load();
         MainController mainController = mainLoader.getController();
-        mainController.init(userType);
+        mainController.init(result.getUserType(), result.getUser());
         
         // Get the current scene and update its root
         usernameField.getScene().setRoot(mainRoot);

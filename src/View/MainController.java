@@ -36,6 +36,7 @@ public class MainController {
 
     private AppViewModel vm;
     private String userType;
+    private Object currentUser; // Client, PropertyOwner, or Admin object
 
     @FXML
     private void initialize() {
@@ -52,8 +53,9 @@ public class MainController {
     }
 
     /** Called by LoginController after the FXML has been loaded. */
-    public void init(String userType) {
+    public void init(String userType, Object user) {
         this.userType = userType;
+        this.currentUser = user;
 
         vm = switch (userType) {
             case "Property Owner" -> new PropertyOwnerViewModel();
@@ -134,7 +136,13 @@ public class MainController {
 
     private Parent loadSectionView(String section) {
         String fxmlFile = null;
-        if (vm instanceof PropertyOwnerViewModel) {
+        if (vm instanceof ClientViewModel) {
+            fxmlFile = switch (section) {
+                case "Available Listings" -> "BrowseListingsView.fxml";
+                case "Bookings" -> "MyBookingsView.fxml";
+                default -> null;
+            };
+        } else if (vm instanceof PropertyOwnerViewModel) {
             fxmlFile = switch (section) {
                 case "My Listings" -> "MyListingsView.fxml";
                 case "My Bookings" -> "MyBookingsView.fxml";
@@ -145,7 +153,18 @@ public class MainController {
             return homeView;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-            return loader.load();
+            Parent root = loader.load();
+            
+            // Pass user data to controller if needed
+            Object controller = loader.getController();
+            if (controller instanceof MyListingsController && currentUser instanceof Model.PropertyOwner) {
+                ((MyListingsController) controller).setPropertyOwner((Model.PropertyOwner) currentUser);
+            } else if (controller instanceof MyListingsController && currentUser == null) {
+                // Admin bypass - no user object, can't show listings
+                // This is okay for dev testing
+            }
+            
+            return root;
         } catch (IOException e) {
             e.printStackTrace();
             return homeView;
