@@ -106,8 +106,16 @@ public class LoginController {
 
     @FXML
     private void handleRegister() {
-        // TODO: Implement registration functionality
-        viewModel.setErrorMessage("Registration is not yet implemented");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("RegistrationView.fxml"));
+            Parent registrationRoot = loader.load();
+            
+            // Get the current scene and update its root
+            usernameField.getScene().setRoot(registrationRoot);
+        } catch (IOException e) {
+            e.printStackTrace();
+            viewModel.setErrorMessage("Failed to load registration form");
+        }
     }
 
     @FXML

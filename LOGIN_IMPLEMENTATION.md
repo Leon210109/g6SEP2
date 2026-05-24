@@ -1,7 +1,7 @@
-# Login System Implementation
+# Login & Registration System Implementation
 
 ## Overview
-The login system has been fully implemented using the existing DAO classes to authenticate users against the PostgreSQL database. The system supports three user types: **Client**, **Property Owner**, and **Admin**.
+The login and registration system has been fully implemented using the existing DAO classes to authenticate users against the PostgreSQL database. The system supports three user types: **Client**, **Property Owner**, and **Admin**.
 
 ---
 
@@ -31,17 +31,40 @@ Fully functional login controller:
 - Validates user input
 - Calls AuthenticationService to verify credentials
 - Displays error messages for failed login attempts
-- Navigates to MainView on successful login
+- Navigates to MainView on successful login based on user type
 - Handles Enter key in password field
 - Supports Admin Access bypass (development mode)
+- Navigates to registration view
 
-### 4. **Updated LoginView.fxml** (`View/LoginView.fxml`)
+### 4. **RegistrationController** (`View/RegistrationController.java`) ⭐ NEW
+Complete registration functionality:
+- Validates all input fields (required fields, email format, password strength)
+- Age validation (must be 18+)
+- Password confirmation matching
+- Saves new clients directly to database using ClientDAO
+- Shows success message and auto-redirects to login
+- Comprehensive error handling with user-friendly messages
+
+### 5. **RegistrationView.fxml** (`View/RegistrationView.fxml`) ⭐ NEW
+Professional registration form with:
+- All required client fields (name, email, phone, username, password)
+- Date picker for birth date
+- Gender dropdown
+- Nationality field
+- Password confirmation
+- Real-time error display
+- Responsive two-column layout
+- Consistent styling with login view
+
+### 6. **Updated LoginView.fxml** (`View/LoginView.fxml`)
 Added:
 - Error label for displaying authentication errors
 - Proper field IDs for binding
+- Register button that navigates to registration
 
-### 5. **Test Utilities**
+### 7. **Test Utilities**
 - **TestAuthentication.java**: Tests database connectivity and authentication
+- **TestRegistrationAndLogin.java**: Complete end-to-end test of registration and login ⭐ NEW
 - **sample_test_data.sql**: Sample user accounts for testing
 
 ---
@@ -62,23 +85,60 @@ The following tables must exist in the `sep2` schema:
 
 ---
 
+## How to Use the System
+
+### Registration Flow
+1. **Launch the application** (`Main.java`)
+2. Click **"Register"** button on login screen
+3. **Fill in all required fields**:
+   - First Name and Last Name
+   - Email (must include @)
+   - Phone Number
+   - Username (min. 3 characters)
+   - Password (min. 6 characters)
+   - Confirm Password (must match)
+   - Date of Birth (must be 18+)
+   - Gender (select from dropdown)
+   - Nationality
+4. Click **"Create Account"**
+5. **Success**: Automatically redirected to login after 2 seconds
+6. **Login** with your new credentials
+
+### Login Flow
+1. **Enter username and password**
+2. Press **Enter** or click **"Login"**
+3. **On success**: Redirected to appropriate main view based on user type
+   - Client → Client view with bookings and listings
+   - Property Owner → Property Owner view with listings management
+   - Admin → Admin view
+4. **On failure**: Error message displayed
+
+### Admin Access (Development/Testing)
+1. Click **"Admin Access ›"** (bottom-right of login screen)
+2. Select user type (Client, Property Owner, or Admin)
+3. Click **"Enter"** to bypass authentication
+
+---
+
 ## How to Test
 
-### Option 1: Using Sample Data (Recommended)
-1. **Start PostgreSQL server** (ensure it's running on `localhost:5432`)
+### Option 1: Full Registration Flow (Recommended)
+1. **Start PostgreSQL** and ensure database is running
+2. **Run the application**: `Main.java`
+3. **Register a new account**:
+   - Click "Register"
+   - Fill in all fields
+   - Click "Create Account"
+4. **Login with new credentials**
+5. **Verify** you're taken to the correct main view
 
-2. **Create test accounts** by running the SQL script:
+### Option 2: Using Sample Data
+1. **Create test accounts** by running:
    ```sql
-   -- Execute: database/sample_test_data.sql
+   -- Execute in DataGrip: database/sample_test_data.sql
    ```
 
-3. **Test the database connection**:
-   ```bash
-   # Run from your IDE or command line:
-   java TestDao.TestAuthentication
-   ```
-
-4. **Launch the application** and try logging in with these credentials:
+2. **Launch the application** and try logging in:
 
    | Username    | Password     | User Type       |
    |-------------|--------------|-----------------|
@@ -89,33 +149,50 @@ The following tables must exist in the `sep2` schema:
    | testadmin   | admin123     | Admin           |
    | admin       | admin2024    | Admin           |
 
-### Option 2: Admin Access (Bypass Login)
-If the database is not available:
-1. Launch the application
-2. Click **"Admin Access ›"** button (bottom-right of login screen)
-3. Select user type (Client, Property Owner, or Admin)
-4. Click **"Enter"** to access the app without authentication
+### Option 3: Run Test Program
+```java
+// Right-click and run:
+TestDao/TestRegistrationAndLogin.java
+```
+This will:
+- Test database connection
+- Create a new test user
+- Attempt login with new user
+- Test login with existing sample users
 
 ---
 
 ## Features
 
 ### ✅ Implemented
-- Database authentication for all three user types
-- Password validation (stored in plain text - see Security Notes)
-- Error handling and user feedback
-- Input validation (empty fields, etc.)
-- Database connection error handling
-- Admin bypass for development/testing
+- **Database authentication** for all three user types (Client, Property Owner, Admin)
+- **Automatic user type detection** - system recognizes user type and loads appropriate UI
+- **Client registration** - new users can create accounts that are saved to database
+- **Comprehensive validation**:
+  - Required fields checking
+  - Email format validation
+  - Password strength (min. 6 characters)
+  - Password confirmation matching
+  - Age verification (18+)
+  - Username length (min. 3 characters)
+- **Real-time error feedback** - clear messages for all validation errors
+- **Success confirmation** - visual feedback and auto-redirect after registration
+- **Database connection error handling** - graceful error messages
+- **Input validation** (empty fields, etc.)
+- **Admin bypass** for development/testing
+- **Enter key support** in login form
 
 ### 🔄 To Be Implemented (Future)
-- Password hashing (currently passwords are stored in plain text)
-- Registration functionality
-- "Remember me" feature
-- Password reset/recovery
-- Account lockout after failed attempts
-- Session management
-- User profile loading after login
+- **Password hashing** (currently passwords are stored in plain text - see Security Notes)
+- **Property Owner registration** (separate form with owner-specific fields)
+- **Admin registration** (separate form or admin-only feature)
+- **Email verification** before account activation
+- **Username uniqueness checking** before registration
+- **"Remember me"** feature
+- **Password reset/recovery**
+- **Account lockout** after failed attempts
+- **Session management**
+- **User profile editing** after login
 
 ---
 
@@ -255,13 +332,18 @@ To complete the application, you should implement:
 
 ### New Files Created:
 - `src/Model/AuthenticationService.java` - Authentication logic
+- `src/View/RegistrationController.java` - Registration form controller ⭐
+- `src/View/RegistrationView.fxml` - Registration form UI ⭐
 - `src/TestDao/TestAuthentication.java` - Database connectivity test
+- `src/TestDao/TestRegistrationAndLogin.java` - End-to-end registration & login test ⭐
 - `database/sample_test_data.sql` - Test data
+- `database/create_database.sql` - Database creation script
 
 ### Modified Files:
-- `src/View/LoginController.java` - Added login functionality
+- `src/View/LoginController.java` - Added login functionality and registration navigation
 - `src/ViewModel/LoginViewModel.java` - Added username/password/error properties
 - `src/View/LoginView.fxml` - Added error label
+- `.vscode/settings.json` - Added PostgreSQL JDBC driver to classpath
 
 ---
 

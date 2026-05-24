@@ -1,26 +1,14 @@
--- Sample data for testing login functionality
--- Make sure you have the tables created first!
 
--- Clear existing test data (optional - comment out if you want to keep existing data)
--- DELETE FROM sep2.client WHERE username IN ('testclient', 'john_doe');
--- DELETE FROM sep2.propertyowner WHERE username IN ('testowner', 'jane_owner');
--- DELETE FROM sep2.admin WHERE username IN ('testadmin', 'admin');
-
--- ========================================
--- Sample Clients
--- ========================================
-
--- Test Client 1
 INSERT INTO sep2.client (firstName, lastName, email, phoneNumber, username, password, dateOfBirth, gender, nationality)
-VALUES ('Test', 'Client', 'testclient@example.com', '+1234567890', 'testclient', 'password123', '1990-01-15', 'Male', 'USA');
+VALUES ('Test', 'Client', 'testclient@example.com', '1234567890', 'testclient', 'password123', '1990-01-15', 'Male', 'USA');
 
 -- Test Client 2
 INSERT INTO sep2.client (firstName, lastName, email, phoneNumber, username, password, dateOfBirth, gender, nationality)
-VALUES ('John', 'Doe', 'john.doe@example.com', '+1234567891', 'john_doe', 'client123', '1985-05-20', 'Male', 'Canada');
+VALUES ('John', 'Doe', 'john.doe@example.com', '1234567891', 'john_doe', 'client123', '1985-05-20', 'Male', 'Canada');
 
 -- Test Client 3
 INSERT INTO sep2.client (firstName, lastName, email, phoneNumber, username, password, dateOfBirth, gender, nationality)
-VALUES ('Alice', 'Smith', 'alice.smith@example.com', '+1234567892', 'alice', 'alice2024', '1992-08-10', 'Female', 'UK');
+VALUES ('Alice', 'Smith', 'alice.smith@example.com', '1234567892', 'alice', 'alice2024', '1992-08-10', 'Female', 'UK');
 
 -- ========================================
 -- Sample Property Owners
@@ -28,15 +16,15 @@ VALUES ('Alice', 'Smith', 'alice.smith@example.com', '+1234567892', 'alice', 'al
 
 -- Test Owner 1
 INSERT INTO sep2.propertyowner (first_name, last_name, email, phoneNumber, username, password, dateOfBirth, gender, nationality, numberOfListings)
-VALUES ('Test', 'Owner', 'testowner@example.com', '+1234567893', 'testowner', 'password123', '1980-03-25', 'Female', 'Denmark', 0);
+VALUES ('Test', 'Owner', 'testowner@example.com', '1234567893', 'testowner', 'password123', '1980-03-25', 'Female', 'Denmark', 0);
 
 -- Test Owner 2
 INSERT INTO sep2.propertyowner (first_name, last_name, email, phoneNumber, username, password, dateOfBirth, gender, nationality, numberOfListings)
-VALUES ('Jane', 'Property', 'jane.property@example.com', '+1234567894', 'jane_owner', 'owner123', '1975-11-30', 'Female', 'Germany', 3);
+VALUES ('Jane', 'Property', 'jane.property@example.com', '1234567894', 'jane_owner', 'owner123', '1975-11-30', 'Female', 'Germany', 3);
 
 -- Test Owner 3
 INSERT INTO sep2.propertyowner (first_name, last_name, email, phoneNumber, username, password, dateOfBirth, gender, nationality, numberOfListings)
-VALUES ('Bob', 'Landlord', 'bob.landlord@example.com', '+1234567895', 'bob_owner', 'bob2024', '1988-07-15', 'Male', 'France', 1);
+VALUES ('Bob', 'Landlord', 'bob.landlord@example.com', '1234567895', 'bob_owner', 'bob2024', '1988-07-15', 'Male', 'France', 1);
 
 -- ========================================
 -- Sample Admins
