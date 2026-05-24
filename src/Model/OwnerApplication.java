@@ -24,6 +24,14 @@ public class OwnerApplication
     propertyAddress=a;
     propertyRegistrationNumber= number;
   }
+  public OwnerApplication(int cId,int adId, Date d,String s,String a,String number){
+    clientId=cId;
+    adminId=adId;
+    submissionDate=d;
+    status=s;
+    propertyAddress=a;
+    propertyRegistrationNumber= number;
+  }
 
 
   public int getAdminId()

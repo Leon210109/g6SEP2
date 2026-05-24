@@ -1,4 +1,4 @@
-package View;
+/*package View;
 
 import ViewModel.LoginViewModel;
 
@@ -328,3 +328,4 @@ public class Main extends Application {
         launch(args);
     }
 }
+*/

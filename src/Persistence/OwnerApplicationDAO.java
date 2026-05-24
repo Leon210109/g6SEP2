@@ -15,7 +15,7 @@ public class OwnerApplicationDAO
     try{
       Connection connection= DatabaseConnection.getConnection();
       String sql= """
-          INSERT INTO ownerApplication
+          INSERT INTO sep2.ownerApplication
           (clientId, adminId, 
           submissionDate, status,
            propertyAddress, propertyRegistrationNumber)
@@ -48,7 +48,7 @@ public class OwnerApplicationDAO
   public OwnerApplication getApplicationById(int id) {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM ownerApplication WHERE id = ?";
+      String sql = "SELECT * FROM sep2.ownerApplication WHERE applicationId = ?";
       PreparedStatement statement = connection.prepareStatement(sql);
       statement.setInt(1, id);
       ResultSet rs = statement.executeQuery();
@@ -59,7 +59,7 @@ public class OwnerApplicationDAO
         Date submissionDate = new Date(submissionLocalDate.getDayOfMonth(), submissionLocalDate.getMonthValue(), submissionLocalDate.getYear());
         
         application = new OwnerApplication(
-            rs.getInt("id"),
+            rs.getInt("applicationId"),
             rs.getInt("clientId"),
             rs.getInt("adminId"),
             submissionDate,
@@ -79,7 +79,7 @@ public class OwnerApplicationDAO
   public ArrayList<OwnerApplication> getApplicationsByClientId(int clientId) {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM ownerApplication WHERE clientId = ?";
+      String sql = "SELECT * FROM sep2.ownerApplication WHERE clientId = ?";
       PreparedStatement statement = connection.prepareStatement(sql);
       statement.setInt(1, clientId);
       ResultSet rs = statement.executeQuery();
@@ -90,7 +90,7 @@ public class OwnerApplicationDAO
         Date submissionDate = new Date(submissionLocalDate.getDayOfMonth(), submissionLocalDate.getMonthValue(), submissionLocalDate.getYear());
         
         OwnerApplication application = new OwnerApplication(
-            rs.getInt("id"),
+            rs.getInt("applicationId"),
             rs.getInt("clientId"),
             rs.getInt("adminId"),
             submissionDate,
@@ -111,7 +111,7 @@ public class OwnerApplicationDAO
   public ArrayList<OwnerApplication> getApplicationsByStatus(String status) {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM ownerApplication WHERE status = ?";
+      String sql = "SELECT * FROM sep2.ownerApplication WHERE status = ?";
       PreparedStatement statement = connection.prepareStatement(sql);
       statement.setString(1, status);
       ResultSet rs = statement.executeQuery();
@@ -122,7 +122,7 @@ public class OwnerApplicationDAO
         Date submissionDate = new Date(submissionLocalDate.getDayOfMonth(), submissionLocalDate.getMonthValue(), submissionLocalDate.getYear());
         
         OwnerApplication application = new OwnerApplication(
-            rs.getInt("id"),
+            rs.getInt("applicationid"),
             rs.getInt("clientId"),
             rs.getInt("adminId"),
             submissionDate,
@@ -143,7 +143,7 @@ public class OwnerApplicationDAO
   public ArrayList<OwnerApplication> getAllApplications() {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM ownerApplication";
+      String sql = "SELECT * FROM sep2.ownerApplication";
       PreparedStatement statement = connection.prepareStatement(sql);
       ResultSet rs = statement.executeQuery();
       
@@ -153,7 +153,7 @@ public class OwnerApplicationDAO
         Date submissionDate = new Date(submissionLocalDate.getDayOfMonth(), submissionLocalDate.getMonthValue(), submissionLocalDate.getYear());
         
         OwnerApplication application = new OwnerApplication(
-            rs.getInt("id"),
+            rs.getInt("applicationid"),
             rs.getInt("clientId"),
             rs.getInt("adminId"),
             submissionDate,
@@ -264,7 +264,7 @@ public class OwnerApplicationDAO
           DatabaseConnection.getConnection();
 
       String sql = """
-        DELETE FROM ownerApplication
+        DELETE FROM sep2.ownerApplication
         WHERE applicationId = ?
         """;
 

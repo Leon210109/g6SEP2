@@ -18,7 +18,7 @@ public class ListingDAO
     try{
       Connection connection= DatabaseConnection.getConnection();
       String sql= """
-          Insert into listing(id,ownerId, number_of_rooms, number_of_bathrooms, has_balcony, surface_area,
+          Insert into sep2.listing(id,ownerId, number_of_rooms, number_of_bathrooms, has_balcony, surface_area,
           price, last_Renovated, max_number_of_people, country, region, street, room_number,streetNo)
               values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
           """;

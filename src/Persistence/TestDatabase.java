@@ -23,5 +23,8 @@ public class TestDatabase
     for(Client c: clients){
       System.out.println(c);
     }
+
+
+
   }
 }

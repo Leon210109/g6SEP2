@@ -13,7 +13,7 @@ public class Listing
   private int maxNumberOfPeople;
   private boolean isBooked;
   private String street;
-  private City city;
+  private String postalcode;
   private String country;
   private String region;
   private int StreetNumber;
@@ -23,7 +23,26 @@ public class Listing
   public Listing(int id,String street,String country,String region,int StreetNumber, int floor, int roomNumber, City city, int numberOfRooms, int numberOfBathrooms, boolean balcony, float surfaceArea, int price, Date lastRenovated, int ownerId, int maxNumberOfPeople)
   {
     this.id = id;
-    this.city=city;
+    this.postalcode=postalcode;
+    this.street=street;
+    this.country= country;
+    this.floor=floor;
+    this.roomNumber=roomNumber;
+    this.region=region;
+    this.StreetNumber=StreetNumber;
+    this.numberOfRooms = numberOfRooms;
+    this.numberOfBathrooms = numberOfBathrooms;
+    this.balcony = balcony;
+    this.surfaceArea = surfaceArea;
+    this.price = price;
+    this.lastRenovated = lastRenovated;
+    this.ownerId = ownerId;
+    this.maxNumberOfPeople = maxNumberOfPeople;
+    this.isBooked = false;
+  }
+  public Listing(int numberOfRooms,int numberOfBathrooms, boolean balcony, float surfaceArea, int price, Date lastRenovated,int maxNumberOfPeople,String country,String region, String street,int floor, int roomNumber, String postalcode,int ownerId)
+  {
+    this.postalcode=postalcode;
     this.street=street;
     this.country= country;
     this.floor=floor;
@@ -117,9 +136,9 @@ public class Listing
     return street;
   }
 
-  public City getCity()
+  public String getPostalcode()
   {
-    return city;
+    return postalcode;
   }
 
   public int getNumberOfRooms()
