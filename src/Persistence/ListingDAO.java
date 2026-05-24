@@ -18,32 +18,31 @@ public class ListingDAO
     try{
       Connection connection= DatabaseConnection.getConnection();
       String sql= """
-          Insert into sep2.listing(id,ownerId, number_of_rooms, number_of_bathrooms, has_balcony, surface_area,
-          price, last_Renovated, max_number_of_people, country, region, street, room_number,streetNo)
+          Insert into sep2.listing(ownerId, number_of_rooms, number_of_bathrooms, has_balcony, surface_area,
+          price, last_Renovated, max_number_of_people, country, region, street, room_number,postal_code,floor)
               values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
           """;
       PreparedStatement statement=connection.prepareStatement(sql);
-      statement.setInt(1,listing.getId());
       statement.setInt(
-          2,
+          1,
           listing.getOwnerId());
       statement.setInt(
-          3,
+          2,
           listing.getNumberOfRooms());
       statement.setInt(
-          4,
+          3,
           listing.getNumberOfBathrooms());
       statement.setBoolean(
-          5,
+          4,
           listing.isBalcony());
       statement.setFloat(
-          6,
+          5,
           listing.getSurfaceArea());
       statement.setInt(
-          7,
+          6,
           listing.getPrice());
       statement.setDate(
-          8,
+          7,
           java.sql.Date.valueOf(
               LocalDate.of(
                   listing.getLastRenovated().getYear(),
@@ -53,23 +52,24 @@ public class ListingDAO
           )
       );
       statement.setInt(
-          9,
+          8,
           listing.getMaxNumberOfPeople());
       statement.setString(
-          10,
+          9,
           listing.getCountry());
       statement.setString(
-          11,
+          10,
           listing.getRegion());
       statement.setString(
-          12,
+          11,
           listing.getStreet());
-      statement.setInt(
-          13,
+      statement.setString(
+          12,
           listing.getRoomNumber());
-      statement.setInt(
-          14,
-          listing.getStreetNumber());
+      statement.setString(
+          13,
+          listing.getPostalcode());
+      statement.setInt(14,listing.getFloor());
 
       statement.executeUpdate();
       connection.close();
@@ -83,7 +83,7 @@ public class ListingDAO
   public Listing getListingById(int id) {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM listing WHERE id = ?";
+      String sql = "SELECT * FROM sep2.listing WHERE id = ?";
       PreparedStatement statement = connection.prepareStatement(sql);
       statement.setInt(1, id);
       ResultSet rs = statement.executeQuery();
@@ -92,19 +92,13 @@ public class ListingDAO
       if (rs.next()) {
         LocalDate renovatedLocalDate = rs.getDate("last_Renovated").toLocalDate();
         Date lastRenovated = new Date(renovatedLocalDate.getDayOfMonth(), renovatedLocalDate.getMonthValue(), renovatedLocalDate.getYear());
-        
-        // Create a City object - using region as city name and empty postal code for now
-        City city = new City(rs.getString("region"), "");
-        
-        listing = new Listing(
+        Listing listing1 = new Listing(
             rs.getInt("id"),
             rs.getString("street"),
             rs.getString("country"),
             rs.getString("region"),
-            rs.getInt("streetNo"),
             rs.getInt("floor"),
-            rs.getInt("room_number"),
-            city,
+            rs.getString("room_number"),
             rs.getInt("number_of_rooms"),
             rs.getInt("number_of_bathrooms"),
             rs.getBoolean("has_balcony"),
@@ -112,8 +106,11 @@ public class ListingDAO
             rs.getInt("price"),
             lastRenovated,
             rs.getInt("ownerId"),
-            rs.getInt("max_number_of_people")
+            rs.getInt("max_number_of_people"),
+            rs.getString("postal_code")
         );
+        
+
       }
       
       connection.close();
@@ -126,7 +123,7 @@ public class ListingDAO
   public ArrayList<Listing> getListingsByOwnerId(int ownerId) {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM listing WHERE ownerId = ?";
+      String sql = "SELECT * FROM sep2.listing WHERE ownerId = ?";
       PreparedStatement statement = connection.prepareStatement(sql);
       statement.setInt(1, ownerId);
       ResultSet rs = statement.executeQuery();
@@ -137,16 +134,14 @@ public class ListingDAO
         Date lastRenovated = new Date(renovatedLocalDate.getDayOfMonth(), renovatedLocalDate.getMonthValue(), renovatedLocalDate.getYear());
         
         City city = new City(rs.getString("region"), "");
-        
+
         Listing listing = new Listing(
             rs.getInt("id"),
             rs.getString("street"),
             rs.getString("country"),
             rs.getString("region"),
-            rs.getInt("streetNo"),
             rs.getInt("floor"),
-            rs.getInt("room_number"),
-            city,
+            rs.getString("room_number"),
             rs.getInt("number_of_rooms"),
             rs.getInt("number_of_bathrooms"),
             rs.getBoolean("has_balcony"),
@@ -154,7 +149,8 @@ public class ListingDAO
             rs.getInt("price"),
             lastRenovated,
             rs.getInt("ownerId"),
-            rs.getInt("max_number_of_people")
+            rs.getInt("max_number_of_people"),
+            rs.getString("postal_code")
         );
         listings.add(listing);
       }
@@ -169,7 +165,7 @@ public class ListingDAO
   public ArrayList<Listing> getAllListings() {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM listing";
+      String sql = "SELECT * FROM sep2.listing";
       PreparedStatement statement = connection.prepareStatement(sql);
       ResultSet rs = statement.executeQuery();
       
@@ -179,16 +175,13 @@ public class ListingDAO
         Date lastRenovated = new Date(renovatedLocalDate.getDayOfMonth(), renovatedLocalDate.getMonthValue(), renovatedLocalDate.getYear());
         
         City city = new City(rs.getString("region"), "");
-        
         Listing listing = new Listing(
             rs.getInt("id"),
             rs.getString("street"),
             rs.getString("country"),
             rs.getString("region"),
-            rs.getInt("streetNo"),
             rs.getInt("floor"),
-            rs.getInt("room_number"),
-            city,
+            rs.getString("room_number"),
             rs.getInt("number_of_rooms"),
             rs.getInt("number_of_bathrooms"),
             rs.getBoolean("has_balcony"),
@@ -196,7 +189,8 @@ public class ListingDAO
             rs.getInt("price"),
             lastRenovated,
             rs.getInt("ownerId"),
-            rs.getInt("max_number_of_people")
+            rs.getInt("max_number_of_people"),
+            rs.getString("postal_code")
         );
         listings.add(listing);
       }
@@ -211,7 +205,7 @@ public class ListingDAO
   public ArrayList<Listing> getAvailableListings() {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM listing WHERE isBooked = false OR isBooked IS NULL";
+      String sql = "SELECT * FROM sep2.listing WHERE isBooked = false OR isBooked IS NULL";
       PreparedStatement statement = connection.prepareStatement(sql);
       ResultSet rs = statement.executeQuery();
       
@@ -227,10 +221,8 @@ public class ListingDAO
             rs.getString("street"),
             rs.getString("country"),
             rs.getString("region"),
-            rs.getInt("streetNo"),
             rs.getInt("floor"),
-            rs.getInt("room_number"),
-            city,
+            rs.getString("room_number"),
             rs.getInt("number_of_rooms"),
             rs.getInt("number_of_bathrooms"),
             rs.getBoolean("has_balcony"),
@@ -238,7 +230,8 @@ public class ListingDAO
             rs.getInt("price"),
             lastRenovated,
             rs.getInt("ownerId"),
-            rs.getInt("max_number_of_people")
+            rs.getInt("max_number_of_people"),
+            rs.getString("postal_code")
         );
         listings.add(listing);
       }
@@ -257,21 +250,23 @@ public class ListingDAO
           DatabaseConnection.getConnection();
 
       String sql = """
-        UPDATE listing
+        UPDATE sep2.listing
         SET numberOfRooms = ?,
             numberOfBathrooms = ?,
             balcony = ?,
             surfaceArea = ?,
             price = ?,
+            last_renovated=?,
             maxNumberOfPeople = ?,
             street = ?,
             country = ?,
             region = ?,
-            streetNumber = ?,
             floor = ?,
-            roomNumber = ?
+            roomNumber = ?,
+            postal_code=?,
+            ownerid=?
             
-        WHERE listingId = ?
+        WHERE id = ?
         """;
 
       PreparedStatement statement =
@@ -314,22 +309,16 @@ public class ListingDAO
           listing.getRegion());
 
       statement.setInt(
-          10,
-          listing.getStreetNumber());
-
-      statement.setInt(
           11,
           listing.getFloor());
 
-      statement.setInt(
+      statement.setString(
           12,
           listing.getRoomNumber());
+      statement.setString(13,listing.getPostalcode());
+      statement.setInt(14,listing.getOwnerId());
 
-      statement.setInt(
-          13,
-          listing.getId());
-
-      statement.executeUpdate();
+     statement.executeUpdate();
 
       connection.close();
     }
@@ -346,7 +335,7 @@ public class ListingDAO
           DatabaseConnection.getConnection();
 
       String sql =
-          "DELETE FROM listing WHERE listingId = ?";
+          "DELETE FROM sep2.listing WHERE listingId = ?";
 
       PreparedStatement statement =
           connection.prepareStatement(sql);

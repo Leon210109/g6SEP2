@@ -13,7 +13,7 @@ public class CityDAO
     try{
       Connection connection= DatabaseConnection.getConnection();
       String sql= """
-          Insert into city(postal_code,name)
+          Insert into sep2.city(postal_code,name)
           values(?,?)          
           """;
       PreparedStatement statement=connection.prepareStatement(sql);
@@ -51,7 +51,7 @@ public class CityDAO
   public ArrayList<City> getAllCities() {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM city";
+      String sql = "SELECT * FROM sep2.city";
       PreparedStatement statement = connection.prepareStatement(sql);
       ResultSet rs = statement.executeQuery();
       
