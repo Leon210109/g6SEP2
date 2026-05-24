@@ -72,6 +72,17 @@
                              -fx-font-size: 20px;
                              -fx-font-weight: bold;"/>
 
+                <!-- Listing type badge -->
+                <Label fx:id="listingTypeLabel"
+                       text="Short-term"
+                       style="-fx-background-color: #1A5F3F;
+                              -fx-text-fill: white;
+                              -fx-font-family: 'Cambria';
+                              -fx-font-size: 12px;
+                              -fx-font-weight: bold;
+                              -fx-background-radius: 4;
+                              -fx-padding: 4 10;"/>
+
                 <GridPane hgap="20" vgap="12">
                     <!-- Address -->
                     <Label text="Address:" GridPane.columnIndex="0" GridPane.rowIndex="0"

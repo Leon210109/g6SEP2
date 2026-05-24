@@ -149,7 +149,7 @@ public class BrowseListingsController {
             "-fx-cursor: hand;"
         );
         card.setPrefWidth(280);
-        card.setPrefHeight(360);
+        card.setPrefHeight(420);
 
         // Add hover effect
         card.setOnMouseEntered(e -> card.setStyle(
@@ -196,6 +196,15 @@ public class BrowseListingsController {
             "-fx-fill: #8B7355;" +
             "-fx-font-family: 'Cambria';" +
             "-fx-font-size: 13px;"
+        );
+
+        // Listing type badge
+        boolean isLongTerm = "LONG_TERM".equals(listing.getListingType());
+        Label typeBadge = new Label(isLongTerm ? "Long-term Rental" : "Short-term");
+        typeBadge.setStyle(
+            "-fx-background-color: " + (isLongTerm ? "#6B4A2A" : "#1A5F3F") + ";" +
+            "-fx-text-fill: white; -fx-font-family: 'Cambria'; -fx-font-size: 11px;" +
+            "-fx-font-weight: bold; -fx-background-radius: 4; -fx-padding: 3 8;"
         );
 
         // Details (rooms, size, price)
@@ -254,7 +263,7 @@ public class BrowseListingsController {
         viewButton.setOnAction(e -> { e.consume(); openListingDetails(listing); });
         buttonRow.getChildren().add(viewButton);
 
-        card.getChildren().addAll(imageView, streetText, locationText, detailsText, buttonRow);
+        card.getChildren().addAll(imageView, streetText, locationText, typeBadge, detailsText, buttonRow);
 
         // Click anywhere on card (but not a button) to open details
         card.setOnMouseClicked(e -> {

@@ -21,8 +21,8 @@ public class ListingDAO
       String sql= """
           Insert into sep2.listing(ownerId, number_of_rooms, number_of_bathrooms, has_balcony, surface_area,
           price, last_Renovated, max_number_of_people, country, region, street, room_number,postal_code,floor,
-          check_in_time, check_out_time)
-              values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+          check_in_time, check_out_time, listing_type)
+              values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
           """;
       PreparedStatement statement=connection.prepareStatement(sql);
       statement.setInt(
@@ -74,6 +74,7 @@ public class ListingDAO
       statement.setInt(14,listing.getFloor());
       statement.setTime(15, java.sql.Time.valueOf(listing.getCheckInTime()));
       statement.setTime(16, java.sql.Time.valueOf(listing.getCheckOutTime()));
+      statement.setString(17, listing.getListingType() != null ? listing.getListingType() : "SHORT_TERM");
 
       statement.executeUpdate();
       connection.close();
@@ -119,6 +120,7 @@ public class ListingDAO
         LocalTime checkOutTime = rs.getTime("check_out_time").toLocalTime();
         listing.setCheckInTime(checkInTime);
         listing.setCheckOutTime(checkOutTime);
+        listing.setListingType(rs.getString("listing_type"));
       }
       
       connection.close();
@@ -166,6 +168,7 @@ public class ListingDAO
         LocalTime checkOutTime = rs.getTime("check_out_time").toLocalTime();
         listing.setCheckInTime(checkInTime);
         listing.setCheckOutTime(checkOutTime);
+        listing.setListingType(rs.getString("listing_type"));
         
         listings.add(listing);
       }
@@ -213,6 +216,7 @@ public class ListingDAO
         LocalTime checkOutTime = rs.getTime("check_out_time").toLocalTime();
         listing.setCheckInTime(checkInTime);
         listing.setCheckOutTime(checkOutTime);
+        listing.setListingType(rs.getString("listing_type"));
         
         listings.add(listing);
       }
@@ -227,7 +231,9 @@ public class ListingDAO
   public ArrayList<Listing> getAvailableListings() {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM sep2.listing WHERE isBooked = false OR isBooked IS NULL";
+      String sql = "SELECT * FROM sep2.listing WHERE (isBooked = false OR isBooked IS NULL) " +
+          "AND NOT (listing_type = 'LONG_TERM' AND id IN " +
+          "(SELECT listing_id FROM sep2.tenancy_application WHERE status = 'approved'))";
       PreparedStatement statement = connection.prepareStatement(sql);
       ResultSet rs = statement.executeQuery();
       
@@ -261,6 +267,7 @@ public class ListingDAO
         LocalTime checkOutTime = rs.getTime("check_out_time").toLocalTime();
         listing.setCheckInTime(checkInTime);
         listing.setCheckOutTime(checkOutTime);
+        listing.setListingType(rs.getString("listing_type"));
         
         listings.add(listing);
       }
@@ -294,7 +301,8 @@ public class ListingDAO
             room_number = ?,
             postal_code = ?,
             check_in_time = ?,
-            check_out_time = ?
+            check_out_time = ?,
+            listing_type = ?
         WHERE id = ?
         """;
 
@@ -322,7 +330,8 @@ public class ListingDAO
       statement.setString(13, listing.getPostalcode());
       statement.setTime(14, java.sql.Time.valueOf(listing.getCheckInTime()));
       statement.setTime(15, java.sql.Time.valueOf(listing.getCheckOutTime()));
-      statement.setInt(16, listing.getId());
+      statement.setString(16, listing.getListingType() != null ? listing.getListingType() : "SHORT_TERM");
+      statement.setInt(17, listing.getId());
 
       statement.executeUpdate();
       connection.close();

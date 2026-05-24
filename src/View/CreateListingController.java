@@ -56,6 +56,8 @@ public class CreateListingController {
     // Messages and actions
     @FXML private Label messageLabel;
     @FXML private Button createButton;
+    @FXML private RadioButton shortTermRadio;
+    @FXML private RadioButton longTermRadio;
 
     private PropertyOwner propertyOwner;
     private List<File> selectedImages = new ArrayList<>();
@@ -199,6 +201,9 @@ public class CreateListingController {
             // Set check-in and check-out times
             newListing.setCheckInTime(checkInTime);
             newListing.setCheckOutTime(checkOutTime);
+
+            // Set listing type
+            newListing.setListingType(longTermRadio != null && longTermRadio.isSelected() ? "LONG_TERM" : "SHORT_TERM");
 
             // Insert into database
             listingDAO.CreateListing(newListing);

@@ -42,6 +42,8 @@ public class EditListingController {
     // Messages and actions
     @FXML private Label messageLabel;
     @FXML private Button updateButton;
+    @FXML private RadioButton shortTermRadio;
+    @FXML private RadioButton longTermRadio;
 
     private Listing listing;
     private PropertyOwner propertyOwner;
@@ -92,6 +94,11 @@ public class EditListingController {
         // Set check-in and check-out times
         checkInTimeField.setText(formatTime(listing.getCheckInTime()));
         checkOutTimeField.setText(formatTime(listing.getCheckOutTime()));
+
+        // Set listing type radio
+        boolean isLongTerm = "LONG_TERM".equals(listing.getListingType());
+        if (longTermRadio != null) longTermRadio.setSelected(isLongTerm);
+        if (shortTermRadio != null) shortTermRadio.setSelected(!isLongTerm);
     }
 
     @FXML
@@ -150,6 +157,7 @@ public class EditListingController {
             listing.setLastRenovated(renovated);
             listing.setCheckInTime(checkInTime);
             listing.setCheckOutTime(checkOutTime);
+            listing.setListingType(longTermRadio != null && longTermRadio.isSelected() ? "LONG_TERM" : "SHORT_TERM");
 
             // Update in database
             listingDAO.updateListing(listing);

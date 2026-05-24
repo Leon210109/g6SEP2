@@ -5,9 +5,11 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -38,6 +40,24 @@
             <padding>
                 <Insets right="10"/>
             </padding>
+
+            <!-- Listing Type Section -->
+            <fx:define><ToggleGroup fx:id="listingTypeGroup"/></fx:define>
+
+            <Text text="Listing Type"
+                  style="-fx-fill: #1A5F3F; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <HBox spacing="20" alignment="CENTER_LEFT">
+                <RadioButton fx:id="shortTermRadio"
+                             text="Short-term (Airbnb-style)"
+                             toggleGroup="$listingTypeGroup"
+                             style="-fx-font-family: 'Cambria'; -fx-font-size: 13px;"/>
+                <RadioButton fx:id="longTermRadio"
+                             text="Long-term (Apartment rental)"
+                             toggleGroup="$listingTypeGroup"
+                             style="-fx-font-family: 'Cambria'; -fx-font-size: 13px;"/>
+            </HBox>
+
+            <Separator style="-fx-background-color: #D4C4B0;"/>
 
             <!-- Location Section -->
             <Text text="Location Information"

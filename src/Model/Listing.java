@@ -22,6 +22,7 @@ public class Listing
   private String roomNumber;
   private LocalTime checkInTime;
   private LocalTime checkOutTime;
+  private String listingType;
 
   @Override public String toString()
   {
@@ -58,6 +59,7 @@ public class Listing
     this.isBooked = false;
     this.checkInTime = LocalTime.of(15, 0); // Default 3:00 PM
     this.checkOutTime = LocalTime.of(11, 0); // Default 11:00 AM
+    this.listingType = "SHORT_TERM";
   }
   public Listing(int numberOfRooms,int numberOfBathrooms, boolean balcony
       , float surfaceArea, int price, Date lastRenovated,
@@ -81,6 +83,7 @@ public class Listing
     this.isBooked = false;
     this.checkInTime = LocalTime.of(15, 0); // Default 3:00 PM
     this.checkOutTime = LocalTime.of(11, 0); // Default 11:00 AM
+    this.listingType = "SHORT_TERM";
   }
 
   public boolean isBalcony()
@@ -266,6 +269,16 @@ public class Listing
   public void setCheckOutTime(LocalTime checkOutTime)
   {
     this.checkOutTime = checkOutTime;
+  }
+
+  public String getListingType()
+  {
+    return listingType;
+  }
+
+  public void setListingType(String listingType)
+  {
+    this.listingType = listingType;
   }
 }
 

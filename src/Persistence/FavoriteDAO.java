@@ -97,6 +97,7 @@ public class FavoriteDAO {
                 LocalTime checkOut = rs.getTime("check_out_time").toLocalTime();
                 listing.setCheckInTime(checkIn);
                 listing.setCheckOutTime(checkOut);
+                listing.setListingType(rs.getString("listing_type"));
                 listings.add(listing);
             }
 

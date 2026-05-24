@@ -35,6 +35,7 @@ public class ListingDetailController {
     @FXML private Label balconyLabel;
     @FXML private Label renovatedLabel;
     @FXML private Label priceLabel;
+    @FXML private Label listingTypeLabel;
     @FXML private Label ownerNameLabel;
     @FXML private Label ownerEmailLabel;
     @FXML private Label ownerPhoneLabel;
@@ -67,6 +68,23 @@ public class ListingDetailController {
         balconyLabel.setText(listing.isBalcony() ? "Yes ✓" : "No");
         renovatedLabel.setText(formatDate(listing.getLastRenovated()));
         priceLabel.setText(listing.getPrice() + " DKK / month");
+
+        // Listing type badge
+        boolean isLongTerm = "LONG_TERM".equals(listing.getListingType());
+        if (listingTypeLabel != null) {
+            if (isLongTerm) {
+                listingTypeLabel.setText("Long-term Rental");
+                listingTypeLabel.setStyle("-fx-background-color: #6B4A2A; -fx-text-fill: white; -fx-font-family: 'Cambria'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 4; -fx-padding: 4 10;");
+            } else {
+                listingTypeLabel.setText("Short-term");
+                listingTypeLabel.setStyle("-fx-background-color: #1A5F3F; -fx-text-fill: white; -fx-font-family: 'Cambria'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 4; -fx-padding: 4 10;");
+            }
+        }
+
+        // Book button label depends on type
+        if (bookButton != null) {
+            bookButton.setText(isLongTerm ? "Apply to Rent" : "Book This Property");
+        }
 
         // Owner details
         if (owner != null) {
@@ -228,27 +246,50 @@ public class ListingDetailController {
             bookButton.setDisable(true);
             return;
         }
-        
+
+        boolean isLongTerm = "LONG_TERM".equals(listing.getListingType());
+
+        if (isLongTerm) {
+            openTenancyApplicationForm();
+        } else {
+            openBookingDialog();
+        }
+    }
+
+    private void openBookingDialog() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("BookingDialogView.fxml"));
             Parent root = loader.load();
-            
             BookingDialogController controller = loader.getController();
             controller.setBookingInfo(listing, client);
-            controller.setOnSuccess(() -> {
-                // Close the detail view after successful booking
-                handleClose();
-            });
-            
+            controller.setOnSuccess(() -> handleClose());
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.setTitle("Book Property");
             dialogStage.setScene(new Scene(root));
             dialogStage.setResizable(false);
             dialogStage.show();
-            
         } catch (Exception e) {
             System.err.println("Error opening booking dialog: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void openTenancyApplicationForm() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("TenancyApplicationFormView.fxml"));
+            Parent root = loader.load();
+            TenancyApplicationFormController ctrl = loader.getController();
+            ctrl.setApplicationInfo(listing, client);
+            ctrl.setOnSuccess(() -> handleClose());
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Apply to Rent - " + listing.getStreet());
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+        } catch (Exception e) {
+            System.err.println("Error opening tenancy form: " + e.getMessage());
             e.printStackTrace();
         }
     }

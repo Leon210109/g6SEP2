@@ -67,14 +67,14 @@ public class MainController {
 
         // Populate nav menu items per user type
         if (vm instanceof ClientViewModel clientVM) {
-            for (String section : new String[] { "Bookings", "Available Listings", "My Favourites" }) {
+            for (String section : new String[] { "Bookings", "Available Listings", "My Favourites", "My Apartments" }) {
                 MenuItem item = new MenuItem(section);
                 item.setStyle("-fx-font-family: 'Cambria'; -fx-font-size: 13px;");
                 item.setOnAction(e -> clientVM.navigateTo(section));
                 navMenu.getItems().add(item);
             }
         } else if (vm instanceof PropertyOwnerViewModel ownerVM) {
-            for (String section : new String[] { "My Listings", "My Bookings" }) {
+            for (String section : new String[] { "My Listings", "My Bookings", "Tenant Applications" }) {
                 MenuItem item = new MenuItem(section);
                 item.setStyle("-fx-font-family: 'Cambria'; -fx-font-size: 13px;");
                 item.setOnAction(e -> ownerVM.navigateTo(section));
@@ -155,12 +155,14 @@ public class MainController {
                 case "Available Listings" -> "BrowseListingsView.fxml";
                 case "Bookings" -> "MyBookingsView.fxml";
                 case "My Favourites" -> "MyFavoritesView.fxml";
+                case "My Apartments" -> "MyApartmentsView.fxml";
                 default -> null;
             };
         } else if (vm instanceof PropertyOwnerViewModel) {
             fxmlFile = switch (section) {
                 case "My Listings" -> "MyListingsView.fxml";
                 case "My Bookings" -> "MyBookingsView.fxml";
+                case "Tenant Applications" -> "TenantApplicationsView.fxml";
                 default -> null;
             };
         } else if (vm instanceof AdminViewModel) {
@@ -183,8 +185,12 @@ public class MainController {
                 ((BrowseListingsController) controller).setClient((Model.Client) currentUser);
             } else if (controller instanceof MyBookingsController && currentUser instanceof Model.Client) {
                 ((MyBookingsController) controller).setClient((Model.Client) currentUser);
+            } else if (controller instanceof TenantApplicationsController && currentUser instanceof Model.PropertyOwner) {
+                ((TenantApplicationsController) controller).setPropertyOwner((Model.PropertyOwner) currentUser);
             } else if (controller instanceof MyFavoritesController && currentUser instanceof Model.Client) {
                 ((MyFavoritesController) controller).setClient((Model.Client) currentUser);
+            } else if (controller instanceof MyApartmentsController && currentUser instanceof Model.Client) {
+                ((MyApartmentsController) controller).setClient((Model.Client) currentUser);
             } else if (controller instanceof AdminController && currentUser instanceof Model.Admin) {
                 ((AdminController) controller).setAdmin((Model.Admin) currentUser);
             } else if (controller instanceof AdminListingsController && currentUser instanceof Model.Admin) {
