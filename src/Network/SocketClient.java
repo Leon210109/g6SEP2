@@ -5,22 +5,27 @@ import Shared.RequestType;
 import Shared.Response;
 import com.google.gson.Gson;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class SocketClient
+public class SocketClient implements Runnable
 {
   private Socket socket;
   private Gson gson;
   private BufferedReader in;
   private PrintWriter out;
+  private PropertyChangeSupport support;
+  private boolean running;
 
   public SocketClient(Gson gson)
   {
     this.gson = gson;
+    support= new PropertyChangeSupport(this);
   }
   public void connect()
   {
@@ -30,37 +35,59 @@ public class SocketClient
       in= new BufferedReader(new InputStreamReader(socket.getInputStream()));
       out=new PrintWriter(socket.getOutputStream(),true);
 
-      System.out.println("Connected to server");
+      running=true;
+      new Thread(this).start();
+      System.out.println("Connect ed to server");
     }
     catch (IOException e)
     {
       e.printStackTrace();
     }
   }
-  public Response sendRequest(Request request)
+  public void sendRequest(Request request)
   {
-    try
-    {   // here first we send request coming from the client model manager
+     // here first we send request coming from the client model manager
       String json = gson.toJson(request);
       // send it to server
       out.println(json);
 
       System.out.println("request has been sent to server from SocketClient");
-      // wait for server response
-      String responseJson = in.readLine();
-
-      // convert json back to response object
-      return gson.fromJson(responseJson, Response.class);
-    }
-    catch (IOException e)
+  }
+  @Override
+  public void run()
+  {
+    try
     {
+      String message;
+      while(running && (message=in.readLine())!=null)
+      {
+        System.out.println("Received json: "+message);
+
+        Response response=gson.fromJson(message, Response.class);
+        support.firePropertyChange(response.getMessage(),null,response.getObject());
+      }
+    }
+    catch(Exception e){
       e.printStackTrace();
     }
-    return new Response(false,"Communication error",null);
   }
 
+  public void addPropertyChangeListener(
+      PropertyChangeListener listener)
+  {
+    support.addPropertyChangeListener(
+        listener);
+  }
+
+  public void removePropertyChangeListener(
+      PropertyChangeListener listener)
+  {
+    support.removePropertyChangeListener(
+        listener);
+  }
   public void disconnect()
   {
+    running=false;
     try
     {
       if (socket != null)

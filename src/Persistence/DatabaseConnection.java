@@ -13,7 +13,7 @@ public class DatabaseConnection
       "postgres";
 
   private static final String password =
-      "sonim";
+      "1234_VIA";
 
   public static Connection getConnection()
       throws SQLException

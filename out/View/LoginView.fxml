@@ -51,6 +51,14 @@
                            maxWidth="Infinity"/>
         </VBox>
 
+        <!-- Error message label -->
+        <Label fx:id="errorLabel" wrapText="true" maxWidth="Infinity"
+               style="-fx-text-fill: #B71C1C; 
+                      -fx-font-family: 'Cambria'; 
+                      -fx-font-size: 13px;
+                      -fx-padding: 4 0;"
+               visible="false" managed="false"/>
+
         <!-- Register / Login buttons -->
         <HBox spacing="14" alignment="CENTER_RIGHT">
             <Button text="Register" onAction="#handleRegister"
