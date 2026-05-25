@@ -25,7 +25,7 @@ public interface RentalModel
 
   void addBooking(Booking booking);
 
-  void removeBooking(int bookingId);
+  void removeBooking(int clientId, int listingId);
 
   void updateBooking(Booking booking);
 

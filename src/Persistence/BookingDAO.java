@@ -69,12 +69,13 @@ public class BookingDAO
     }
   }
 
-  public Booking getBookingById(int id) {
+  public Booking getBookingByKey(int clientId, int listingId) {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM sep2.booking WHERE id = ?";
+      String sql = "SELECT * FROM sep2.booking WHERE clientId = ? AND listingId = ?";
       PreparedStatement statement = connection.prepareStatement(sql);
-      statement.setInt(1, id);
+      statement.setInt(1, clientId);
+      statement.setInt(2, listingId);
       ResultSet rs = statement.executeQuery();
       
       Booking booking = null;
@@ -232,8 +233,7 @@ public class BookingDAO
             number_of_people = ?,
             check_in_time = ?,
             check_out_time = ?
-            
-        WHERE bookingId = ?
+        WHERE clientId = ? AND listingId = ?
         """;
 
       PreparedStatement statement =
@@ -281,7 +281,11 @@ public class BookingDAO
 
       statement.setInt(
           6,
-          booking.getId());
+          booking.getClientId());
+
+      statement.setInt(
+          7,
+          booking.getListingId());
 
       statement.executeUpdate();
 
@@ -292,35 +296,6 @@ public class BookingDAO
       throw new RuntimeException(e);
     }
   }
-  public void deleteBooking(int bookingId)
-  {
-    try
-    {
-      Connection connection =
-          DatabaseConnection.getConnection();
-
-      String sql =
-          "DELETE FROM sep2.booking WHERE clientId = ? AND listingId = ?";
-
-      PreparedStatement statement =
-          connection.prepareStatement(sql);
-
-      // Note: This method signature needs clientId and listingId, not bookingId
-      // The parameter is misleading - it should be changed
-      statement.setInt(1, bookingId); // This won't work correctly
-      statement.setInt(2, bookingId); // This won't work correctly
-
-      statement.executeUpdate();
-
-      connection.close();
-    }
-    catch (SQLException e)
-    {
-      throw new RuntimeException(e);
-    }
-  }
-  
-  // Correct version using composite key
   public void deleteBooking(int clientId, int listingId)
   {
     try

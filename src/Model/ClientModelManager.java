@@ -148,12 +148,13 @@ public class ClientModelManager
 
   @Override
   public void removeBooking(
-      int bookingId)
+      int clientId,
+      int listingId)
   {
     Request request =
         new Request(
             RequestType.Remove_Booking,
-            bookingId);
+            clientId);
 
     socketClient.sendRequest(request);
   }

@@ -348,14 +348,17 @@ public class ListingDAO
       Connection connection =
           DatabaseConnection.getConnection();
 
-      String sql =
-          "DELETE FROM sep2.listing WHERE id = ?";
+      // Delete associated bookings first (no ON DELETE CASCADE on booking FK)
+      PreparedStatement deleteBookings =
+          connection.prepareStatement(
+              "DELETE FROM sep2.booking WHERE listingId = ?");
+      deleteBookings.setInt(1, listingId);
+      deleteBookings.executeUpdate();
 
       PreparedStatement statement =
-          connection.prepareStatement(sql);
-
+          connection.prepareStatement(
+              "DELETE FROM sep2.listing WHERE id = ?");
       statement.setInt(1, listingId);
-
       statement.executeUpdate();
 
       connection.close();

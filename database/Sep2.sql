@@ -6,6 +6,7 @@
 -- ---------------------------------------------------------------
 -- Schema
 -- ---------------------------------------------------------------
+create database roomrental;
 CREATE SCHEMA IF NOT EXISTS sep2;
 SET SCHEMA 'sep2';
 
@@ -57,7 +58,7 @@ CREATE TABLE client (
 CREATE TABLE ownerApplication (
     applicationId              SERIAL PRIMARY KEY,
     clientId                   INTEGER      NOT NULL REFERENCES client(id),
-    adminId                    INTEGER      NOT NULL REFERENCES admin(id),
+    adminId                    INTEGER      REFERENCES admin(id),
     submissionDate             DATE         NOT NULL,
     status                     VARCHAR(50)  NOT NULL,
     propertyAddress            VARCHAR(100) NOT NULL,
@@ -88,7 +89,7 @@ CREATE TABLE listing (
 
 CREATE TABLE Booking (
     clientId        INTEGER NOT NULL REFERENCES client(id),
-    listingId       INTEGER NOT NULL REFERENCES listing(id),
+    listingId       INTEGER NOT NULL REFERENCES listing(id) ON DELETE CASCADE,
     start_Date      DATE,
     end_Date        DATE,
     check_in_time   TIME    NOT NULL,

@@ -36,12 +36,16 @@ public class AdminController {
 
     public void setAdmin(Admin admin) {
         this.admin = admin;
-        loadApplications();
     }
 
     @FXML
     private void initialize() {
         // Data loaded when setAdmin is called (or directly if admin bypass)
+        loadApplications();
+    }
+
+    @FXML
+    private void handleRefresh() {
         loadApplications();
     }
 
@@ -155,12 +159,11 @@ public class AdminController {
         confirm.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
-                    // 1. Update application status
-                    applicationDAO.updateApplicationStatus(app.getApplicationId(), "approved");
-
-                    // 2. Create PropertyOwner from Client data
+                    // 1. Fetch client
                     Client client = clientDAO.getClientById(app.getClientId());
-                    if (client != null) {
+
+                    // 2. Create PropertyOwner from Client data (only if not already a PropertyOwner)
+                    if (client != null && ownerDAO.getPropertyOwnerByUsername(client.getUsername()) == null) {
                         PropertyOwner newOwner = new PropertyOwner(
                             client.getFirstName(),
                             client.getLastName(),
@@ -175,7 +178,14 @@ public class AdminController {
                         ownerDAO.CreatePropertyOwner(newOwner);
                     }
 
-                    // 3. Update card UI
+                    // 3. Update application status (only after PropertyOwner is ready)
+                    if (admin != null) {
+                        applicationDAO.updateApplicationStatusAndAdmin(app.getApplicationId(), "Approved", admin.getID());
+                    } else {
+                        applicationDAO.updateApplicationStatus(app.getApplicationId(), "Approved");
+                    }
+
+                    // 4. Update card UI
                     statusBadge.setText("● APPROVED");
                     statusBadge.setStyle("-fx-fill: #1A5F3F; -fx-font-size: 11px; -fx-font-weight: bold;");
                     // Remove the button row (last child)
@@ -201,7 +211,11 @@ public class AdminController {
         confirm.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
-                    applicationDAO.updateApplicationStatus(app.getApplicationId(), "rejected");
+                    if (admin != null) {
+                        applicationDAO.updateApplicationStatusAndAdmin(app.getApplicationId(), "Rejected", admin.getID());
+                    } else {
+                        applicationDAO.updateApplicationStatus(app.getApplicationId(), "Rejected");
+                    }
 
                     statusBadge.setText("● REJECTED");
                     statusBadge.setStyle("-fx-fill: #B22222; -fx-font-size: 11px; -fx-font-weight: bold;");

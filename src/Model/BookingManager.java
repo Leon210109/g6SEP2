@@ -15,8 +15,8 @@ public class BookingManager
     bookingDAO.CreateBooking(booking);
   }
 
-  public Booking getBookingById(int bookingId){
-    return bookingDAO.getBookingById(bookingId);
+  public Booking getBookingByKey(int clientId, int listingId){
+    return bookingDAO.getBookingByKey(clientId, listingId);
   }
 
   public ArrayList<Booking> getBookingsByClientId(int clientId){
@@ -37,9 +37,8 @@ public class BookingManager
 
   // Note: Delete and update operations would need DELETE/UPDATE SQL methods in DAO
   // Keeping these as placeholders for now
-  public void removeBooking(int bookingId){
-    // TODO: Add deleteBooking method to BookingDAO
-    throw new UnsupportedOperationException("Delete operation not yet implemented in DAO");
+  public void removeBooking(int clientId, int listingId){
+    bookingDAO.deleteBooking(clientId, listingId);
   }
 
   public void updateBooking(Booking booking){

@@ -54,7 +54,7 @@ public class OwnerApplicationFormController {
                 client.getID(),
                 0,
                 submissionDate,
-                "pending",
+                "Pending",
                 address,
                 regNumber
             );

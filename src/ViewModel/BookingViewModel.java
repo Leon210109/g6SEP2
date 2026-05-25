@@ -54,7 +54,8 @@ public class BookingViewModel implements PropertyChangeListener
     }
 
     model.removeBooking(
-        selectedBooking.get().getId());
+        selectedBooking.get().getClientId(),
+        selectedBooking.get().getListingId());
   }
   @Override
   public void propertyChange(

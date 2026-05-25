@@ -147,15 +147,17 @@ public class ModelManager
 
   @Override
   public void removeBooking(
-      int bookingId)
+      int clientId,
+      int listingId)
   {
     bookingDAO.deleteBooking(
-        bookingId);
+        clientId,
+        listingId);
 
     support.firePropertyChange(
         "BookingRemoved",
         null,
-        bookingId);
+        clientId);
   }
 
   @Override

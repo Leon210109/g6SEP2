@@ -23,7 +23,11 @@ public class OwnerApplicationDAO
           """;
       PreparedStatement statement=connection.prepareStatement(sql);
       statement.setInt(1,ownerApplication.getClientId());
-      statement.setInt(2,ownerApplication.getAdminId());
+      if (ownerApplication.getAdminId() == 0) {
+        statement.setNull(2, java.sql.Types.INTEGER);
+      } else {
+        statement.setInt(2, ownerApplication.getAdminId());
+      }
       statement.setDate(3,java.sql.Date.valueOf(
           LocalDate.of(
               ownerApplication.getSubmissionDate().getYear(),
@@ -292,6 +296,25 @@ public class OwnerApplicationDAO
       PreparedStatement statement = connection.prepareStatement(sql);
       statement.setString(1, status);
       statement.setInt(2, applicationId);
+      statement.executeUpdate();
+      connection.close();
+    }
+    catch (SQLException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public void updateApplicationStatusAndAdmin(int applicationId, String status, int adminId)
+  {
+    try
+    {
+      Connection connection = DatabaseConnection.getConnection();
+      String sql = "UPDATE sep2.ownerApplication SET status = ?, adminId = ? WHERE applicationId = ?";
+      PreparedStatement statement = connection.prepareStatement(sql);
+      statement.setString(1, status);
+      statement.setInt(2, adminId);
+      statement.setInt(3, applicationId);
       statement.executeUpdate();
       connection.close();
     }

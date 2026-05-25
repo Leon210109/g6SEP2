@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
@@ -17,17 +19,28 @@
     </padding>
 
     <!-- Header -->
-    <VBox spacing="8">
-        <Text text="Owner Applications"
-              style="-fx-fill: #143D29;
-                     -fx-font-family: 'Palatino Linotype';
-                     -fx-font-size: 36px;
-                     -fx-font-weight: bold;"/>
-        <Text text="Review and approve or reject pending applications"
-              style="-fx-fill: #8B7355;
-                     -fx-font-family: 'Cambria';
-                     -fx-font-size: 14px;"/>
-    </VBox>
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <VBox spacing="8" HBox.hgrow="ALWAYS">
+            <Text text="Owner Applications"
+                  style="-fx-fill: #143D29;
+                         -fx-font-family: 'Palatino Linotype';
+                         -fx-font-size: 36px;
+                         -fx-font-weight: bold;"/>
+            <Text text="Review and approve or reject pending applications"
+                  style="-fx-fill: #8B7355;
+                         -fx-font-family: 'Cambria';
+                         -fx-font-size: 14px;"/>
+        </VBox>
+        <Button text="↻ Refresh" onAction="#handleRefresh"
+                style="-fx-background-color: #1A5F3F;
+                       -fx-text-fill: white;
+                       -fx-font-family: 'Cambria';
+                       -fx-font-size: 13px;
+                       -fx-font-weight: bold;
+                       -fx-background-radius: 6;
+                       -fx-padding: 8 18;
+                       -fx-cursor: hand;"/>
+    </HBox>
 
     <!-- Applications list -->
     <ScrollPane fx:id="applicationsScrollPane"
