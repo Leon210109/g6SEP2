@@ -141,6 +141,25 @@ public class PropertyOwnerDAO
     }
   }
 
+  public void deletePropertyOwner(int id) {
+    try {
+      Connection connection = DatabaseConnection.getConnection();
+      // Delete listings first (bookings/favorites/tenancy_applications cascade from listing)
+      PreparedStatement deleteListings = connection.prepareStatement(
+          "DELETE FROM sep2.listing WHERE ownerId = ?");
+      deleteListings.setInt(1, id);
+      deleteListings.executeUpdate();
+      // Delete the property owner
+      PreparedStatement deleteOwner = connection.prepareStatement(
+          "DELETE FROM sep2.propertyOwner WHERE id = ?");
+      deleteOwner.setInt(1, id);
+      deleteOwner.executeUpdate();
+      connection.close();
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   public ArrayList<PropertyOwner> getAllPropertyOwners() {
     try {
       Connection connection = DatabaseConnection.getConnection();

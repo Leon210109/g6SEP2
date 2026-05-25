@@ -121,12 +121,12 @@ public class AdminController {
 
         card.getChildren().addAll(statusBadge, appIdText, clientLabel, addressLabel, regLabel, dateLabel);
 
+        HBox buttonBox = new HBox(10);
+        buttonBox.setAlignment(Pos.CENTER_LEFT);
+        buttonBox.setPadding(new Insets(8, 0, 0, 0));
+
         // Action buttons only for pending applications
         if ("pending".equalsIgnoreCase(app.getStatus())) {
-            HBox buttonBox = new HBox(10);
-            buttonBox.setAlignment(Pos.CENTER_LEFT);
-            buttonBox.setPadding(new Insets(8, 0, 0, 0));
-
             Button approveBtn = new Button("✓ Approve");
             approveBtn.setStyle(
                 "-fx-background-color: #1A5F3F; -fx-text-fill: white;" +
@@ -144,8 +144,17 @@ public class AdminController {
             rejectBtn.setOnAction(e -> handleReject(app, card, statusBadge, buttonBox));
 
             buttonBox.getChildren().addAll(approveBtn, rejectBtn);
-            card.getChildren().add(buttonBox);
         }
+
+        Button removeBtn = new Button("🗑 Remove");
+        removeBtn.setStyle(
+            "-fx-background-color: #555555; -fx-text-fill: white;" +
+            "-fx-font-size: 12px; -fx-font-weight: bold;" +
+            "-fx-background-radius: 5; -fx-padding: 7 18; -fx-cursor: hand;"
+        );
+        removeBtn.setOnAction(e -> handleRemove(app, card));
+        buttonBox.getChildren().add(removeBtn);
+        card.getChildren().add(buttonBox);
 
         return card;
     }
@@ -185,17 +194,52 @@ public class AdminController {
                         applicationDAO.updateApplicationStatus(app.getApplicationId(), "Approved");
                     }
 
-                    // 4. Update card UI
+                    // 4. Remove client from client table (they are now a PropertyOwner)
+                    if (client != null) {
+                        clientDAO.deleteClient(client.getID());
+                    }
+
+                    // 5. Update card UI
                     statusBadge.setText("● APPROVED");
                     statusBadge.setStyle("-fx-fill: #1A5F3F; -fx-font-size: 11px; -fx-font-weight: bold;");
-                    // Remove the button row (last child)
+                    // Replace button row with Remove-only row
                     if (!card.getChildren().isEmpty()) {
                         card.getChildren().remove(card.getChildren().size() - 1);
                     }
+                    HBox removeBox = new HBox();
+                    removeBox.setAlignment(Pos.CENTER_LEFT);
+                    removeBox.setPadding(new Insets(8, 0, 0, 0));
+                    Button rb = new Button("\uD83D\uDDD1 Remove");
+                    rb.setStyle("-fx-background-color: #555555; -fx-text-fill: white;" +
+                        "-fx-font-size: 12px; -fx-font-weight: bold;" +
+                        "-fx-background-radius: 5; -fx-padding: 7 18; -fx-cursor: hand;");
+                    rb.setOnAction(ev -> handleRemove(app, card));
+                    removeBox.getChildren().add(rb);
+                    card.getChildren().add(removeBox);
                     statusLabel.setText("Application approved successfully.");
 
                 } catch (Exception e) {
                     statusLabel.setText("Error approving application: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void handleRemove(OwnerApplication app, VBox card) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Remove Application");
+        confirm.setHeaderText("Remove application #" + app.getApplicationId() + "?");
+        confirm.setContentText("This will permanently delete the application record.");
+
+        confirm.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    applicationDAO.deleteOwnerApplication(app.getApplicationId());
+                    applicationsTilePane.getChildren().remove(card);
+                    statusLabel.setText("Application removed.");
+                } catch (Exception e) {
+                    statusLabel.setText("Error removing application: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -219,7 +263,18 @@ public class AdminController {
 
                     statusBadge.setText("● REJECTED");
                     statusBadge.setStyle("-fx-fill: #B22222; -fx-font-size: 11px; -fx-font-weight: bold;");
+                    // Replace button row with Remove-only row
                     card.getChildren().remove(buttonBox);
+                    HBox removeBox = new HBox();
+                    removeBox.setAlignment(Pos.CENTER_LEFT);
+                    removeBox.setPadding(new Insets(8, 0, 0, 0));
+                    Button rb = new Button("\uD83D\uDDD1 Remove");
+                    rb.setStyle("-fx-background-color: #555555; -fx-text-fill: white;" +
+                        "-fx-font-size: 12px; -fx-font-weight: bold;" +
+                        "-fx-background-radius: 5; -fx-padding: 7 18; -fx-cursor: hand;");
+                    rb.setOnAction(ev -> handleRemove(app, card));
+                    removeBox.getChildren().add(rb);
+                    card.getChildren().add(removeBox);
                     statusLabel.setText("Application rejected.");
 
                 } catch (Exception e) {

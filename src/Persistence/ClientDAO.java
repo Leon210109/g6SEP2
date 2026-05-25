@@ -306,14 +306,25 @@ public class ClientDAO
       Connection connection =
           DatabaseConnection.getConnection();
 
-      String sql =
-          "DELETE FROM sep2.client WHERE id = ?";
+      // Delete bookings (no ON DELETE CASCADE on booking.clientId)
+      PreparedStatement deleteBookings =
+          connection.prepareStatement(
+              "DELETE FROM sep2.booking WHERE clientId = ?");
+      deleteBookings.setInt(1, id);
+      deleteBookings.executeUpdate();
 
+      // Delete owner applications (no ON DELETE CASCADE on ownerApplication.clientId)
+      PreparedStatement deleteApplications =
+          connection.prepareStatement(
+              "DELETE FROM sep2.ownerApplication WHERE clientId = ?");
+      deleteApplications.setInt(1, id);
+      deleteApplications.executeUpdate();
+
+      // Delete client (favorites and tenancy_application cascade automatically)
       PreparedStatement statement =
-          connection.prepareStatement(sql);
-
+          connection.prepareStatement(
+              "DELETE FROM sep2.client WHERE id = ?");
       statement.setInt(1, id);
-
       statement.executeUpdate();
 
       connection.close();

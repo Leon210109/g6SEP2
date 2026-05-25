@@ -1,5 +1,7 @@
 package View;
 
+import Persistence.ClientDAO;
+import Persistence.PropertyOwnerDAO;
 import ViewModel.AdminViewModel;
 import ViewModel.AppViewModel;
 import ViewModel.ClientViewModel;
@@ -7,7 +9,9 @@ import ViewModel.PropertyOwnerViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
@@ -27,6 +31,8 @@ public class MainController {
     private Text sectionLabel;
     @FXML
     private Button backToLoginBtn;
+    @FXML
+    private Button deleteAccountBtn;
     @FXML
     private MenuButton navMenu;
     @FXML
@@ -105,6 +111,10 @@ public class MainController {
             backToLoginBtn.setVisible(isHome);
             backToLoginBtn.setManaged(isHome);
 
+            boolean showDelete = isHome && !(currentUser instanceof Model.Admin);
+            deleteAccountBtn.setVisible(showDelete);
+            deleteAccountBtn.setManaged(showDelete);
+
             if (isHome) {
                 buildHomeView();
                 contentArea.getChildren().setAll(homeView);
@@ -112,6 +122,11 @@ public class MainController {
                 contentArea.getChildren().setAll(loadSectionView(newVal));
             }
         });
+
+        // Show delete account button on home for non-admin users
+        boolean showDelete = !(currentUser instanceof Model.Admin);
+        deleteAccountBtn.setVisible(showDelete);
+        deleteAccountBtn.setManaged(showDelete);
 
         // Build initial home view (adds Apply button for clients, etc.)
         buildHomeView();
@@ -144,6 +159,36 @@ public class MainController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/LoginView.fxml"));
         Parent loginRoot = loader.load();
         backToLoginBtn.getScene().setRoot(loginRoot);
+    }
+
+    @FXML
+    private void handleDeleteAccount() {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete Account");
+        confirm.setHeaderText("Permanently delete your account?");
+        confirm.setContentText("This cannot be undone. All your data will be removed.");
+
+        confirm.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try {
+                    if (currentUser instanceof Model.Client client) {
+                        new ClientDAO().deleteClient(client.getID());
+                    } else if (currentUser instanceof Model.PropertyOwner owner) {
+                        new PropertyOwnerDAO().deletePropertyOwner(owner.getID());
+                    }
+                    // Return to login
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/LoginView.fxml"));
+                    Parent loginRoot = loader.load();
+                    deleteAccountBtn.getScene().setRoot(loginRoot);
+                } catch (Exception e) {
+                    Alert err = new Alert(Alert.AlertType.ERROR);
+                    err.setTitle("Error");
+                    err.setHeaderText("Could not delete account");
+                    err.setContentText(e.getMessage());
+                    err.showAndWait();
+                }
+            }
+        });
     }
 
     // ── Section view loader ───────────────────────────────────────────────────
