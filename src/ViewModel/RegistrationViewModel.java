@@ -1,6 +1,7 @@
 package ViewModel;
 
 import Model.*;
+import javafx.application.Platform;
 import javafx.beans.property.*;
 
 import java.beans.PropertyChangeEvent;
@@ -58,8 +59,9 @@ public class RegistrationViewModel implements PropertyChangeListener
       errorMessage.set("Passwords" + "donot match");
       return;
     }
+     String normalizedPhone = phonenumber.get() == null ? "" : phonenumber.get().replaceAll("[^0-9]", "");
      Client client= new Client(firstname.get(),
-         lastname.get(), email.get(), phonenumber.get(), username.get(),
+         lastname.get(), email.get(), normalizedPhone, username.get(),
          password.get(), dob.get(),gender.get(), nationality.get());
      model.registerClient(client);
   }
@@ -79,10 +81,10 @@ public class RegistrationViewModel implements PropertyChangeListener
     switch(evt.getPropertyName())
     {
       case "ClientRegistered":
-        registrationSuccess.set(true);
+        Platform.runLater(() -> registrationSuccess.set(true));
         break;
       case "ERROR":
-        errorMessage.set((String) evt.getNewValue());
+        Platform.runLater(() -> errorMessage.set((String) evt.getNewValue()));
         break;
     }
   }

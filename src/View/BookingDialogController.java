@@ -4,7 +4,8 @@ import Model.Booking;
 import Model.Client;
 import Model.Date;
 import Model.Listing;
-import Persistence.BookingDAO;
+import ViewModel.BookingViewModel;
+import ViewModel.ViewModelFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -28,7 +29,7 @@ public class BookingDialogController {
 
     private Listing listing;
     private Client client;
-    private BookingDAO bookingDAO = new BookingDAO();
+    private BookingViewModel bookingViewModel;
     private Runnable onSuccess;
 
     public void setBookingInfo(Listing listing, Client client) {
@@ -54,20 +55,27 @@ public class BookingDialogController {
 
     @FXML
     private void initialize() {
-        // Add numeric validation to number of people field
-        numberOfPeopleField.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal.matches("\\d*")) {
-                numberOfPeopleField.setText(oldVal);
+        bookingViewModel = ViewModelFactory.getInstance().getBookingViewModel();
+        numberOfPeopleField.textProperty().addListener((obs, o, n) -> { if (!n.matches("\\d*")) numberOfPeopleField.setText(o); });
+        startDatePicker.valueProperty().addListener((obs, o, n) -> {
+            if (n != null && endDatePicker.getValue() != null && !endDatePicker.getValue().isAfter(n))
+                endDatePicker.setValue(n.plusDays(1));
+        });
+        bookingViewModel.bookingAddedSuccessProperty().addListener((obs, o, ok) -> {
+            if (ok) {
+                bookingViewModel.resetBookingSuccess();
+                showSuccess("Booking confirmed!");
+                new Thread(() -> {
+                    try { Thread.sleep(1500); } catch (InterruptedException ignored) {}
+                    javafx.application.Platform.runLater(() -> {
+                        if (onSuccess != null) onSuccess.run();
+                        closeWindow();
+                    });
+                }).start();
             }
         });
-        
-        // Validate that end date is after start date
-        startDatePicker.valueProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != null && endDatePicker.getValue() != null) {
-                if (!endDatePicker.getValue().isAfter(newVal)) {
-                    endDatePicker.setValue(newVal.plusDays(1));
-                }
-            }
+        bookingViewModel.errorMessageProperty().addListener((obs, o, msg) -> {
+            if (msg != null && !msg.isEmpty()) showError(msg);
         });
     }
 
@@ -85,65 +93,21 @@ public class BookingDialogController {
             LocalDate endLocal = endDatePicker.getValue();
             int numberOfPeople = Integer.parseInt(numberOfPeopleField.getText().trim());
 
-            // Check if listing is already booked (race condition guard)
-            if (bookingDAO.isListingBooked(listing.getId())) {
-                showError("This listing has already been booked. Please go back and choose another.");
-                return;
-            }
-
-            // Check if number of people exceeds max
             if (numberOfPeople > listing.getMaxNumberOfPeople()) {
-                showError("Number of people exceeds maximum occupancy (" + 
-                         listing.getMaxNumberOfPeople() + ")");
+                showError("Number of people exceeds maximum occupancy (" + listing.getMaxNumberOfPeople() + ")");
                 return;
             }
 
-            // Convert LocalDate to custom Date
-            Date startDate = new Date(
-                startLocal.getDayOfMonth(),
-                startLocal.getMonthValue(),
-                startLocal.getYear()
-            );
-            Date endDate = new Date(
-                endLocal.getDayOfMonth(),
-                endLocal.getMonthValue(),
-                endLocal.getYear()
-            );
+            Date startDate = new Date(startLocal.getDayOfMonth(), startLocal.getMonthValue(), startLocal.getYear());
+            Date endDate   = new Date(endLocal.getDayOfMonth(),   endLocal.getMonthValue(),   endLocal.getYear());
 
-            // Get check-in/out times from listing
-            LocalTime checkInTime = listing.getCheckInTime();
-            LocalTime checkOutTime = listing.getCheckOutTime();
-
-            // Create booking
             Booking newBooking = new Booking(
-                client.getID(),
-                listing.getId(),
-                startDate,
-                endDate,
-                numberOfPeople,
-                checkInTime,
-                checkOutTime
+                client.getID(), listing.getId(),
+                startDate, endDate, numberOfPeople,
+                listing.getCheckInTime(), listing.getCheckOutTime()
             );
 
-            // Save to database
-            bookingDAO.CreateBooking(newBooking);
-
-            showSuccess("Booking confirmed successfully!");
-            
-            // Wait a moment then close
-            new Thread(() -> {
-                try {
-                    Thread.sleep(1500);
-                    javafx.application.Platform.runLater(() -> {
-                        if (onSuccess != null) {
-                            onSuccess.run();
-                        }
-                        closeWindow();
-                    });
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).start();
+            bookingViewModel.addBooking(newBooking);  // goes through client-server pipeline
 
         } catch (NumberFormatException e) {
             showError("Please enter a valid number of people.");

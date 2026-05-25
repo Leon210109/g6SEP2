@@ -3,8 +3,8 @@ package View;
 import Model.Date;
 import Model.Listing;
 import Model.PropertyOwner;
-import Persistence.CityDAO;
-import Persistence.ListingDAO;
+import ViewModel.ListingViewModel;
+import ViewModel.ViewModelFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -47,8 +47,7 @@ public class EditListingController {
 
     private Listing listing;
     private PropertyOwner propertyOwner;
-    private ListingDAO listingDAO = new ListingDAO();
-    private CityDAO cityDAO = new CityDAO();
+    private ListingViewModel listingViewModel;
     private Runnable onSuccess;
 
     public void setListing(Listing listing, PropertyOwner owner) {
@@ -63,7 +62,21 @@ public class EditListingController {
 
     @FXML
     private void initialize() {
-        // Will be populated when setListing is called
+        listingViewModel = ViewModelFactory.getInstance().getListingViewModel();
+        listingViewModel.updateSuccessProperty().addListener((obs, o, ok) -> {
+            if (ok) {
+                listingViewModel.resetUpdateSuccess();
+                showSuccess("Listing updated successfully!");
+                if (onSuccess != null) onSuccess.run();
+                new Thread(() -> {
+                    try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
+                    javafx.application.Platform.runLater(this::closeWindow);
+                }).start();
+            }
+        });
+        listingViewModel.errorMessageProperty().addListener((obs, o, msg) -> {
+            if (msg != null && !msg.isEmpty()) showError(msg);
+        });
     }
 
     private void populateFields() {
@@ -138,10 +151,7 @@ public class EditListingController {
             LocalTime checkInTime = parseTime(checkInTimeField.getText().trim());
             LocalTime checkOutTime = parseTime(checkOutTimeField.getText().trim());
 
-            // Ensure city/postal code exists in database
-            ensureCityExists(postalCode, region);
-
-            // Update listing object
+            // Update listing object with new values
             listing.setStreet(street);
             listing.setRoomNumber(roomNumber);
             listing.setRegion(region);
@@ -159,26 +169,7 @@ public class EditListingController {
             listing.setCheckOutTime(checkOutTime);
             listing.setListingType(longTermRadio != null && longTermRadio.isSelected() ? "LONG_TERM" : "SHORT_TERM");
 
-            // Update in database
-            listingDAO.updateListing(listing);
-
-            // Show success message
-            showSuccess("Listing updated successfully!");
-            
-            // Notify parent and close
-            if (onSuccess != null) {
-                onSuccess.run();
-            }
-            
-            // Wait a moment then close
-            new Thread(() -> {
-                try {
-                    Thread.sleep(1000);
-                    javafx.application.Platform.runLater(this::closeWindow);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }).start();
+            listingViewModel.updateListing(listing);  // goes through client-server pipeline
 
         } catch (NumberFormatException e) {
             showError("Please ensure all numeric fields are valid numbers.");
@@ -260,17 +251,6 @@ public class EditListingController {
     private String formatTime(LocalTime time) {
         if (time == null) return "";
         return time.format(DateTimeFormatter.ofPattern("HH:mm"));
-    }
-
-    private void ensureCityExists(String postalCode, String cityName) {
-        try {
-            // Check if city exists, if not create it
-            if (cityDAO.getCityByPostalCode(postalCode) == null) {
-                cityDAO.createCity(postalCode, cityName);
-            }
-        } catch (Exception e) {
-            System.err.println("Note: City may already exist or error checking: " + e.getMessage());
-        }
     }
 
     private void showError(String message) {

@@ -1,11 +1,10 @@
 package View;
 
-import Persistence.ClientDAO;
-import Persistence.PropertyOwnerDAO;
 import ViewModel.AdminViewModel;
 import ViewModel.AppViewModel;
 import ViewModel.ClientViewModel;
 import ViewModel.PropertyOwnerViewModel;
+import ViewModel.ViewModelFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -42,7 +41,7 @@ public class MainController {
 
     private AppViewModel vm;
     private String userType;
-    private Object currentUser; // Client, PropertyOwner, or Admin object
+    private Object currentUser;
 
     @FXML
     private void initialize() {
@@ -123,6 +122,17 @@ public class MainController {
             }
         });
 
+        // Bind delete-account success back to login
+        if (vm instanceof ClientViewModel clientVM) {
+            clientVM.accountDeletedProperty().addListener((obs, o, deleted) -> {
+                if (deleted) navigateBackToLogin();
+            });
+        } else if (vm instanceof PropertyOwnerViewModel ownerVM) {
+            ownerVM.accountDeletedProperty().addListener((obs, o, deleted) -> {
+                if (deleted) navigateBackToLogin();
+            });
+        }
+
         // Show delete account button on home for non-admin users
         boolean showDelete = !(currentUser instanceof Model.Admin);
         deleteAccountBtn.setVisible(showDelete);
@@ -170,25 +180,21 @@ public class MainController {
 
         confirm.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                try {
-                    if (currentUser instanceof Model.Client client) {
-                        new ClientDAO().deleteClient(client.getID());
-                    } else if (currentUser instanceof Model.PropertyOwner owner) {
-                        new PropertyOwnerDAO().deletePropertyOwner(owner.getID());
-                    }
-                    // Return to login
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/LoginView.fxml"));
-                    Parent loginRoot = loader.load();
-                    deleteAccountBtn.getScene().setRoot(loginRoot);
-                } catch (Exception e) {
-                    Alert err = new Alert(Alert.AlertType.ERROR);
-                    err.setTitle("Error");
-                    err.setHeaderText("Could not delete account");
-                    err.setContentText(e.getMessage());
-                    err.showAndWait();
+                if (vm instanceof ClientViewModel clientVM && currentUser instanceof Model.Client client) {
+                    clientVM.deleteAccount(client.getID());
+                } else if (vm instanceof PropertyOwnerViewModel ownerVM && currentUser instanceof Model.PropertyOwner owner) {
+                    ownerVM.deleteAccount(owner.getID());
                 }
             }
         });
+    }
+
+    private void navigateBackToLogin() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/LoginView.fxml"));
+            Parent loginRoot = loader.load();
+            deleteAccountBtn.getScene().setRoot(loginRoot);
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
     // ── Section view loader ───────────────────────────────────────────────────

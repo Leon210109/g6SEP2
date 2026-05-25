@@ -1,66 +1,40 @@
 package Network;
 
 import Model.*;
-
 import Shared.Request;
 import Shared.RequestType;
 import Shared.Response;
-
 import com.google.gson.Gson;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-
 import java.net.Socket;
 
-public class ClientHandler
-    implements Runnable,
-    PropertyChangeListener
+public class ClientHandler implements Runnable, PropertyChangeListener
 {
-  private Socket socket;
-
-  private RentalModel model;
-
+  private final Socket socket;
+  private final RentalModel model;
   private BufferedReader in;
   private PrintWriter out;
-
-  private Gson gson;
-
+  private final Gson gson;
   private boolean running;
 
-  public ClientHandler(
-      Socket socket,
-      RentalModel model)
+  public ClientHandler(Socket socket, RentalModel model)
   {
     this.socket = socket;
-    this.model = model;
-
-    gson = new Gson();
-
-    running = true;
-
+    this.model  = model;
+    this.gson   = new Gson();
+    this.running = true;
     model.addPropertyChangeListener(this);
-
-    try
-    {
-      in = new BufferedReader(
-          new InputStreamReader(
-              socket.getInputStream()));
-
-      out = new PrintWriter(
-          socket.getOutputStream(),
-          true);
-
-      System.out.println(
-          "Client connected");
-    }
-    catch(IOException e)
-    {
+    try {
+      in  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      out = new PrintWriter(socket.getOutputStream(), true);
+      System.out.println("Client connected");
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }
@@ -68,342 +42,255 @@ public class ClientHandler
   @Override
   public void run()
   {
-    try
-    {
+    try {
       String message;
-
-      while(running &&
-          (message = in.readLine()) != null)
-      {
-        System.out.println(
-            "Received JSON: "
-                + message);
-
-        Request request =
-            gson.fromJson(
-                message,
-                Request.class);
-
+      while (running && (message = in.readLine()) != null) {
+        System.out.println("Received JSON: " + message);
+        Request request = gson.fromJson(message, Request.class);
         processRequest(request);
       }
-    }
-    catch(Exception e)
-    {
-      System.out.println(
-          "Client disconnected");
-    }
-    finally
-    {
+    } catch (Exception e) {
+      System.out.println("Client disconnected: " + e.getMessage());
+    } finally {
       closeConnection();
     }
   }
 
-  // ───────────────── PROCESS REQUEST ─────────────────
+  // ── REQUEST ROUTER ────────────────────────────────────────────────────────
 
-  private void processRequest(
-      Request request)
+  private void processRequest(Request request)
   {
-    try
-    {
-      switch(request.getRequestType())
-      {
-        // ───────── CLIENT ─────────
-
-        case Login:
-          handleLogin(request);
-          break;
-
-        case Register_Client:
-          handleRegisterClient(request);
-          break;
-
-        // ───────── LISTINGS ─────────
-
-        case Add_Listing:
-          handleAddListing(request);
-          break;
-
-        case Remove_Listing:
-          handleRemoveListing(request);
-          break;
-
-        case Update_Listing:
-          handleUpdateListing(request);
-          break;
-
-        case Get_All_Listings:
-          handleGetAllListings();
-          break;
-
-        // ───────── BOOKINGS ─────────
-
-        case Make_Booking:
-          handleAddBooking(request);
-          break;
-
-        case Remove_Booking:
-          handleRemoveBooking(request);
-          break;
-
-        case Update_Booking:
-          handleUpdateBooking(request);
-          break;
-
-        case Get_All_Booking:
-          handleGetAllBookings();
-          break;
-
-        // ───────── OWNER APPLICATIONS ─────────
-
-        case Add_Owner_Application:
-          handleAddOwnerApplication(request);
-          break;
-
-        case Remove_Owner_Application:
-          handleRemoveOwnerApplication(request);
-          break;
-
-        case Update_Owner_Application:
-          handleUpdateOwnerApplication(request);
-          break;
-
-        case Get_All_Owner_Applications:
-          handleGetAllOwnerApplications();
-          break;
-
+    try {
+      switch (request.getRequestType()) {
+        case Login:                           handleLogin(request);                    break;
+        case Register_Client:                 handleRegisterClient(request);           break;
+        case Get_All_Listings:                model.getAllListings();                   break;
+        case Get_Available_Listings:          model.getAvailableListings();            break;
+        case Get_Listings_By_Owner:           handleGetListingsByOwner(request);       break;
+        case Add_Listing:                     handleAddListing(request);               break;
+        case Remove_Listing:                  handleRemoveListing(request);            break;
+        case Update_Listing:                  handleUpdateListing(request);            break;
+        case Make_Booking:                    handleAddBooking(request);               break;
+        case Remove_Booking:                  handleRemoveBooking(request);            break;
+        case Update_Booking:                  handleUpdateBooking(request);            break;
+        case Get_All_Booking:                 model.getAllBookings();                   break;
+        case Get_Bookings_By_Client:          handleGetBookingsByClient(request);      break;
+        case Add_Owner_Application:           handleAddOwnerApplication(request);      break;
+        case Remove_Owner_Application:        handleRemoveOwnerApplication(request);   break;
+        case Update_Owner_Application:        handleUpdateOwnerApplication(request);   break;
+        case Get_All_Owner_Applications:      model.getAllOwnerApplications();          break;
+        case Approve_Owner_Application:       handleApproveOwnerApplication(request);  break;
+        case Reject_Owner_Application:        handleRejectOwnerApplication(request);   break;
+        case Get_Favorites_By_Client:         handleGetFavoritesByClient(request);     break;
+        case Add_Favorite:                    handleAddFavorite(request);              break;
+        case Remove_Favorite:                 handleRemoveFavorite(request);           break;
+        case Submit_Tenancy_Application:      handleSubmitTenancyApplication(request); break;
+        case Get_Tenancy_Apps_By_Owner:       handleGetTenancyAppsByOwner(request);    break;
+        case Get_Tenancy_Apps_By_Client:      handleGetTenancyAppsByClient(request);   break;
+        case Delete_Tenancy_Application:      handleDeleteTenancyApp(request);         break;
+        case Update_Tenancy_Application_Status: handleUpdateTenancyStatus(request);   break;
+        case Delete_Client:                   handleDeleteClient(request);             break;
+        case Delete_Property_Owner:           handleDeletePropertyOwner(request);      break;
+        case Get_Owner_By_Id:                 handleGetOwnerById(request);             break;
         default:
-          sendResponse(
-              new Response(
-                  false,
-                  "ERROR",
-                  "Unknown request"));
+          sendResponse(new Response(false, "ERROR", "Unknown request type"));
       }
-    }
-    catch(Exception e)
-    {
-      sendResponse(
-          new Response(
-              false,
-              "ERROR",
-              e.getMessage()));
+    } catch (Exception e) {
+      sendResponse(new Response(false, "ERROR", e.getMessage()));
     }
   }
 
-  // ───────────────── CLIENT METHODS ─────────────────
+  // ── AUTH ──────────────────────────────────────────────────────────────────
 
-  private void handleLogin(
-      Request request)
+  private void handleLogin(Request r)
   {
-    String username =
-        (String) request.getArgs()[0];
-
-    String password =
-        (String) request.getArgs()[1];
-
-    model.login(
-        username,
-        password);
+    model.login((String) r.getArgs()[0], (String) r.getArgs()[1]);
   }
 
-  private void handleRegisterClient(
-      Request request)
+  private void handleRegisterClient(Request r)
   {
-    Client client =
-        gson.fromJson(
-            gson.toJson(
-                request.getArgs()[0]),
-            Client.class);
-
+    Client client = gson.fromJson(gson.toJson(r.getArgs()[0]), Client.class);
     model.registerClient(client);
   }
 
-  // ───────────────── LISTING METHODS ─────────────────
+  // ── LISTINGS ──────────────────────────────────────────────────────────────
 
-  private void handleAddListing(
-      Request request)
+  private void handleAddListing(Request r)
   {
-    Listing listing =
-        gson.fromJson(
-            gson.toJson(
-                request.getArgs()[0]),
-            Listing.class);
-
+    Listing listing = gson.fromJson(gson.toJson(r.getArgs()[0]), Listing.class);
     model.addListing(listing);
   }
 
-  private void handleRemoveListing(
-      Request request)
+  private void handleRemoveListing(Request r)
   {
-    int listingId =
-        ((Double) request.getArgs()[0])
-            .intValue();
-
-    model.removeListing(listingId);
+    model.removeListing(((Double) r.getArgs()[0]).intValue());
   }
 
-  private void handleUpdateListing(
-      Request request)
+  private void handleUpdateListing(Request r)
   {
-    Listing listing =
-        gson.fromJson(
-            gson.toJson(
-                request.getArgs()[0]),
-            Listing.class);
-
+    Listing listing = gson.fromJson(gson.toJson(r.getArgs()[0]), Listing.class);
     model.updateListing(listing);
   }
 
-  private void handleGetAllListings()
+  private void handleGetListingsByOwner(Request r)
   {
-    model.getAllListings();
+    model.getListingsByOwner(((Double) r.getArgs()[0]).intValue());
   }
 
-  // ───────────────── BOOKING METHODS ─────────────────
+  // ── BOOKINGS ──────────────────────────────────────────────────────────────
 
-  private void handleAddBooking(
-      Request request)
+  private void handleAddBooking(Request r)
   {
-    Booking booking =
-        gson.fromJson(
-            gson.toJson(
-                request.getArgs()[0]),
-            Booking.class);
-
+    Booking booking = gson.fromJson(gson.toJson(r.getArgs()[0]), Booking.class);
     model.addBooking(booking);
   }
 
-  private void handleRemoveBooking(
-      Request request)
+  private void handleRemoveBooking(Request r)
   {
-    int bookingId =
-        ((Double) request.getArgs()[0])
-            .intValue();
-
-    model.removeBooking(bookingId);
+    int clientId  = ((Double) r.getArgs()[0]).intValue();
+    int listingId = ((Double) r.getArgs()[1]).intValue();
+    model.removeBooking(clientId, listingId);
   }
 
-  private void handleUpdateBooking(
-      Request request)
+  private void handleUpdateBooking(Request r)
   {
-    Booking booking =
-        gson.fromJson(
-            gson.toJson(
-                request.getArgs()[0]),
-            Booking.class);
-
+    Booking booking = gson.fromJson(gson.toJson(r.getArgs()[0]), Booking.class);
     model.updateBooking(booking);
   }
 
-  private void handleGetAllBookings()
+  private void handleGetBookingsByClient(Request r)
   {
-    model.getAllBookings();
+    model.getBookingsByClient(((Double) r.getArgs()[0]).intValue());
   }
 
-  // ───────────────── OWNER APPLICATION METHODS ─────────────────
+  // ── OWNER APPLICATIONS ────────────────────────────────────────────────────
 
-  private void handleAddOwnerApplication(
-      Request request)
+  private void handleAddOwnerApplication(Request r)
   {
-    OwnerApplication ownerApplication =
-        gson.fromJson(
-            gson.toJson(
-                request.getArgs()[0]),
-            OwnerApplication.class);
-
-    model.addOwnerApplication(
-        ownerApplication);
+    OwnerApplication app = gson.fromJson(gson.toJson(r.getArgs()[0]), OwnerApplication.class);
+    model.addOwnerApplication(app);
   }
 
-  private void handleRemoveOwnerApplication(
-      Request request)
+  private void handleRemoveOwnerApplication(Request r)
   {
-    int applicationId =
-        ((Double) request.getArgs()[0])
-            .intValue();
-
-    model.removeOwnerApplication(
-        applicationId);
+    model.removeOwnerApplication(((Double) r.getArgs()[0]).intValue());
   }
 
-  private void handleUpdateOwnerApplication(
-      Request request)
+  private void handleUpdateOwnerApplication(Request r)
   {
-    OwnerApplication ownerApplication =
-        gson.fromJson(
-            gson.toJson(
-                request.getArgs()[0]),
-            OwnerApplication.class);
-
-    model.updateOwnerApplication(
-        ownerApplication);
+    OwnerApplication app = gson.fromJson(gson.toJson(r.getArgs()[0]), OwnerApplication.class);
+    model.updateOwnerApplication(app);
   }
 
-  private void handleGetAllOwnerApplications()
+  private void handleApproveOwnerApplication(Request r)
   {
-    model.getAllOwnerApplications();
+    int applicationId = ((Double) r.getArgs()[0]).intValue();
+    int adminId       = r.getArgs().length > 1 ? ((Double) r.getArgs()[1]).intValue() : 0;
+    model.approveOwnerApplication(applicationId, adminId);
   }
 
-  // ───────────────── MODEL EVENTS ─────────────────
+  private void handleRejectOwnerApplication(Request r)
+  {
+    model.rejectOwnerApplication(((Double) r.getArgs()[0]).intValue());
+  }
+
+  // ── FAVORITES ─────────────────────────────────────────────────────────────
+
+  private void handleGetFavoritesByClient(Request r)
+  {
+    model.getFavoritesByClient(((Double) r.getArgs()[0]).intValue());
+  }
+
+  private void handleAddFavorite(Request r)
+  {
+    int clientId  = ((Double) r.getArgs()[0]).intValue();
+    int listingId = ((Double) r.getArgs()[1]).intValue();
+    model.addFavorite(clientId, listingId);
+  }
+
+  private void handleRemoveFavorite(Request r)
+  {
+    int clientId  = ((Double) r.getArgs()[0]).intValue();
+    int listingId = ((Double) r.getArgs()[1]).intValue();
+    model.removeFavorite(clientId, listingId);
+  }
+
+  // ── TENANCY APPLICATIONS ──────────────────────────────────────────────────
+
+  private void handleSubmitTenancyApplication(Request r)
+  {
+    TenancyApplication app = gson.fromJson(gson.toJson(r.getArgs()[0]), TenancyApplication.class);
+    model.addTenancyApplication(app);
+  }
+
+  private void handleGetTenancyAppsByOwner(Request r)
+  {
+    model.getTenancyApplicationsByOwner(((Double) r.getArgs()[0]).intValue());
+  }
+
+  private void handleGetTenancyAppsByClient(Request r)
+  {
+    model.getTenancyApplicationsByClient(((Double) r.getArgs()[0]).intValue());
+  }
+
+  private void handleDeleteTenancyApp(Request r)
+  {
+    model.deleteTenancyApplication(((Double) r.getArgs()[0]).intValue());
+  }
+
+  private void handleUpdateTenancyStatus(Request r)
+  {
+    int id       = ((Double) r.getArgs()[0]).intValue();
+    String status = (String) r.getArgs()[1];
+    model.updateTenancyApplicationStatus(id, status);
+  }
+
+  // ── ACCOUNT ───────────────────────────────────────────────────────────────
+
+  private void handleDeleteClient(Request r)
+  {
+    model.deleteClient(((Double) r.getArgs()[0]).intValue());
+  }
+
+  private void handleDeletePropertyOwner(Request r)
+  {
+    model.deletePropertyOwner(((Double) r.getArgs()[0]).intValue());
+  }
+
+  // ── LOOKUP ────────────────────────────────────────────────────────────────
+
+  private void handleGetOwnerById(Request r)
+  {
+    model.getOwnerById(((Double) r.getArgs()[0]).intValue());
+  }
+
+  // ── MODEL EVENT BROADCAST ─────────────────────────────────────────────────
 
   @Override
-  public void propertyChange(
-      PropertyChangeEvent evt)
+  public void propertyChange(PropertyChangeEvent evt)
   {
-    Response response =
-        new Response(
-            true,
-            evt.getPropertyName(),
-            evt.getNewValue());
-
-    sendResponse(response);
+    sendResponse(new Response(true, evt.getPropertyName(), evt.getNewValue()));
   }
 
-  // ───────────────── SEND RESPONSE ─────────────────
+  // ── HELPERS ───────────────────────────────────────────────────────────────
 
-  private void sendResponse(
-      Response response)
+  private void sendResponse(Response response)
   {
-    String json =
-        gson.toJson(response);
-
+    String json = gson.toJson(response);
     out.println(json);
-
-    System.out.println(
-        "Sent JSON: "
-            + json);
+    System.out.println("Sent JSON: " + json);
   }
-
-  // ───────────────── CLOSE CONNECTION ─────────────────
 
   private void closeConnection()
   {
     running = false;
-
-    model.removePropertyChangeListener(
-        this);
-
-    try
-    {
-      if(socket != null)
-      {
-        socket.close();
-      }
-
-      if(in != null)
-      {
-        in.close();
-      }
-
-      if(out != null)
-      {
-        out.close();
-      }
-
-      System.out.println(
-          "Connection closed");
-    }
-    catch(IOException e)
-    {
+    model.removePropertyChangeListener(this);
+    try {
+      if (socket != null) socket.close();
+      if (in != null)     in.close();
+      if (out != null)    out.close();
+      System.out.println("Connection closed");
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }
