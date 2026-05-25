@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="View.MyBookingsController"
+      alignment="TOP_CENTER" spacing="20"
+      style="-fx-background-color: #F5F0E8;">
+    <padding>
+        <Insets top="40" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Text text="My Bookings"
+          style="-fx-fill: #143D29;
+                 -fx-font-family: 'Palatino Linotype';
+                 -fx-font-size: 48px;
+                 -fx-font-weight: bold;"/>
+
+    <Text text="Your confirmed property bookings"
+          style="-fx-fill: #1A5F3F;
+                 -fx-font-family: 'Cambria';
+                 -fx-font-size: 16px;"/>
+
+    <Label fx:id="statusLabel" text=""
+           style="-fx-text-fill: #8B7355;
+                  -fx-font-family: 'Cambria';
+                  -fx-font-size: 14px;"/>
+
+    <ScrollPane fx:id="bookingsScrollPane" fitToWidth="true" 
+                style="-fx-background: #F5F0E8; -fx-background-color: transparent;">
+        <TilePane fx:id="bookingsTilePane" 
+                  hgap="20" vgap="20" 
+                  alignment="TOP_LEFT"
+                  prefColumns="2"
+                  style="-fx-background-color: transparent;">
+        </TilePane>
+    </ScrollPane>
+</VBox>

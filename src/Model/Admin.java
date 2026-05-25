@@ -3,29 +3,41 @@ package Model;
 
 public class Admin {
   private int ID;
-  private User logIn;
+  private String username;
+  private String password;
   private String adminName;
 
-  public Admin(int ID, User logIn, String adminName) {
+  public Admin(int ID,String adminName,String username,String password) {
     this.ID = ID;
-    this.logIn = logIn;
     this.adminName = adminName;
+    this.username=username;
+    this.password=password;
   }
+  public Admin(String adminName,String username,String password) {
+    this.adminName = adminName;
+    this.username=username;
+    this.password=password;
+  }
+
 
   public int getID() {
     return ID;
   }
 
-  public User getUser() {
-    return logIn;
-  }
+
 
   public void setID(int ID) {
     this.ID = ID;
   }
 
-  public void setLogIn(User logIn) {
-    this.logIn = logIn;
+  public String getUsername()
+  {
+    return username;
+  }
+
+  public String getPassword()
+  {
+    return password;
   }
 
   public String getAdminName() {
@@ -36,8 +48,10 @@ public class Admin {
     this.adminName = adminName;
   }
 
-  public String toString() {
-    return "Username " + logIn.getUsername() + "\n Password" + logIn.getPassword() + "\n ID: " + ID + adminName
-        + "AdminName";
+  @Override public String toString()
+  {
+    return "Admin{" + "ID=" + ID + ", username='" + username + '\''
+        + ", password='" + password + '\'' + ", adminName='" + adminName + '\''
+        + '}';
   }
 }

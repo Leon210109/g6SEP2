@@ -16,32 +16,31 @@ public class PropertyOwnerDAO
     try{
       Connection connection= DatabaseConnection.getConnection();
       String sql= """
-          Insert into propertyOwner(id, first_name, last_name, email, phoneNumber, 
+          Insert into sep2.propertyowner( first_name, last_name, email, phoneNumber, 
           username, password, dateOfBirth, gender, nationality, numberOfListings)
-              values (?,?,?,?,?,?,?,?,?,?,?)
+              values (?,?,?,?,?,?,?,?,?,?)
           """;
       PreparedStatement statement=connection.prepareStatement(sql);
-      statement.setInt(1,owner.getID());
       statement.setString(
-          2,
+          1,
           owner.getFirstName());
       statement.setString(
-          3,
+          2,
           owner.getLastName());
       statement.setString(
-          4,
+          3,
           owner.getEmail());
       statement.setString(
-          5,
+          4,
           owner.getPhoneNumber());
       statement.setString(
-          6,
-          owner.getLogIn().getUsername());
+          5,
+          owner.getUsername());
       statement.setString(
-          7,
-          owner.getLogIn().getPassword());
+          6,
+          owner.getPassword());
       statement.setDate(
-          8,
+          7,
           java.sql.Date.valueOf(
               LocalDate.of(
                   owner.getDOB().getYear(),
@@ -51,13 +50,13 @@ public class PropertyOwnerDAO
           )
       );
       statement.setString(
-          9,
+          8,
           owner.getGender());
       statement.setString(
-          10,
+          9,
           owner.getNationality());
       statement.setInt(
-          11,
+          10,
           owner.getNumberOflistings());
 
 
@@ -73,7 +72,7 @@ public class PropertyOwnerDAO
   public PropertyOwner getPropertyOwnerById(int id) {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM propertyOwner WHERE id = ?";
+      String sql = "SELECT * FROM sep2.propertyowner WHERE id = ?";
       PreparedStatement statement = connection.prepareStatement(sql);
       statement.setInt(1, id);
       ResultSet rs = statement.executeQuery();
@@ -90,7 +89,9 @@ public class PropertyOwnerDAO
             rs.getString("email"),
             rs.getString("phoneNumber"),
             dateOfBirth,
-            user,
+            rs.getString("username"),
+            rs.getString("password"),
+
             rs.getString("gender"),
             rs.getString("nationality"),
             rs.getInt("id")
@@ -107,7 +108,7 @@ public class PropertyOwnerDAO
   public PropertyOwner getPropertyOwnerByUsername(String username) {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM propertyOwner WHERE username = ?";
+      String sql = "SELECT * FROM sep2.propertyowner WHERE username = ?";
       PreparedStatement statement = connection.prepareStatement(sql);
       statement.setString(1, username);
       ResultSet rs = statement.executeQuery();
@@ -124,7 +125,9 @@ public class PropertyOwnerDAO
             rs.getString("email"),
             rs.getString("phoneNumber"),
             dateOfBirth,
-            user,
+            rs.getString("username"),
+            rs.getString("password"),
+
             rs.getString("gender"),
             rs.getString("nationality"),
             rs.getInt("id")
@@ -141,7 +144,7 @@ public class PropertyOwnerDAO
   public ArrayList<PropertyOwner> getAllPropertyOwners() {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM propertyOwner";
+      String sql = "SELECT * FROM sep2.propertyowner";
       PreparedStatement statement = connection.prepareStatement(sql);
       ResultSet rs = statement.executeQuery();
       
@@ -156,11 +159,12 @@ public class PropertyOwnerDAO
             rs.getString("last_name"),
             rs.getString("email"),
             rs.getString("phoneNumber"),
+            rs.getString("username"),
+            rs.getString("password"),
             dateOfBirth,
-            user,
             rs.getString("gender"),
-            rs.getString("nationality"),
-            rs.getInt("id")
+            rs.getString("nationality")
+
         );
         owners.add(owner);
       }

@@ -11,15 +11,31 @@ public class PropertyOwner
   private int ID;
   private User logIn;
   private int NumberOflistings;
+  private String username;
+  private String password;
 
-  public PropertyOwner(String FirstName, String LastName, String Email, String PhoneNumber, Date DOB, User logIn,String gender,String nationality, int ID)
+  public PropertyOwner(String FirstName, String LastName, String Email, String PhoneNumber, Date DOB, String username,String password,String gender,String nationality, int ID)
   {
     this.ID = ID;
     this.FirstName=FirstName;
     this.LastName=LastName;
     this.Email=Email;
     this.PhoneNumber=PhoneNumber;
-    this.logIn=logIn;
+    this.username= username;
+    this.password=password;
+    this.DOB=DOB;
+    this.Gender=gender;
+    this.Nationality=nationality;
+    this.NumberOflistings = 0;
+  }
+  public PropertyOwner(String FirstName, String LastName, String Email, String PhoneNumber,String username, String password ,Date DOB,String gender,String nationality)
+  {
+    this.FirstName=FirstName;
+    this.LastName=LastName;
+    this.Email=Email;
+    this.PhoneNumber=PhoneNumber;
+    this.username=username;
+    this.password=password;
     this.DOB=DOB;
     this.Gender=gender;
     this.Nationality=nationality;
@@ -59,11 +75,6 @@ public class PropertyOwner
   public String getEmail()
   {
     return Email;
-  }
-
-  public User getLogIn()
-  {
-    return logIn;
   }
 
   public int getNumberOflistings()
@@ -121,6 +132,17 @@ public class PropertyOwner
     this.logIn = logIn;
   }
 
+  public String getUsername()
+  {
+    return username;
+  }
+
+  public String getPassword()
+  {
+    return password;
+  }
+
+
   public void setNumberOflistings(int numberOflistings)
   {
     NumberOflistings = numberOflistings;
@@ -128,4 +150,6 @@ public class PropertyOwner
   public String toString() {
     return ("First name: "+ FirstName + "Last name: "+ LastName + "Email: "+ Email + "Phone number: " + PhoneNumber + "Date of birth: "+ DOB + "Gender: " + Gender + "Nationality: " + Nationality + "ID: " + ID + "Log in:" + logIn + "Number of listings: " + NumberOflistings);
   }
+
+
 }

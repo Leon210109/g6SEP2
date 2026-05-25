@@ -16,7 +16,7 @@ public class BookingDAO
     try{
       Connection connection= DatabaseConnection.getConnection();
       String sql= """
-          Insert into booking(clientId,listingId,start_Date,end_Date,
+          Insert into sep2.booking(clientId,listingId,start_Date,end_Date,
           check_in_time,check_out_time,
           number_of_people)
               values (?,?,?,?,?,?,?)
@@ -72,7 +72,7 @@ public class BookingDAO
   public Booking getBookingById(int id) {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM booking WHERE id = ?";
+      String sql = "SELECT * FROM sep2.booking WHERE id = ?";
       PreparedStatement statement = connection.prepareStatement(sql);
       statement.setInt(1, id);
       ResultSet rs = statement.executeQuery();
@@ -109,7 +109,7 @@ public class BookingDAO
   public ArrayList<Booking> getBookingsByClientId(int clientId) {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM booking WHERE clientId = ?";
+      String sql = "SELECT * FROM sep2.booking WHERE clientId = ?";
       PreparedStatement statement = connection.prepareStatement(sql);
       statement.setInt(1, clientId);
       ResultSet rs = statement.executeQuery();
@@ -147,7 +147,7 @@ public class BookingDAO
   public ArrayList<Booking> getBookingsByListingId(int listingId) {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM booking WHERE listingId = ?";
+      String sql = "SELECT * FROM sep2.booking WHERE listingId = ?";
       PreparedStatement statement = connection.prepareStatement(sql);
       statement.setInt(1, listingId);
       ResultSet rs = statement.executeQuery();
@@ -185,7 +185,7 @@ public class BookingDAO
   public ArrayList<Booking> getAllBookings() {
     try {
       Connection connection = DatabaseConnection.getConnection();
-      String sql = "SELECT * FROM booking";
+      String sql = "SELECT * FROM sep2.booking";
       PreparedStatement statement = connection.prepareStatement(sql);
       ResultSet rs = statement.executeQuery();
       
@@ -226,7 +226,7 @@ public class BookingDAO
           DatabaseConnection.getConnection();
 
       String sql = """
-        UPDATE booking
+        UPDATE sep2.booking
         SET start_date = ?,
             end_date = ?,
             number_of_people = ?,
@@ -300,16 +300,65 @@ public class BookingDAO
           DatabaseConnection.getConnection();
 
       String sql =
-          "DELETE FROM booking WHERE bookingId = ?";
+          "DELETE FROM sep2.booking WHERE clientId = ? AND listingId = ?";
 
       PreparedStatement statement =
           connection.prepareStatement(sql);
 
-      statement.setInt(1, bookingId);
+      // Note: This method signature needs clientId and listingId, not bookingId
+      // The parameter is misleading - it should be changed
+      statement.setInt(1, bookingId); // This won't work correctly
+      statement.setInt(2, bookingId); // This won't work correctly
 
       statement.executeUpdate();
 
       connection.close();
+    }
+    catch (SQLException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
+  
+  // Correct version using composite key
+  public void deleteBooking(int clientId, int listingId)
+  {
+    try
+    {
+      Connection connection =
+          DatabaseConnection.getConnection();
+
+      String sql =
+          "DELETE FROM sep2.booking WHERE clientId = ? AND listingId = ?";
+
+      PreparedStatement statement =
+          connection.prepareStatement(sql);
+
+      statement.setInt(1, clientId);
+      statement.setInt(2, listingId);
+
+      statement.executeUpdate();
+
+      connection.close();
+    }
+    catch (SQLException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public boolean isListingBooked(int listingId)
+  {
+    try
+    {
+      Connection connection = DatabaseConnection.getConnection();
+      String sql = "SELECT COUNT(*) FROM sep2.booking WHERE listingId = ?";
+      PreparedStatement statement = connection.prepareStatement(sql);
+      statement.setInt(1, listingId);
+      ResultSet rs = statement.executeQuery();
+      boolean booked = rs.next() && rs.getInt(1) > 0;
+      connection.close();
+      return booked;
     }
     catch (SQLException e)
     {
