@@ -270,7 +270,7 @@ public class MyListingsController {
         System.out.println("DEBUG: PropertyOwner = " + propertyOwner);
         
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateListingView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/CreateListingView.fxml"));
             System.out.println("DEBUG: About to load FXML...");
             Parent root = loader.load();
             System.out.println("DEBUG: FXML loaded successfully!");
@@ -297,7 +297,7 @@ public class MyListingsController {
 
     private void openListingDetails(Listing listing) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ListingDetailView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/ListingDetailView.fxml"));
             Parent root = loader.load();
             
             ListingDetailController controller = loader.getController();
@@ -318,7 +318,7 @@ public class MyListingsController {
 
     private void openEditListing(Listing listing) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("EditListingView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/EditListingView.fxml"));
             Parent root = loader.load();
             
             EditListingController controller = loader.getController();

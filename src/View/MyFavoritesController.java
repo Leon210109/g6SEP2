@@ -148,7 +148,7 @@ public class MyFavoritesController {
     private void openDetails(Listing listing) {
         try {
             PropertyOwner owner = ownerDAO.getPropertyOwnerById(listing.getOwnerId());
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ListingDetailView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/ListingDetailView.fxml"));
             Parent root = loader.load();
             ListingDetailController ctrl = loader.getController();
             ctrl.setListing(listing, owner, client);

@@ -107,7 +107,7 @@ public class LoginController {
     @FXML
     private void handleRegister() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("RegistrationView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/RegistrationView.fxml"));
             Parent registrationRoot = loader.load();
             
             // Get the current scene and update its root
@@ -120,7 +120,7 @@ public class LoginController {
 
     @FXML
     private void handleAdminAccess() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminAccessView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/AdminAccessView.fxml"));
         Parent popupRoot = loader.load();
         AdminAccessController popupController = loader.getController();
 
@@ -131,7 +131,7 @@ public class LoginController {
         popup.setResizable(false);
 
         Scene popupScene = new Scene(popupRoot);
-        popupScene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        popupScene.getStylesheets().add(getClass().getResource("/View/styles.css").toExternalForm());
         popup.setScene(popupScene);
 
         popupController.setOnEnter(userType -> {
@@ -151,7 +151,7 @@ public class LoginController {
      * Navigate to the main application view with authentication result
      */
     private void navigateToMainView(AuthenticationResult result) throws IOException {
-        FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("MainView.fxml"));
+        FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/View/MainView.fxml"));
         Parent mainRoot = mainLoader.load();
         MainController mainController = mainLoader.getController();
         mainController.init(result.getUserType(), result.getUser());

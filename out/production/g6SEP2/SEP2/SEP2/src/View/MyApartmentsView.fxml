@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="View.MyApartmentsController"
+      spacing="20"
+      style="-fx-background-color: #F5F0E8;">
+
+    <padding>
+        <Insets top="30" right="40" bottom="30" left="40"/>
+    </padding>
+
+    <!-- Header -->
+    <VBox spacing="8">
+        <Text text="My Apartments"
+              style="-fx-fill: #143D29;
+                     -fx-font-family: 'Palatino Linotype';
+                     -fx-font-size: 36px;
+                     -fx-font-weight: bold;"/>
+        <Text text="Your long-term rental applications and their status"
+              style="-fx-fill: #8B7355;
+                     -fx-font-family: 'Cambria';
+                     -fx-font-size: 14px;"/>
+    </VBox>
+
+    <!-- Application cards (stacked vertically, wider cards) -->
+    <ScrollPane fx:id="appsScrollPane"
+                fitToWidth="true"
+                VBox.vgrow="ALWAYS"
+                style="-fx-background: #F5F0E8; -fx-background-color: transparent;">
+
+        <VBox fx:id="appsContainer"
+              spacing="16"
+              style="-fx-background-color: #F5F0E8;">
+            <padding>
+                <Insets right="8"/>
+            </padding>
+        </VBox>
+    </ScrollPane>
+
+    <Label fx:id="statusLabel"
+           text="Loading your applications..."
+           style="-fx-text-fill: #8B7355;
+                  -fx-font-family: 'Cambria';
+                  -fx-font-size: 13px;"/>
+
+</VBox>

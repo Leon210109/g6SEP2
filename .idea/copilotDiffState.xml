@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/run.bat">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/run.bat" />
+              <option name="updatedContent" value="@echo off&#10;rem Run the app with JavaFX 25.&#10;rem Requires JAVAFX_HOME to point at your JavaFX SDK folder (the one that contains a lib subfolder).&#10;rem Example: setx JAVAFX_HOME &quot;C:\javafx-sdk-25&quot;  (then open a new terminal)&#10;&#10;if &quot;%JAVAFX_HOME%&quot;==&quot;&quot; (&#10;  echo ERROR: JAVAFX_HOME is not set.&#10;  echo Please set it to your JavaFX SDK folder and reopen this terminal.&#10;  echo Example:  setx JAVAFX_HOME &quot;C:\javafx-sdk-25&quot;&#10;  pause&#10;  exit /b 1&#10;)&#10;&#10;set REPO_ROOT=%~dp0&#10;set APP_CLASSES=%REPO_ROOT%out\production\g6SEP2&#10;set CLASSPATH=%APP_CLASSES%;%REPO_ROOT%lib\gson-2.11.0.jar;%REPO_ROOT%lib\postgresql-42.7.11.jar&#10;set MODULEPATH=%JAVAFX_HOME%\lib&#10;&#10;echo Running with JAVAFX_HOME=%JAVAFX_HOME%&#10;&#10;java --module-path &quot;%MODULEPATH%&quot; --add-modules javafx.controls,javafx.fxml -cp &quot;%CLASSPATH%&quot; View.Main %*&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

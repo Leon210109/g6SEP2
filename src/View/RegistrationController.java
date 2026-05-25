@@ -260,7 +260,7 @@ public class RegistrationController {
     @FXML
     private void handleBackToLogin() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/LoginView.fxml"));
             Parent loginRoot = loader.load();
             registerButton.getScene().setRoot(loginRoot);
         } catch (IOException e) {

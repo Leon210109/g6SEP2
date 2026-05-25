@@ -141,7 +141,7 @@ public class MainController {
 
     @FXML
     private void handleBackToLogin() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/LoginView.fxml"));
         Parent loginRoot = loader.load();
         backToLoginBtn.getScene().setRoot(loginRoot);
     }
@@ -175,9 +175,9 @@ public class MainController {
         if (fxmlFile == null)
             return homeView;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/" + fxmlFile));
             Parent root = loader.load();
-            
+
             Object controller = loader.getController();
             if (controller instanceof MyListingsController && currentUser instanceof Model.PropertyOwner) {
                 ((MyListingsController) controller).setPropertyOwner((Model.PropertyOwner) currentUser);
@@ -196,7 +196,7 @@ public class MainController {
             } else if (controller instanceof AdminListingsController && currentUser instanceof Model.Admin) {
                 ((AdminListingsController) controller).setAdmin((Model.Admin) currentUser);
             }
-            
+
             return root;
         } catch (IOException e) {
             e.printStackTrace();
@@ -229,7 +229,7 @@ public class MainController {
 
     private void openOwnerApplicationForm(Model.Client client) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("OwnerApplicationFormView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/OwnerApplicationFormView.fxml"));
             Parent root = loader.load();
             OwnerApplicationFormController ctrl = loader.getController();
             ctrl.setClient(client);
