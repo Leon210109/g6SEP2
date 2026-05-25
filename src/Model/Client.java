@@ -6,34 +6,57 @@ public class Client
   private String FirstName;
   private String LastName;
   private String Email;
-  private int PhoneNumber;
+  private String PhoneNumber;
   private Date  DOB;
   private String Gender;
   private String Nationality;
-  private String HomeAddress;
   private int ID;
-  private User logIn;
+  private String username;
+  private String password;
 
-  public Client(String FirstName, String LastName, String Gender,
-      String Nationality, String HomeAddress, String Email, int PhoneNumber,
-      Date DOB, User logIn, int ID)
+
+
+  public Client(int ID, String firstName, String lastName, String email, String phoneNumber,
+       String username,String password, Date DOB, String gender, String nationality)
   {
     this.ID = ID;
-    this.FirstName = FirstName;
-    this.LastName = LastName;
+    this.FirstName = firstName;
+    this.LastName = lastName;
+    this.Email = email;
+    this.PhoneNumber = phoneNumber;
+    this.username=username;
+    this.password=password;
+    this.DOB = DOB;
     this.Gender = Gender;
     this.Nationality = Nationality;
-    this.HomeAddress = HomeAddress;
-    this.Email = Email;
-    this.PhoneNumber = PhoneNumber;
-    this.DOB = DOB;
-    this.logIn = logIn;
   }
 
-  public User getUser()
+  public Client(String firstName, String lastName, String email,
+      String phoneNumber, String username, String password,Date DOB,
+      String gender, String nationality)
   {
-    return logIn;
+    FirstName = firstName;
+    LastName = lastName;
+    Email = email;
+    PhoneNumber = phoneNumber;
+    this.username = username;
+    this.password = password;
+    this.DOB = DOB;
+    Gender = gender;
+    Nationality = nationality;
   }
+
+  public String getUsername()
+  {
+    return username;
+  }
+
+  public String getPassword()
+  {
+    return password;
+  }
+
+
   public int getID()
   {
     return ID;
@@ -64,22 +87,28 @@ public class Client
     return LastName;
   }
 
-  public String getHomeAddress()
-  {
-    return HomeAddress;
-  }
-
   public String getNationality()
   {
     return Nationality;
   }
 
-  public int getPhoneNumber()
+  public String getPhoneNumber()
   {
     return PhoneNumber;
   }
-  public String toString()
+
+  public User getUser()
   {
-    return "Name: " + LastName + " " + FirstName + "\nUsername " + logIn.getUsername() + "\nPassword " + logIn.getPassword() + "\n Email " + Email + "\n Phone number " + PhoneNumber +"\nGender " + Gender + "\nDate of birth " + DOB + "\nNationality " + Nationality + "\nHome address " + HomeAddress + "\nID " + ID;
+    return new User(getUsername(),getPassword());
+
+  }
+
+  @Override public String toString()
+  {
+    return "Client{" + "FirstName='" + FirstName + '\'' + ", LastName='"
+        + LastName + '\'' + ", Email='" + Email + '\'' + ", PhoneNumber='"
+        + PhoneNumber + '\'' + ", DOB=" + DOB + ", Gender='" + Gender + '\''
+        + ", Nationality='" + Nationality + '\'' + ", ID=" + ID + ", username='"
+        + username + '\'' + ", password='" + password + '\'' + '}';
   }
 }

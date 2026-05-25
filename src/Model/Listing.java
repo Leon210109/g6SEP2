@@ -1,5 +1,7 @@
 package Model;
 
+import java.time.LocalTime;
+
 public class Listing
 {
   private int id;
@@ -13,23 +15,39 @@ public class Listing
   private int maxNumberOfPeople;
   private boolean isBooked;
   private String street;
-  private City city;
   private String country;
   private String region;
-  private int StreetNumber;
+  private String postal_code;
   private int floor;
-  private int roomNumber;
+  private String roomNumber;
+  private LocalTime checkInTime;
+  private LocalTime checkOutTime;
+  private String listingType;
 
-  public Listing(int id,String street,String country,String region,int StreetNumber, int floor, int roomNumber, City city, int numberOfRooms, int numberOfBathrooms, boolean balcony, float surfaceArea, int price, Date lastRenovated, int ownerId, int maxNumberOfPeople)
+  @Override public String toString()
+  {
+    return "Listing{" + "id=" + id + ", numberOfRooms=" + numberOfRooms
+        + ", numberOfBathrooms=" + numberOfBathrooms + ", balcony=" + balcony
+        + ", surfaceArea=" + surfaceArea + ", price=" + price
+        + ", lastRenovated=" + lastRenovated + ", ownerId=" + ownerId
+        + ", maxNumberOfPeople=" + maxNumberOfPeople + ", isBooked=" + isBooked
+        + ", street='" + street + '\'' + ", country='" + country + '\''
+        + ", region='" + region + '\'' + ", postal_code='" + postal_code + '\''
+        + ", floor=" + floor + ", roomNumber='" + roomNumber + '\'' + '}';
+  }
+
+  public Listing(int id,String street,String country,String region,int floor,
+      String roomNumber, int numberOfRooms, int numberOfBathrooms,
+      boolean balcony, float surfaceArea, int price, Date lastRenovated,
+      int ownerId, int maxNumberOfPeople,String postalcode)
   {
     this.id = id;
-    this.city=city;
+    this.postal_code=postalcode;
     this.street=street;
     this.country= country;
     this.floor=floor;
     this.roomNumber=roomNumber;
     this.region=region;
-    this.StreetNumber=StreetNumber;
     this.numberOfRooms = numberOfRooms;
     this.numberOfBathrooms = numberOfBathrooms;
     this.balcony = balcony;
@@ -39,6 +57,33 @@ public class Listing
     this.ownerId = ownerId;
     this.maxNumberOfPeople = maxNumberOfPeople;
     this.isBooked = false;
+    this.checkInTime = LocalTime.of(15, 0); // Default 3:00 PM
+    this.checkOutTime = LocalTime.of(11, 0); // Default 11:00 AM
+    this.listingType = "SHORT_TERM";
+  }
+  public Listing(int numberOfRooms,int numberOfBathrooms, boolean balcony
+      , float surfaceArea, int price, Date lastRenovated,
+      int maxNumberOfPeople,String country,String region,
+      String street,int floor, String roomNumber, String postalcode,int ownerId)
+  {
+    this.postal_code=postalcode;
+    this.street=street;
+    this.country= country;
+    this.floor=floor;
+    this.roomNumber=roomNumber;
+    this.region=region;;
+    this.numberOfRooms = numberOfRooms;
+    this.numberOfBathrooms = numberOfBathrooms;
+    this.balcony = balcony;
+    this.surfaceArea = surfaceArea;
+    this.price = price;
+    this.lastRenovated = lastRenovated;
+    this.ownerId = ownerId;
+    this.maxNumberOfPeople = maxNumberOfPeople;
+    this.isBooked = false;
+    this.checkInTime = LocalTime.of(15, 0); // Default 3:00 PM
+    this.checkOutTime = LocalTime.of(11, 0); // Default 11:00 AM
+    this.listingType = "SHORT_TERM";
   }
 
   public boolean isBalcony()
@@ -51,12 +96,8 @@ public class Listing
     return price;
   }
 
-  public int getStreetNumber()
-  {
-    return StreetNumber;
-  }
 
-  public int getRoomNumber()
+  public String getRoomNumber()
   {
     return roomNumber;
   }
@@ -117,9 +158,9 @@ public class Listing
     return street;
   }
 
-  public City getCity()
+  public String getPostalcode()
   {
-    return city;
+    return postal_code;
   }
 
   public int getNumberOfRooms()
@@ -182,10 +223,7 @@ public class Listing
     this.street = street;
   }
 
-  public void setCity(City city)
-  {
-    this.city = city;
-  }
+
 
   public void setCountry(String country)
   {
@@ -197,22 +235,50 @@ public class Listing
     this.region = region;
   }
 
-  public void setStreetNumber(int streetNumber)
-  {
-    StreetNumber = streetNumber;
-  }
 
   public void setFloor(int floor)
   {
     this.floor = floor;
   }
 
-  public void setRoomNumber(int roomNumber)
+  public void setRoomNumber(String roomNumber)
   {
     this.roomNumber = roomNumber;
   }
-  public String toString() {
-    return "ID: " + id + "Number of Rooms: " + numberOfRooms  + "Number of Bathrooms: " + numberOfBathrooms + "Balcony: " + balcony + "Surface Area: " + surfaceArea + "Price: "+ price + "Last Renovated: " + lastRenovated + "Owner Id: " + ownerId + "Max number of people: " + maxNumberOfPeople + "Is booked : " + isBooked  + "Street: " + street + "City: "+ city  + country + "Region: " + region + "Street Number "+ StreetNumber + "Floor: "  + floor + "Room Number: "+ roomNumber;
+
+  public void setPostalcode(String postalcode)
+  {
+    this.postal_code = postalcode;
+  }
+
+  public LocalTime getCheckInTime()
+  {
+    return checkInTime;
+  }
+
+  public void setCheckInTime(LocalTime checkInTime)
+  {
+    this.checkInTime = checkInTime;
+  }
+
+  public LocalTime getCheckOutTime()
+  {
+    return checkOutTime;
+  }
+
+  public void setCheckOutTime(LocalTime checkOutTime)
+  {
+    this.checkOutTime = checkOutTime;
+  }
+
+  public String getListingType()
+  {
+    return listingType;
+  }
+
+  public void setListingType(String listingType)
+  {
+    this.listingType = listingType;
   }
 }
 

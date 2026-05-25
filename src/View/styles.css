@@ -190,3 +190,80 @@
 .menu-item:hover .label {
     -fx-text-fill: #F5F0E8;
 }
+
+/* ── Text fields & password fields ── */
+.text-field, .password-field {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #C8C1AE;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 10 14;
+    -fx-font-family: "Cambria";
+    -fx-font-size: 14px;
+    -fx-text-fill: #2B2B2B;
+    -fx-prompt-text-fill: #AAAAA0;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #1A5F3F;
+    -fx-border-width: 2;
+}
+
+/* ── Field labels ── */
+.field-label {
+    -fx-text-fill: #143D29;
+    -fx-font-family: "Cambria";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* ── Primary button ── */
+.btn-primary {
+    -fx-background-color: #1A5F3F;
+    -fx-text-fill: #F5F0E8;
+    -fx-font-family: "Cambria";
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 11 36;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #143D29;
+}
+
+/* ── Secondary (outlined) button ── */
+.btn-secondary {
+    -fx-background-color: transparent;
+    -fx-text-fill: #1A5F3F;
+    -fx-font-family: "Cambria";
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-border-color: #1A5F3F;
+    -fx-border-radius: 8;
+    -fx-border-width: 2;
+    -fx-padding: 9 34;
+    -fx-cursor: hand;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #1A5F3F;
+    -fx-text-fill: #F5F0E8;
+}
+
+/* ── Admin access link button ── */
+.admin-access-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #8B7355;
+    -fx-font-family: "Cambria";
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+    -fx-padding: 6 8;
+    -fx-border-color: transparent;
+}
+
+.admin-access-btn:hover {
+    -fx-text-fill: #143D29;
+}
