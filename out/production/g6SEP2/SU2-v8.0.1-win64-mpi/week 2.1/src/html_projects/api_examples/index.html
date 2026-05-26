@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser API Examples</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Browser API Examples</h1>
+        <p>Interactive demonstrations of various browser APIs</p>
+    </header>
+
+    <main>
+        <!-- ========== GEOLOCATION API ========== -->
+        <section class="api-section">
+            <h2>Geolocation API</h2>
+            <p>Get the user's current location</p>
+            <button id="getLocation">Get My Location</button>
+            <div id="locationResult" class="result"></div>
+        </section>
+
+        <!-- ========== FETCH API ========== -->
+        <section class="api-section">
+            <h2>Fetch API</h2>
+            <p>Retrieve data from a public API (Random User Generator)</p>
+            <button id="fetchUser">Get Random User</button>
+            <div id="userResult" class="result"></div>
+        </section>
+
+        <!-- ========== LOCAL STORAGE API ========== -->
+        <section class="api-section">
+            <h2>LocalStorage API</h2>
+            <p>Store and retrieve data in the browser</p>
+            <input type="text" id="storageInput" placeholder="Enter some text">
+            <div class="button-group">
+                <button id="saveData">Save to LocalStorage</button>
+                <button id="loadData">Load from LocalStorage</button>
+                <button id="clearData">Clear Storage</button>
+            </div>
+            <div id="storageResult" class="result"></div>
+        </section>
+
+        <!-- ========== DATE API ========== -->
+        <section class="api-section">
+            <h2>Date API</h2>
+            <p>HTML5 date picker with date calculations</p>
+            <label for="selectedDate">Pick a date:</label>
+            <input type="date" id="selectedDate">
+            <button id="calculateDate">Calculate Days from Today</button>
+            <div id="dateResult" class="result"></div>
+        </section>
+
+        <!-- ========== CANVAS API ========== -->
+        <section class="api-section">
+            <h2>Canvas API</h2>
+            <p>Draw graphics with JavaScript</p>
+            <canvas id="myCanvas" width="400" height="200"></canvas>
+            <div class="button-group">
+                <button id="drawCircle">Draw Circle</button>
+                <button id="drawRectangle">Draw Rectangle</button>
+                <button id="clearCanvas">Clear Canvas</button>
+            </div>
+        </section>
+
+        <!-- ========== WEB NOTIFICATIONS API ========== -->
+        <section class="api-section">
+            <h2>Notifications API</h2>
+            <p>Send browser notifications to users</p>
+            <button id="requestNotification">Request Notification Permission</button>
+            <button id="sendNotification" disabled>Send Notification</button>
+            <div id="notificationResult" class="result"></div>
+        </section>
+
+        <!-- ========== CLIPBOARD API ========== -->
+        <section class="api-section">
+            <h2>Clipboard API</h2>
+            <p>Copy and paste text programmatically</p>
+            <input type="text" id="clipboardInput" placeholder="Text to copy" value="Hello, Clipboard API!">
+            <div class="button-group">
+                <button id="copyText">Copy to Clipboard</button>
+                <button id="pasteText">Paste from Clipboard</button>
+            </div>
+            <div id="clipboardResult" class="result"></div>
+        </section>
+
+        <!-- ========== BATTERY STATUS API ========== -->
+        <section class="api-section">
+            <h2>Battery Status API</h2>
+            <p>Check device battery level (may not work on all devices)</p>
+            <button id="getBattery">Get Battery Status</button>
+            <div id="batteryResult" class="result"></div>
+        </section>
+
+        <!-- ========== WEB SPEECH API ========== -->
+        <section class="api-section">
+            <h2>Web Speech API (Text-to-Speech)</h2>
+            <p>Convert text to speech</p>
+            <textarea id="speechText" rows="3" placeholder="Enter text to speak">Hello! This is the Web Speech API demonstration.</textarea>
+            <button id="speakText">Speak Text</button>
+            <div id="speechResult" class="result"></div>
+        </section>
+
+        <!-- ========== INTERSECTION OBSERVER API ========== -->
+        <section class="api-section">
+            <h2>Intersection Observer API</h2>
+            <p>Detect when elements enter the viewport</p>
+            <div class="observer-box" id="observerBox">
+                Scroll down to see this box get detected!
+            </div>
+            <div id="observerResult" class="result"></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

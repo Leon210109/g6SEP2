@@ -1,0 +1,370 @@
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_21\" default=\"true\" project-jdk-name=\"liberica-21\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 6e7c9f7874b10ec2ebe174ff2124b4fb614fa9ae)
++++ b/.idea/misc.xml	(date 1778568253057)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="liberica-21" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" default="true" project-jdk-name="liberica-full-26" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: src/Model/BookingManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package SEP2.SEP2.src.Model;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class BookingManager\r\n{\r\n  private ArrayList<Booking> bookings;\r\n\r\n\r\n  public BookingManager(){\r\n    bookings= new ArrayList<>();\r\n  }\r\n  public void addBooking(Booking booking){\r\n    bookings.add(booking);\r\n  }\r\n  public int getSize(){\r\n    return bookings.size();\r\n  }\r\n  public void removeListing(int bookingId){\r\n    for(Booking booking:bookings){\r\n      if(booking.getId()==bookingId){\r\n        bookings.remove(booking);\r\n      }\r\n    }\r\n  }\r\n  public void updateListing(Booking booking){\r\n    for(int i=0; i<bookings.size();i++){\r\n      if(bookings.get(i).getId()== booking.getId()){\r\n        bookings.set(i,booking);\r\n      }\r\n    }\r\n  }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Model/BookingManager.java b/src/Model/BookingManager.java
+--- a/src/Model/BookingManager.java	(revision 6e7c9f7874b10ec2ebe174ff2124b4fb614fa9ae)
++++ b/src/Model/BookingManager.java	(date 1778568253086)
+@@ -16,14 +16,14 @@
+   public int getSize(){
+     return bookings.size();
+   }
+-  public void removeListing(int bookingId){
++  public void removeBooking(int bookingId){
+     for(Booking booking:bookings){
+       if(booking.getId()==bookingId){
+         bookings.remove(booking);
+       }
+     }
+   }
+-  public void updateListing(Booking booking){
++  public void updateBooking(Booking booking){
+     for(int i=0; i<bookings.size();i++){
+       if(bookings.get(i).getId()== booking.getId()){
+         bookings.set(i,booking);
+Index: src/Model/OwnerApplicationManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package SEP2.SEP2.src.Model;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class OwnerApplicationManager\r\n{\r\n  private ArrayList<OwnerApplication> applications;\r\n\r\n\r\n  public OwnerApplicationManager(){\r\n    applications= new ArrayList<>();\r\n  }\r\n  public void addOwnerApplication(OwnerApplication application){\r\n    applications.add(application);\r\n  }\r\n  public int getSize(){\r\n    return applications.size();\r\n  }\r\n  public void removeOwnerApplication(int applicationId){\r\n    for(OwnerApplication application:applications){\r\n      if(application.getApplicationId()==applicationId){\r\n        applications.remove(applicationId);\r\n      }\r\n    }\r\n  }\r\n  public void updateListing(OwnerApplication application){\r\n    for(int i=0; i<applications.size();i++){\r\n      if(applications.get(i).getApplicationId()== application.getApplicationId()){\r\n        applications.set(i,application);\r\n      }\r\n    }\r\n  }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Model/OwnerApplicationManager.java b/src/Model/OwnerApplicationManager.java
+--- a/src/Model/OwnerApplicationManager.java	(revision 6e7c9f7874b10ec2ebe174ff2124b4fb614fa9ae)
++++ b/src/Model/OwnerApplicationManager.java	(date 1778568253090)
+@@ -23,7 +23,7 @@
+       }
+     }
+   }
+-  public void updateListing(OwnerApplication application){
++  public void updateApplication(OwnerApplication application){
+     for(int i=0; i<applications.size();i++){
+       if(applications.get(i).getApplicationId()== application.getApplicationId()){
+         applications.set(i,application);
+Index: src/Model/Model.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package SEP2.SEP2.src.Model;\r\n\r\npublic interface Model\r\n{\r\n  // ------------------------------------------------\r\n  // USER METHODS\r\n  // ------------------------------------------------\r\n\r\n  void registerClient(User user,\r\n      Client client);\r\n\r\n  void addUser(User user);\r\n\r\n  User login(String username,\r\n      String password);\r\n\r\n  // ------------------------------------------------\r\n  // LISTING METHODS\r\n  // ------------------------------------------------\r\n\r\n  void addListing(Listing listing);\r\n\r\n  void removeListing(int listingId);\r\n\r\n  void updateListing(Listing listing);\r\n\r\n  // ------------------------------------------------\r\n  // BOOKING METHODS\r\n  // ------------------------------------------------\r\n\r\n  void addBooking(Booking booking);\r\n\r\n  void removeBooking(int bookingId);\r\n\r\n  void updateBooking(Booking booking);\r\n\r\n  // ------------------------------------------------\r\n  // OWNER APPLICATION METHODS\r\n  // ------------------------------------------------\r\n\r\n  void addOwnerApplication(\r\n      OwnerApplication ownerApplication);\r\n\r\n  void removeOwnerApplication(\r\n      int applicationId);\r\n\r\n  void updateOwnerApplication(\r\n      OwnerApplication ownerApplication);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Model/Model.java b/src/Model/Model.java
+--- a/src/Model/Model.java	(revision 6e7c9f7874b10ec2ebe174ff2124b4fb614fa9ae)
++++ b/src/Model/Model.java	(date 1778568253087)
+@@ -1,5 +1,6 @@
+ package SEP2.SEP2.src.Model;
+ 
++
+ public interface Model
+ {
+   // ------------------------------------------------
+Index: src/Model/ModelManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package SEP2.SEP2.src.Model;\r\n\r\npublic class ModelManager implements Model\r\n{\r\n  private UserManager userManager;\r\n  private ListingManager listingManager;\r\n  private BookingManager bookingManager;\r\n  private OwnerApplicationManager ownerApplicationManager;\r\n\r\n  public ModelManager()\r\n  {\r\n    userManager = new UserManager();\r\n    listingManager = new ListingManager();\r\n    bookingManager = new BookingManager();\r\n    ownerApplicationManager = new OwnerApplicationManager();\r\n  }\r\n    // this one for user manager methods\r\n  @Override\r\n   public void registerClient(User user,Client client){\r\n    userManager.registerClient(user,client);\r\n   }\r\n   @Override\r\n   public void addUser(User user){\r\n    userManager.addUser(user);\r\n   }\r\n   @Override\r\n   public User login(String username, String password){\r\n    return userManager.login(username,password);\r\n   }\r\n   @Override\r\n   public void addListing(Listing listing){\r\n    listingManager.addListing(listing);\r\n   }\r\n   @Override\r\n    public void removeListing(int listingId){\r\n    listingManager.removeListing(listingId);\r\n    }\r\n    @Override\r\n    public void updateListing(Listing listing)\r\n    {\r\n      listingManager.updateListing(listing);\r\n    }\r\n    // booking methods\r\n  @Override\r\n  public void addBooking(Booking booking){\r\n    bookingManager.addBooking(booking);\r\n  }\r\n  @Override\r\n  public void removeBooking(int bookingId)\r\n  {\r\n    bookingManager.removeListing(bookingId);\r\n  }\r\n  @Override\r\n  public void updateBooking(Booking booking)\r\n  {\r\n    bookingManager.updateListing(booking);\r\n  }\r\n  // owner application methods\r\n  @Override\r\n  public void addOwnerApplication(OwnerApplication ownerApplication)\r\n  {\r\n    ownerApplicationManager.addOwnerApplication(ownerApplication);\r\n  }\r\n  @Override\r\n  public void removeOwnerApplication(int applicationId)\r\n  {\r\n    ownerApplicationManager.removeOwnerApplication(applicationId);\r\n  }\r\n  @Override\r\n  public void updateOwnerApplication(OwnerApplication ownerApplication){\r\n    ownerApplicationManager.updateListing(ownerApplication);\r\n  }\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Model/ModelManager.java b/src/Model/ModelManager.java
+--- a/src/Model/ModelManager.java	(revision 6e7c9f7874b10ec2ebe174ff2124b4fb614fa9ae)
++++ b/src/Model/ModelManager.java	(date 1778568299714)
+@@ -14,25 +14,15 @@
+     bookingManager = new BookingManager();
+     ownerApplicationManager = new OwnerApplicationManager();
+   }
+-    // this one for user manager methods
+-  @Override
+-   public void registerClient(User user,Client client){
+-    userManager.registerClient(user,client);
+-   }
+    @Override
+-   public void addUser(User user){
+     userManager.addUser(user);
+    }
+    @Override
+-   public User login(String username, String password){
+-    return userManager.login(username,password);
+    }
+    @Override
+-   public void addListing(Listing listing){
+     listingManager.addListing(listing);
+    }
+    @Override
+-    public void removeListing(int listingId){
+     listingManager.removeListing(listingId);
+     }
+     @Override
+@@ -40,36 +30,24 @@
+     {
+       listingManager.updateListing(listing);
+     }
+-    // booking methods
+   @Override
+-  public void addBooking(Booking booking){
+     bookingManager.addBooking(booking);
+   }
+   @Override
+   public void removeBooking(int bookingId)
+   {
+-    bookingManager.removeListing(bookingId);
+   }
+   @Override
+   public void updateBooking(Booking booking)
+   {
+-    bookingManager.updateListing(booking);
+   }
+-  // owner application methods
+   @Override
+-  public void addOwnerApplication(OwnerApplication ownerApplication)
+   {
+-    ownerApplicationManager.addOwnerApplication(ownerApplication);
+   }
+   @Override
+-  public void removeOwnerApplication(int applicationId)
+   {
+-    ownerApplicationManager.removeOwnerApplication(applicationId);
+   }
+   @Override
+-  public void updateOwnerApplication(OwnerApplication ownerApplication){
+-    ownerApplicationManager.updateListing(ownerApplication);
+   }
+ 
+-
+ }
+\ No newline at end of file
+Index: out/production/g6SEP2/SEP2/SEP2/g6SEP2.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<module type=\"JAVA_MODULE\" version=\"4\">\r\n  <component name=\"NewModuleRootManager\" inherit-compiler-output=\"true\">\r\n    <exclude-output />\r\n    <content url=\"file://$MODULE_DIR$\">\r\n      <sourceFolder url=\"file://$MODULE_DIR$\" isTestSource=\"false\" packagePrefix=\"SEP2.SEP2\" />\r\n    </content>\r\n    <orderEntry type=\"inheritedJdk\" />\r\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\r\n  </component>\r\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/out/production/g6SEP2/SEP2/SEP2/g6SEP2.iml b/out/production/g6SEP2/SEP2/SEP2/g6SEP2.iml
+--- a/out/production/g6SEP2/SEP2/SEP2/g6SEP2.iml	(revision 6e7c9f7874b10ec2ebe174ff2124b4fb614fa9ae)
++++ b/out/production/g6SEP2/SEP2/SEP2/g6SEP2.iml	(date 1778568253062)
+@@ -7,5 +7,6 @@
+     </content>
+     <orderEntry type="inheritedJdk" />
+     <orderEntry type="sourceFolder" forTests="false" />
++    <orderEntry type="library" name="postgresql-42.7.10" level="project" />
+   </component>
+ </module>
+\ No newline at end of file
+Index: g6SEP2.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<module type=\"JAVA_MODULE\" version=\"4\">\r\n  <component name=\"NewModuleRootManager\" inherit-compiler-output=\"true\">\r\n    <exclude-output />\r\n    <content url=\"file://$MODULE_DIR$\">\r\n      <sourceFolder url=\"file://$MODULE_DIR$\" isTestSource=\"false\" packagePrefix=\"SEP2.SEP2\" />\r\n    </content>\r\n    <orderEntry type=\"inheritedJdk\" />\r\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\r\n  </component>\r\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/g6SEP2.iml b/g6SEP2.iml
+--- a/g6SEP2.iml	(revision 6e7c9f7874b10ec2ebe174ff2124b4fb614fa9ae)
++++ b/g6SEP2.iml	(date 1778568253059)
+@@ -7,5 +7,6 @@
+     </content>
+     <orderEntry type="inheritedJdk" />
+     <orderEntry type="sourceFolder" forTests="false" />
++    <orderEntry type="library" name="postgresql-42.7.10" level="project" />
+   </component>
+ </module>
+\ No newline at end of file
+Index: out/production/g6SEP2/SEP2/SEP2/.idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_21\" default=\"true\" project-jdk-name=\"liberica-21\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/out/production/g6SEP2/SEP2/SEP2/.idea/misc.xml b/out/production/g6SEP2/SEP2/SEP2/.idea/misc.xml
+--- a/out/production/g6SEP2/SEP2/SEP2/.idea/misc.xml	(revision 6e7c9f7874b10ec2ebe174ff2124b4fb614fa9ae)
++++ b/out/production/g6SEP2/SEP2/SEP2/.idea/misc.xml	(date 1778568253061)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="liberica-21" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" default="true" project-jdk-name="liberica-full-26" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: src/Persistence/DatabaseConnection.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Persistence/DatabaseConnection.java b/src/Persistence/DatabaseConnection.java
+new file mode 100644
+--- /dev/null	(date 1778568253096)
++++ b/src/Persistence/DatabaseConnection.java	(date 1778568253096)
+@@ -0,0 +1,19 @@
++package SEP2.SEP2.src.Persistence;
++
++import java.sql.Connection;
++import java.sql.DriverManager;
++import java.sql.SQLException;
++
++public class DatabaseConnection
++{
++  private static final String url=   "jdbc:postgresql://localhost:5432/roomrental";
++  private static final String user= "postgres";
++  private static final String password="sonim";
++
++  public static Connection getConnection() throws SQLException
++  {
++    return DriverManager.getConnection(
++        url,user,password
++    );
++  }
++}
+Index: src/Persistence/ClientDAO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Persistence/ClientDAO.java b/src/Persistence/ClientDAO.java
+new file mode 100644
+--- /dev/null	(date 1778568253095)
++++ b/src/Persistence/ClientDAO.java	(date 1778568253095)
+@@ -0,0 +1,66 @@
++package SEP2.SEP2.src.Persistence;
++
++import SEP2.SEP2.src.Model.Client;
++
++import java.sql.Connection;
++import java.sql.PreparedStatement;
++import java.sql.SQLException;
++
++public class ClientDAO
++{
++  public void CreateClient(Client client){
++    try{
++      Connection connection= DatabaseConnection.getConnection();
++      String sql= """
++          Insert into client(firstName, lastName,
++           email, phoneNumber,
++            username, password,
++             dateOfBirth, gender,
++              nationality)
++              values (?,?,?,?,?,?,?,?,?)
++          """;
++      PreparedStatement statement=connection.prepareStatement(sql);
++      statement.setString(1,client.getFirstName());
++      statement.setString(
++          2,
++          client.getLastName());
++      statement.setString(
++          3,
++          client.getEmail());
++
++      statement.setString(
++          4,
++          String.valueOf(
++              client.getPhoneNumber()));
++
++      statement.setString(
++          5,
++          client.getUser()
++              .getUsername());
++
++      statement.setString(
++          6,
++          client.getUser()
++              .getPassword());
++
++      statement.setDate(
++          7,
++          java.sql.Date.valueOf(
++              client.getDOB()));
++
++      statement.setString(
++          8,
++          client.getGender());
++
++      statement.setString(
++          9,
++          client.getNationality());
++      statement.executeUpdate();
++      connection.close();
++    }
++    catch (SQLException e)
++    {
++      throw new RuntimeException(e);
++    }
++  }
++}
+Index: .idea/libraries/postgresql_42_7_10.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/postgresql_42_7_10.xml b/.idea/libraries/postgresql_42_7_10.xml
+new file mode 100644
+--- /dev/null	(date 1778568253056)
++++ b/.idea/libraries/postgresql_42_7_10.xml	(date 1778568253056)
+@@ -0,0 +1,9 @@
++<component name="libraryTable">
++  <library name="postgresql-42.7.10">
++    <CLASSES>
++      <root url="jar://$USER_HOME$/Downloads/postgresql-42.7.10.jar!/" />
++    </CLASSES>
++    <JAVADOC />
++    <SOURCES />
++  </library>
++</component>
+\ No newline at end of file
+Index: src/Persistence/Test.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Persistence/Test.java b/src/Persistence/Test.java
+new file mode 100644
+--- /dev/null	(date 1778568253097)
++++ b/src/Persistence/Test.java	(date 1778568253097)
+@@ -0,0 +1,24 @@
++package SEP2.SEP2.src.Persistence;
++
++import java.sql.Connection;
++
++public class Test
++{
++  public static void main(String[] args)
++  {
++    try
++    {
++      Connection connection =
++          DatabaseConnection.getConnection();
++
++      System.out.println(
++          "Connected successfully!");
++
++      connection.close();
++    }
++    catch(Exception e)
++    {
++      e.printStackTrace();
++    }
++  }
++}

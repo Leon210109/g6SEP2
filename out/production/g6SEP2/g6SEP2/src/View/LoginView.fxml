@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="View.LoginController"
+           style="-fx-background-color: #F5F0E8;">
+
+    <!-- Centred card -->
+    <VBox spacing="28" alignment="CENTER_LEFT" maxWidth="480"
+          style="-fx-background-color: #EDE8DC;
+                 -fx-background-radius: 10;
+                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 14, 0, 0, 4);">
+        <padding>
+            <Insets top="60" right="70" bottom="60" left="70"/>
+        </padding>
+
+        <!-- Title -->
+        <Text text="Booking via VIA"
+              style="-fx-fill: #143D29;
+                     -fx-font-family: 'Palatino Linotype';
+                     -fx-font-size: 52px;
+                     -fx-font-weight: bold;
+                     -fx-font-style: italic;"/>
+
+        <!-- Subtitle -->
+        <Text text="Sign in to your account"
+              style="-fx-fill: #1A5F3F;
+                     -fx-font-family: 'Cambria';
+                     -fx-font-size: 20px;"/>
+
+        <!-- Username field -->
+        <VBox spacing="6">
+            <Label text="Username" styleClass="field-label"/>
+            <TextField fx:id="usernameField" promptText="Enter your username"
+                       maxWidth="Infinity"/>
+        </VBox>
+
+        <!-- Password field -->
+        <VBox spacing="6">
+            <Label text="Password" styleClass="field-label"/>
+            <PasswordField fx:id="passwordField" promptText="Enter your password"
+                           maxWidth="Infinity"/>
+        </VBox>
+
+        <!-- Error message label -->
+        <Label fx:id="errorLabel" wrapText="true" maxWidth="Infinity"
+               style="-fx-text-fill: #B71C1C; 
+                      -fx-font-family: 'Cambria'; 
+                      -fx-font-size: 13px;
+                      -fx-padding: 4 0;"
+               visible="false" managed="false"/>
+
+        <!-- Register / Login buttons -->
+        <HBox spacing="14" alignment="CENTER_RIGHT">
+            <Button text="Register" onAction="#handleRegister"
+                    styleClass="btn-secondary"/>
+            <Button text="Login" onAction="#handleLogin"
+                    styleClass="btn-primary"/>
+        </HBox>
+    </VBox>
+
+    <!-- Admin Access button (bottom-right) -->
+    <Button fx:id="adminAccessBtn" text="Admin Access ›"
+            onAction="#handleAdminAccess"
+            styleClass="admin-access-btn">
+        <StackPane.alignment>BOTTOM_RIGHT</StackPane.alignment>
+        <StackPane.margin>
+            <Insets bottom="22" right="26"/>
+        </StackPane.margin>
+    </Button>
+
+    <!-- ESC hint (top-right) -->
+    <Label text="Press ESC to exit fullscreen"
+           style="-fx-text-fill: #8B7355; -fx-padding: 15px;
+                  -fx-font-family: 'Cambria'; -fx-font-size: 14px;">
+        <StackPane.alignment>TOP_RIGHT</StackPane.alignment>
+    </Label>
+
+</StackPane>
+

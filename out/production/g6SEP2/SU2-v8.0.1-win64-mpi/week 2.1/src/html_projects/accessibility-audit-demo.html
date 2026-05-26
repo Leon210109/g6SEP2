@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessibility Audit Demonstration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #f5f5f5;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+
+        .header h1 {
+            margin-bottom: 10px;
+        }
+
+        .audit-guide {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .audit-guide h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .audit-guide h3 {
+            color: #34495e;
+            margin: 20px 0 10px 0;
+        }
+
+        .audit-guide ol, .audit-guide ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        .audit-guide li {
+            margin-bottom: 8px;
+        }
+
+        .code-block {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .example-section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .example-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .bad-example {
+            border-left: 4px solid #e74c3c;
+            background: #ffe6e6;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .good-example {
+            border-left: 4px solid #27ae60;
+            background: #e6ffe6;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .issue-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .critical {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .serious {
+            background: #e67e22;
+            color: white;
+        }
+
+        .moderate {
+            background: #f39c12;
+            color: white;
+        }
+
+        .minor {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .success {
+            background: #27ae60;
+            color: white;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        button:focus {
+            outline: 3px solid #f39c12;
+            outline-offset: 2px;
+        }
+
+        input, textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input:focus, textarea:focus {
+            outline: 2px solid #3498db;
+            border-color: #3498db;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #000;
+            color: #fff;
+            padding: 8px;
+            text-decoration: none;
+            z-index: 100;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        .results-panel {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
+        .wcag-level {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .level-a {
+            background: #3498db;
+            color: white;
+        }
+
+        .level-aa {
+            background: #27ae60;
+            color: white;
+        }
+
+        .level-aaa {
+            background: #9b59b6;
+            color: white;
+        }
+
+        /* Visually hidden but accessible to screen readers */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <div class="header">
+        <h1>🔍 Accessibility Audit Demonstration</h1>
+        <p>Learn how to conduct accessibility audits and interpret results</p>
+    </div>
+
+    <main id="main-content">
+        <!-- ========== AUDIT GUIDE ========== -->
+        <section class="audit-guide">
+            <h2>📋 How to Conduct an Accessibility Audit</h2>
+            
+            <h3>Step 1: Automated Testing Tools</h3>
+            <ol>
+                <li><strong>Chrome Lighthouse:</strong>
+                    <ul>
+                        <li>Open Chrome DevTools (F12 or Right-click → Inspect)</li>
+                        <li>Click "Lighthouse" tab</li>
+                        <li>Check "Accessibility" category</li>
+                        <li>Click "Generate report"</li>
+                        <li>Review score (0-100) and issues found</li>
+                    </ul>
+                </li>
+                <li><strong>axe DevTools:</strong>
+                    <ul>
+                        <li>Install axe DevTools browser extension</li>
+                        <li>Open DevTools and find "axe DevTools" tab</li>
+                        <li>Click "Scan ALL of my page"</li>
+                        <li>Review issues categorized by severity</li>
+                    </ul>
+                </li>
+                <li><strong>WAVE (Web Accessibility Evaluation Tool):</strong>
+                    <ul>
+                        <li>Install WAVE browser extension</li>
+                        <li>Click extension icon on any page</li>
+                        <li>View visual overlay showing errors, alerts, and features</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3>Step 2: Manual Testing</h3>
+            <ol>
+                <li><strong>Keyboard Navigation:</strong> Try navigating the entire page using only Tab, Shift+Tab, Enter, Space, and Arrow keys</li>
+                <li><strong>Screen Reader:</strong> Test with NVDA (Windows), JAWS (Windows), or VoiceOver (Mac)</li>
+                <li><strong>Color Contrast:</strong> Check text has sufficient contrast (4.5:1 for normal text, 3:1 for large text)</li>
+                <li><strong>Zoom Testing:</strong> Zoom to 200% and verify layout doesn't break</li>
+                <li><strong>Focus Indicators:</strong> Ensure all interactive elements show visible focus</li>
+            </ol>
+
+            <h3>Step 3: Interpreting Results</h3>
+            <div class="code-block">
+<strong>Severity Levels:</strong>
+• <span style="color: #e74c3c;">CRITICAL</span> - Blocks users completely (e.g., no alt text on images, form without labels)
+• <span style="color: #e67e22;">SERIOUS</span> - Major barriers (e.g., poor color contrast, missing ARIA labels)
+• <span style="color: #f39c12;">MODERATE</span> - Significant obstacles (e.g., missing skip links, redundant links)
+• <span style="color: #95a5a6;">MINOR</span> - Annoying but not blocking (e.g., missing lang attribute on inline elements)
+
+<strong>WCAG Conformance Levels:</strong>
+• <span style="color: #3498db;">Level A</span> - Basic accessibility (minimum requirement)
+• <span style="color: #27ae60;">Level AA</span> - Industry standard (most legislation requires this)
+• <span style="color: #9b59b6;">Level AAA</span> - Enhanced accessibility (highest level)
+            </div>
+
+            <h3>Step 4: Prioritize Fixes</h3>
+            <ol>
+                <li>Fix all CRITICAL issues first (these completely block users)</li>
+                <li>Address SERIOUS issues (major barriers to access)</li>
+                <li>Tackle MODERATE issues (improve overall experience)</li>
+                <li>Polish with MINOR fixes (achieve excellence)</li>
+            </ol>
+        </section>
+
+        <!-- ========== COMMON ISSUES EXAMPLES ========== -->
+        <section class="example-section">
+            <h2>🚫 Common Accessibility Issues & How to Fix Them</h2>
+
+            <!-- Issue 1: Missing Alt Text -->
+            <div class="bad-example">
+                <span class="issue-badge critical">CRITICAL</span>
+                <h3>❌ Issue: Missing Alternative Text</h3>
+                <p><strong>What the audit says:</strong> "Images must have alternate text" (WCAG 1.1.1, Level A)</p>
+                <p><strong>Why it matters:</strong> Screen reader users cannot perceive the image content</p>
+                <img src="https://via.placeholder.com/150" width="150" height="150">
+                <div class="code-block">
+&lt;!-- BAD: No alt attribute --&gt;
+&lt;img src="logo.png"&gt;
+                </div>
+            </div>
+
+            <div class="good-example">
+                <span class="issue-badge success">✓ FIXED</span>
+                <h3>✅ Fixed: Descriptive Alt Text</h3>
+                <p><strong>The fix:</strong> Add meaningful alt text describing the image purpose</p>
+                <img src="https://via.placeholder.com/150" alt="Company logo featuring a blue shield with white text" width="150" height="150">
+                <div class="code-block">
+&lt;!-- GOOD: Descriptive alt text --&gt;
+&lt;img src="logo.png" alt="Company logo featuring a blue shield"&gt;
+
+&lt;!-- GOOD: Decorative images --&gt;
+&lt;img src="decoration.png" alt="" role="presentation"&gt;
+                </div>
+            </div>
+
+            <!-- Issue 2: Missing Form Labels -->
+            <div class="bad-example">
+                <span class="issue-badge critical">CRITICAL</span>
+                <h3>❌ Issue: Form Inputs Without Labels</h3>
+                <p><strong>What the audit says:</strong> "Form elements must have labels" (WCAG 3.3.2, Level A)</p>
+                <p><strong>Why it matters:</strong> Screen readers can't announce what the input is for</p>
+                <div class="form-group">
+                    <input type="text" placeholder="Enter your name">
+                    <input type="email" placeholder="Enter your email">
+                </div>
+                <div class="code-block">
+&lt;!-- BAD: Relying only on placeholder --&gt;
+&lt;input type="text" placeholder="Enter your name"&gt;
+                </div>
+            </div>
+
+            <div class="good-example">
+                <span class="issue-badge success">✓ FIXED</span>
+                <h3>✅ Fixed: Properly Associated Labels</h3>
+                <p><strong>The fix:</strong> Use label elements with for/id association</p>
+                <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email Address:</label>
+                    <input type="email" id="userEmail" name="userEmail" placeholder="Enter your email">
+                </div>
+                <div class="code-block">
+&lt;!-- GOOD: Explicit label association --&gt;
+&lt;label for="fullName"&gt;Full Name:&lt;/label&gt;
+&lt;input type="text" id="fullName" name="fullName"&gt;
+                </div>
+            </div>
+
+            <!-- Issue 3: Poor Color Contrast -->
+            <div class="bad-example">
+                <span class="issue-badge serious">SERIOUS</span>
+                <h3>❌ Issue: Insufficient Color Contrast</h3>
+                <p><strong>What the audit says:</strong> "Text must have sufficient color contrast" (WCAG 1.4.3, Level AA)</p>
+                <p><strong>Why it matters:</strong> Low vision users and users in bright environments can't read the text</p>
+                <p style="color: #999; background: #ddd; padding: 10px;">
+                    This text has poor contrast (2.3:1 ratio) - hard to read!
+                </p>
+                <div class="code-block">
+/* BAD: Contrast ratio 2.3:1 (needs 4.5:1) */
+color: #999;
+background: #ddd;
+                </div>
+            </div>
+
+            <div class="good-example">
+                <span class="issue-badge success">✓ FIXED</span>
+                <h3>✅ Fixed: Sufficient Contrast Ratio</h3>
+                <p><strong>The fix:</strong> Use darker text color to achieve 4.5:1 contrast minimum</p>
+                <p style="color: #333; background: #ddd; padding: 10px;">
+                    This text has good contrast (10.8:1 ratio) - easy to read!
+                </p>
+                <div class="code-block">
+/* GOOD: Contrast ratio 10.8:1 (exceeds 4.5:1) */
+color: #333;
+background: #ddd;
+
+/* Check contrast at: https://webaim.org/resources/contrastchecker/ */
+                </div>
+            </div>
+
+            <!-- Issue 4: Non-Descriptive Link Text -->
+            <div class="bad-example">
+                <span class="issue-badge moderate">MODERATE</span>
+                <h3>❌ Issue: Non-Descriptive Link Text</h3>
+                <p><strong>What the audit says:</strong> "Links must have discernible text" (WCAG 2.4.4, Level A)</p>
+                <p><strong>Why it matters:</strong> Screen reader users often navigate by links - "click here" doesn't help</p>
+                <p>To learn more about accessibility, <a href="#">click here</a>.</p>
+                <div class="code-block">
+&lt;!-- BAD: Generic link text --&gt;
+&lt;a href="#"&gt;click here&lt;/a&gt;
+&lt;a href="#"&gt;read more&lt;/a&gt;
+                </div>
+            </div>
+
+            <div class="good-example">
+                <span class="issue-badge success">✓ FIXED</span>
+                <h3>✅ Fixed: Descriptive Link Text</h3>
+                <p><strong>The fix:</strong> Make link text describe the destination or action</p>
+                <p><a href="#">Learn more about web accessibility guidelines</a></p>
+                <div class="code-block">
+&lt;!-- GOOD: Descriptive link text --&gt;
+&lt;a href="#"&gt;Learn more about web accessibility guidelines&lt;/a&gt;
+&lt;a href="#"&gt;Download the accessibility checklist (PDF)&lt;/a&gt;
+                </div>
+            </div>
+
+            <!-- Issue 5: Missing Skip Link -->
+            <div class="bad-example">
+                <span class="issue-badge moderate">MODERATE</span>
+                <h3>❌ Issue: No Skip Navigation Link</h3>
+                <p><strong>What the audit says:</strong> "Bypass blocks: A mechanism is available" (WCAG 2.4.1, Level A)</p>
+                <p><strong>Why it matters:</strong> Keyboard users must tab through entire navigation on every page</p>
+                <div class="code-block">
+&lt;!-- BAD: No way to skip repetitive content --&gt;
+&lt;body&gt;
+  &lt;nav&gt;...30 navigation links...&lt;/nav&gt;
+  &lt;main&gt;...main content...&lt;/main&gt;
+&lt;/body&gt;
+                </div>
+            </div>
+
+            <div class="good-example">
+                <span class="issue-badge success">✓ FIXED</span>
+                <h3>✅ Fixed: Skip to Main Content Link</h3>
+                <p><strong>The fix:</strong> Add a skip link at the top (this page has one - try pressing Tab!)</p>
+                <div class="code-block">
+&lt;!-- GOOD: Skip link appears on focus --&gt;
+&lt;a href="#main-content" class="skip-link"&gt;Skip to main content&lt;/a&gt;
+
+&lt;style&gt;
+.skip-link {
+  position: absolute;
+  top: -40px;
+  /* Visible when focused */
+}
+.skip-link:focus {
+  top: 0;
+}
+&lt;/style&gt;
+                </div>
+            </div>
+
+            <!-- Issue 6: Missing ARIA Labels for Icons -->
+            <div class="bad-example">
+                <span class="issue-badge serious">SERIOUS</span>
+                <h3>❌ Issue: Icon-Only Buttons Without Labels</h3>
+                <p><strong>What the audit says:</strong> "Buttons must have discernible text" (WCAG 4.1.2, Level A)</p>
+                <p><strong>Why it matters:</strong> Screen readers announce "button" but don't know what it does</p>
+                <button title="Settings">⚙️</button>
+                <button title="Delete">🗑️</button>
+                <div class="code-block">
+&lt;!-- BAD: Only has title (not read by screen readers by default) --&gt;
+&lt;button title="Settings"&gt;⚙️&lt;/button&gt;
+                </div>
+            </div>
+
+            <div class="good-example">
+                <span class="issue-badge success">✓ FIXED</span>
+                <h3>✅ Fixed: Accessible Icon Buttons</h3>
+                <p><strong>The fix:</strong> Add aria-label or visually hidden text</p>
+                <button aria-label="Settings">⚙️</button>
+                <button aria-label="Delete item">🗑️</button>
+                <button>
+                    🏠 <span class="sr-only">Go to homepage</span>
+                </button>
+                <div class="code-block">
+&lt;!-- GOOD: aria-label provides accessible name --&gt;
+&lt;button aria-label="Settings"&gt;⚙️&lt;/button&gt;
+
+&lt;!-- GOOD: Visually hidden text --&gt;
+&lt;button&gt;
+  🏠 &lt;span class="sr-only"&gt;Go to homepage&lt;/span&gt;
+&lt;/button&gt;
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== INTERACTIVE AUDIT TOOL ========== -->
+        <section class="example-section">
+            <h2>🛠️ Try It Yourself: Keyboard Navigation Test</h2>
+            <p>Press Tab to navigate through these elements. All should be accessible and show clear focus indicators:</p>
+            
+            <div style="margin: 20px 0;">
+                <button>Button 1</button>
+                <button>Button 2</button>
+                <a href="#" onclick="return false;">Link 1</a>
+                <input type="text" placeholder="Text input" aria-label="Sample text input">
+                <button>Button 3</button>
+            </div>
+
+            <div class="results-panel">
+                <h3>✅ Keyboard Navigation Checklist:</h3>
+                <ul>
+                    <li>Can you reach all interactive elements using Tab?</li>
+                    <li>Is there a visible focus indicator (outline or highlight)?</li>
+                    <li>Is the tab order logical (follows visual order)?</li>
+                    <li>Can you activate buttons/links with Enter or Space?</li>
+                    <li>Can you escape modals/dialogs with Escape key?</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ========== AUDIT REPORT INTERPRETATION ========== -->
+        <section class="example-section">
+            <h2>📊 Sample Audit Report Interpretation</h2>
+            
+            <h3>Typical Lighthouse Report Findings:</h3>
+            
+            <div class="code-block">
+<strong>Accessibility Score: 78/100</strong>
+
+Issues Found:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔴 [CRITICAL] Image elements do not have [alt] attributes
+   ↳ 5 images affected
+   ↳ Impact: Screen readers cannot describe images
+   ↳ Fix: Add alt="description" to all images
+   ↳ WCAG: 1.1.1 (Level A)
+
+🟠 [SERIOUS] Form elements do not have associated labels  
+   ↳ 3 inputs affected
+   ↳ Impact: Screen readers cannot identify input purpose
+   ↳ Fix: Add &lt;label for="id"&gt; elements
+   ↳ WCAG: 3.3.2 (Level A)
+
+🟡 [MODERATE] Links do not have a discernible name
+   ↳ 2 links affected  
+   ↳ Impact: "Read more" links are ambiguous
+   ↳ Fix: Use descriptive link text
+   ↳ WCAG: 2.4.4 (Level A)
+
+⚪ [MINOR] Document does not have a main landmark
+   ↳ Impact: Screen reader users can't skip to main content
+   ↳ Fix: Wrap content in &lt;main&gt; element
+   ↳ WCAG: 2.4.1 (Level A)
+
+✅ [PASSED] Color contrast is sufficient (15 elements)
+✅ [PASSED] Heading elements are in sequentially-descending order
+✅ [PASSED] All interactive elements have focus indicators
+            </div>
+
+            <h3>How to Interpret This:</h3>
+            <ul>
+                <li><strong>Score 78/100:</strong> Needs improvement. Aim for 90+ (excellent) or 100 (perfect)</li>
+                <li><strong>5 Critical Issues:</strong> Must fix immediately - these block users completely</li>
+                <li><strong>Priority Order:</strong> Fix red → orange → yellow → gray</li>
+                <li><strong>WCAG Levels:</strong> All issues shown are Level A (basic compliance) - must fix these to meet minimum standards</li>
+                <li><strong>Quick Wins:</strong> Adding alt text and labels are fast fixes with huge impact</li>
+            </ul>
+
+            <h3>After Fixes - Improved Report:</h3>
+            <div class="code-block">
+<strong>Accessibility Score: 100/100 ✨</strong>
+
+All automated checks passed! ✅
+
+Manual testing still recommended:
+• Keyboard navigation
+• Screen reader testing  
+• Color blindness simulation
+• Mobile accessibility
+            </div>
+        </section>
+
+        <!-- ========== BEST PRACTICES ========== -->
+        <section class="audit-guide">
+            <h2>🎯 Accessibility Best Practices Summary</h2>
+            
+            <div class="good-example">
+                <h3>✅ Always Do:</h3>
+                <ul>
+                    <li>Provide alt text for all meaningful images</li>
+                    <li>Associate labels with all form inputs</li>
+                    <li>Ensure 4.5:1 color contrast for normal text</li>
+                    <li>Make all functionality keyboard accessible</li>
+                    <li>Use semantic HTML (&lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;footer&gt;)</li>
+                    <li>Provide visible focus indicators</li>
+                    <li>Use descriptive link text</li>
+                    <li>Test with keyboard and screen readers</li>
+                    <li>Include skip navigation links</li>
+                    <li>Ensure proper heading hierarchy (h1, h2, h3...)</li>
+                </ul>
+            </div>
+
+            <div class="bad-example">
+                <h3>❌ Never Do:</h3>
+                <ul>
+                    <li>Remove focus outlines without providing alternative</li>
+                    <li>Use color alone to convey information</li>
+                    <li>Create keyboard traps (can't escape with keyboard)</li>
+                    <li>Use placeholder as the only label</li>
+                    <li>Hide content from screen readers unless purely decorative</li>
+                    <li>Have flashing content faster than 3 times per second</li>
+                    <li>Use "click here" or "read more" as link text</li>
+                    <li>Disable zoom on mobile</li>
+                    <li>Rely solely on automated testing</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ========== RESOURCES ========== -->
+        <section class="audit-guide">
+            <h2>📚 Helpful Resources</h2>
+            
+            <h3>Testing Tools:</h3>
+            <ul>
+                <li><strong>Chrome Lighthouse:</strong> Built into Chrome DevTools</li>
+                <li><strong>axe DevTools:</strong> https://www.deque.com/axe/devtools/</li>
+                <li><strong>WAVE:</strong> https://wave.webaim.org/extension/</li>
+                <li><strong>Contrast Checker:</strong> https://webaim.org/resources/contrastchecker/</li>
+                <li><strong>Screen Readers:</strong> NVDA (free), JAWS, VoiceOver (Mac/iOS built-in)</li>
+            </ul>
+
+            <h3>Guidelines & Documentation:</h3>
+            <ul>
+                <li><strong>WCAG 2.1 Guidelines:</strong> https://www.w3.org/WAI/WCAG21/quickref/</li>
+                <li><strong>WebAIM:</strong> https://webaim.org/</li>
+                <li><strong>A11y Project:</strong> https://www.a11yproject.com/</li>
+                <li><strong>MDN Accessibility:</strong> https://developer.mozilla.org/en-US/docs/Web/Accessibility</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer style="text-align: center; padding: 20px; color: #666; margin-top: 40px;">
+        <p>💡 Remember: Automated tools catch ~30-40% of issues. Manual testing is essential!</p>
+    </footer>
+</body>
+</html>

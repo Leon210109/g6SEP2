@@ -1,0 +1,16 @@
+Summary Table
+Pros	                Cons
+Fast development	    Runtime type errors
+Flexible & expressive	Unexpected coercion
+Beginner-friendly	    Harder to scale
+Adapts to dynamic data	Weaker static guarantees
+
+Block elements respect:
+width
+height
+margin
+padding (all directions)
+Inline elements:
+Ignore width/height settings
+Respect horizontal padding/margin
+Vertical margin/padding behaves inconsistently

@@ -22,7 +22,7 @@ public class DatabaseDiagnostic {
     
     private static void printSettings() {
         System.out.println("Current Database Settings:");
-        System.out.println("  URL: jdbc:postgresql://localhost:5432/roomrental");
+        System.out.println("  URL: jdbc:postgresql://192.168.1.107:5432/roomrental");
         System.out.println("  Database: roomrental");
         System.out.println("  Schema: sep2");
         System.out.println("  User: postgres");

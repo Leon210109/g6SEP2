@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/src/mvvm_excercises/viewmodel/SimpleExerciseViewModel.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/src/mvvm_excercises/viewmodel/SimpleExerciseViewModel.java" />
+              <option name="updatedContent" value="package mvvm_excercises.viewmodel;&#10;&#10;import javafx.beans.property.ObjectProperty;&#10;import javafx.beans.property.SimpleObjectProperty;&#10;import javafx.beans.property.SimpleStringProperty;&#10;import javafx.beans.property.StringProperty;&#10;&#10;/**&#10; * Represents a single row in the exercises table.&#10; */&#10;public class SimpleExerciseViewModel {&#10;&#10;    private final StringProperty number    = new SimpleStringProperty();&#10;    private final StringProperty topic     = new SimpleStringProperty();&#10;    private final ObjectProperty&lt;Boolean&gt; completed = new SimpleObjectProperty&lt;&gt;();&#10;&#10;    public SimpleExerciseViewModel(String number, String topic, boolean completed) {&#10;        this.number.set(number);&#10;        this.topic.set(topic);&#10;        this.completed.set(completed);&#10;    }&#10;&#10;    public StringProperty getNumberProperty()          { return number; }&#10;    public StringProperty getTopicProperty()           { return topic; }&#10;    public ObjectProperty&lt;Boolean&gt; getCompletedProperty() { return completed; }&#10;&#10;    public String getNumber()    { return number.get(); }&#10;    public String getTopic()     { return topic.get(); }&#10;    public Boolean isCompleted() { return completed.get(); }&#10;&#10;    public void setNumber(String number)       { this.number.set(number); }&#10;    public void setTopic(String topic)         { this.topic.set(topic); }&#10;    public void setCompleted(boolean completed){ this.completed.set(completed); }&#10;}&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

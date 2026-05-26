@@ -1,0 +1,115 @@
+*{font-family: Arial,serif;}
+html{background-color: gray;background-image: linear-gradient(to top, rgba(54, 98, 218, 0.432),#1ad9eb52);min-height: 1200px;}
+.site-header {
+    text-align: center;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+}
+.site-logo {
+    display: block;
+    margin: 0 auto 1rem;
+    max-width: 150px;
+    height: auto;
+}
+.rounded{
+    padding: 2rem;
+    margin: 2rem auto;
+    border-radius: 10px;
+    background-image: linear-gradient(to right, rgba(54, 98, 218, 0.432),#1ad9eb52);
+    max-width: 90%;
+    width: 100%;
+    box-sizing: border-box;
+}
+.grid-three-column
+{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    
+}
+
+/* ========== FLEXBOX SECTION START: Field Container ========== */
+.field
+{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    cursor: pointer;
+    width: 100%;
+}
+/* ========== FLEXBOX SECTION END: Field Container ========== */
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="date"] {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-top: 5px;
+    width: 100%;
+}
+
+input:invalid {
+    border-color: #ff0000;
+}
+
+.error-message {
+    display: none;
+    color: #ff0000;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+input:invalid + .error-message {
+    display: block;
+}
+
+label {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.emailCheck{padding: 1%;}
+
+.button
+{
+  border: 0;
+  padding: .75rem 1rem;
+  border-radius: .75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+/* ========== FLEXBOX SECTION START: Actions Container ========== */
+.actions
+{
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    margin-top: 5px;
+
+}
+/* ========== FLEXBOX SECTION END: Actions Container ========== */
+
+/* the hidden steps for the radio button navigation */
+
+/* hides steps by default*/
+.step 
+{
+    display: none;
+}
+
+/* Show Step 1 when #slide1 is checked */
+body:has(#slide1:checked) .step-1 {
+  display: block;
+  opacity: 1;
+  transform: none;
+}
+
+/* Show Step 2 when #slide2 is checked */
+body:has(#slide2:checked) .step-2 {
+  display: block;
+  opacity: 1;
+  transform: none;
+}

@@ -1,0 +1,27 @@
+.root{
+<<<<<<< HEAD
+<<<<<<< HEAD
+    -fx-background-color:linear-gradient(from 0px 0px to 0px 45px, rgb(35, 139, 44), rgb(29, 99, 22) 50%, rgb(72, 180, 81) 99%, rgb(34, 97, 44));
+=======
+    -fx-background-color:linear-gradient(from 0px 0px to 0px 45px, rgb(45, 126, 52), rgb(39, 110, 33) 50%, rgb(39, 110, 33) 99%, rgb(45, 126, 52));
+>>>>>>> 5be4d1c3361ad7ca07b55cce59bedb51567fcde0
+=======
+    -fx-background-color:linear-gradient(from 0px 0px to 0px 45px, rgb(115, 221, 74), rgb(120, 202, 88)50%, rgb(61, 153, 33)99%, rgb(116, 189, 87));
+>>>>>>> 5ddce2b9b5d8ae4b4888a815c1f30aaedfeec26b
+
+    /* -fx-background:#ccffff; */
+
+}
+.button{
+    -fx-text-fill:#000000
+    
+}
+.red-border{
+    -fx-border-color: red; 
+    -fx-border-width: 1px;
+    /* -fx-color:rgb(255, 231, 231); */
+}
+.title{
+    -fx-padding:5 0 7 20;
+    -fx-font-weight:bold;
+}

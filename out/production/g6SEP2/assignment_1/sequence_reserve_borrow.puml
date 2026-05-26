@@ -1,0 +1,29 @@
+@startuml
+title Reserve -> Borrow sequence (simplified)
+
+actor User
+participant View as "ManageView (Controller)"
+participant VM as "ViewModel (AppVM)"
+participant Model as "ModelManager"
+participant Vinyl as "Vinyl"
+
+User -> View : click Reserve
+View -> VM : reserveVinyl(vinyl, userName)
+VM -> Model : reserve(vinyl, userName)
+Model -> Vinyl : setReservedBy(userName)
+Model -> Vinyl : reserveVinyl()
+Model -> VM : notify vinylUpdated
+VM -> View : ObservableList updated (UI refresh)
+
+User -> View : click Borrow
+View -> VM : borrowVinyl(vinyl, userName)
+VM -> Model : borrow(vinyl, userName)
+Model -> Vinyl : setBorrowedBy(userName)
+Model -> Vinyl : borrowVinyl()
+Model -> VM : notify vinylUpdated
+VM -> View : ObservableList updated (UI refresh)
+
+note over Vinyl: State changes from
+Reserved -> Borrowed (as implemented)
+@enduml
+

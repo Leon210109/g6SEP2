@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="icon" type="image/x-icon" href="/images/logoicon.png">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Lone wolf nation creation</title>
+  <link rel="stylesheet" href="assignment_2.css">
+</head>
+<body>
+
+
+  <!-- radio buttoms to show which slide you are on-->
+<header class="site-header">
+  <img src="images/logoicon.png" alt="Lone Wolf Logo" class="site-logo">
+  <h1>Join LoneWolfesAlphaNation</h1>
+  <p class="subtitle">Create your account.</p>
+  <input type="radio" name="step" id="slide1" class ="visually-hidden" checked> 
+  <input type="radio" name="step" id="slide2" class ="visually-hidden">
+
+
+</header>
+<main>
+
+
+
+<!-- section for the first slide with personal info-->
+<section class="rounded step step-1" id="step1">
+  <!--rounded for pretty, and step to refer to the radio object, and step-1 to later use it in css to show slide1-->
+  <h2 class="step-title">Personal Information</h2>
+  <p>Fields marked with * are required.</p>
+  <!--visual for now(Changeable)-->
+
+  <div class="grid-three-column rounded field">
+<!--make it pretty-->
+    <label for ="firstname"> Firstname *</label>
+    <input type="text" id="firstname" name = "firstname" placeholder ="Enter your firstname" required>
+    <span class="error-message" id="firstname-error">First name is required</span>
+    <label for ="middlename"> Middlename </label>
+    <input type="text" id="middlename" name="middlename" placeholder="Enter your Middlename">
+    <label for="lastname">Lastname * </label>
+    <input type="text" id="lastname" name="lastname" placeholder="Enter your Lastname" required>
+    <span class="error-message" id="lastname-error">Last name is required</span>
+    </div>
+
+    <!-- ========== DATE OF BIRTH API SECTION START ========== -->
+    <!-- Using HTML5 date input type which provides a native date picker -->
+    <!-- The browser's built-in date API handles date selection, validation, and formatting -->
+    <div class="rounded field">
+      <div class="field">
+        <label for="dob">Date of Birth *</label>
+        <input type="date" id="dob" name="dob" required>
+        <span class="error-message" id="dob-error">Date of birth is required</span>
+      </div>
+    </div>
+    <!-- ========== DATE OF BIRTH API SECTION END ========== -->
+    
+    <div class="grid rounded field">
+      <label for ="email"> Email *</label>
+      <input type="email" id="email" name="email" placeholder="Enter your e-mail" required>
+      <span class="error-message" id="email-error">Valid email is required</span>
+      <label for="emailCheck">emailCheck</label>
+      <input type="checkbox" id="emailCheck" name="emailCheck" placeholder="this is my email">
+      <!-- Align checkbox to left and text next saying "this is my email 👍" -->
+      
+    </div>
+    
+    
+  </div>
+    
+<!--the next button, with id to change in css and useable for screen readers-->
+<div class="actions">
+  <!--actions makes it go to the right-->
+  <label class="button" for="slide2" aria-label="button for step 2">Next</lable>
+    <!--button makes it clickable-->
+</div>
+</section>
+<!-- section for the second slide with security info-->
+<section class="rounded step step-2" id="step2">
+  <h2 class="step2-title">Security Information</h2>
+
+  <div class="field">
+          <label for="password">Password * (minimum 8 characters)</label>
+          <input id="password" name="password" type="password"
+                 minlength="8"
+                 oninvalid="this.setCustomValidity('Password must be at least 8 characters long')"
+                 oninput="this.setCustomValidity('')"
+                 required>
+          <span class="error-message">Password must be at least 8 characters long</span>
+        </div>
+
+  <div class="field">
+          <label for="confirmPassword">Confirm password *</label>
+          <input id="confirmPassword" name="confirmPassword" type="password"
+                 minlength="8"
+                 title="Re-enter the same password."
+                 autocomplete="new-password" required>
+          <small>Please confirm your password.</small>
+        </div>
+      </div>
+      <div class="actions">
+        <!--working bakc button and fake Submit for now(Make external page that welcomes you into LoneWolfesAlphaNation) 
+        lebron james picture-->
+        <label class="button" for="slide1" aria-label="button for step 1">Back</label>
+        <button type="submit" class="button">Submit</button>
+      </div>
+</section>
+</main>

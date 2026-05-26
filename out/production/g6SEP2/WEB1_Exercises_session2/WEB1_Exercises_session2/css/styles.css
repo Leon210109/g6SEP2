@@ -1,0 +1,24 @@
+* {
+  font-size: 1.2em;
+}
+
+body {
+    background-color: skyblue;
+}
+
+h1 {
+    color: #ff0000;
+    font-family: "Broadway", monospace;
+}
+
+h1 {
+    color: #0000FF !important;
+}
+
+#header {
+    color: #00FF00;
+}
+
+li {
+    font-size: 0.7em;
+}

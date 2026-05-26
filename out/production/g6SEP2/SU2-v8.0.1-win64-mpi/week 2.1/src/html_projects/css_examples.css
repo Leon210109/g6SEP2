@@ -1,0 +1,2733 @@
+/* Basic media querie */
+@media (max-width: 768px) {
+  body {
+    background-color: lightblue;
+  }
+}
+
+
+
+/* Mobile */
+@media (max-width: 480px) { }
+
+/* Tablet */
+@media (max-width: 768px) { }
+
+/* Laptop */
+@media (max-width: 1024px) { }
+
+/* Desktop */
+@media (min-width: 1200px) { }
+
+
+/* ============================================ */
+/* ===== CSS PSEUDO-CLASSES: PURPOSES & USAGE ===== */
+/* ============================================ */
+
+/* 
+WHAT ARE PSEUDO-CLASSES?
+
+Pseudo-classes are keywords added to selectors that specify a SPECIAL STATE
+of the selected element(s). They start with a single colon (:)
+
+Syntax: selector:pseudo-class { property: value; }
+
+Example: a:hover { color: red; }
+         ^  ^
+         |  |__ pseudo-class (hover state)
+         |_____ selector (anchor tag)
+
+KEY DIFFERENCE from pseudo-elements (::before, ::after):
+- Pseudo-classes (:) target elements in a special STATE
+- Pseudo-elements (::) target specific PARTS of elements
+*/
+
+
+/* ============================================ */
+/* 1) USER INTERACTION PSEUDO-CLASSES */
+/* ============================================ */
+/* Purpose: Style elements based on user actions (clicks, hovers, focus) */
+
+/* :hover - When mouse is over the element */
+/* Purpose: Provide visual feedback for interactive elements */
+a:hover {
+  color: blue;
+  text-decoration: underline;
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+/* :active - While element is being clicked/activated */
+/* Purpose: Show that an element is currently being pressed */
+button:active {
+  transform: scale(0.95);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* :focus - When element has keyboard focus */
+/* Purpose: Improve accessibility for keyboard navigation */
+input:focus {
+  outline: 2px solid blue;
+  border-color: blue;
+  box-shadow: 0 0 5px rgba(0,100,255,0.5);
+}
+
+textarea:focus {
+  background-color: #fffff0;
+}
+
+/* :focus-visible - Focus from keyboard, not mouse clicks */
+/* Purpose: Show focus only when navigating with keyboard (better UX) */
+button:focus-visible {
+  outline: 3px solid orange;
+  outline-offset: 2px;
+}
+
+/* :focus-within - Element OR any descendant has focus */
+/* Purpose: Style parent when child gets focus (e.g., form containers) */
+form:focus-within {
+  background-color: #f0f8ff;
+  border: 2px solid #007bff;
+}
+
+
+/* ============================================ */
+/* 2) LINK STATE PSEUDO-CLASSES */
+/* ============================================ */
+/* Purpose: Style links based on their visit status */
+
+/* :link - Unvisited links */
+a:link {
+  color: blue;
+}
+
+/* :visited - Already visited links */
+/* Purpose: Show users which links they've already clicked */
+a:visited {
+  color: purple;
+}
+
+/* Best practice order: LVHA (Link, Visited, Hover, Active) */
+/* This order ensures styles don't override each other incorrectly */
+a:link { color: blue; }
+a:visited { color: purple; }
+a:hover { color: red; }
+a:active { color: darkred; }
+
+
+/* ============================================ */
+/* 3) STRUCTURAL PSEUDO-CLASSES */
+/* ============================================ */
+/* Purpose: Select elements based on their position in the DOM tree */
+
+/* :first-child - First child of its parent */
+/* Purpose: Style the first item differently (e.g., no top margin) */
+li:first-child {
+  font-weight: bold;
+  margin-top: 0;
+}
+
+/* :last-child - Last child of its parent */
+/* Purpose: Remove bottom margin/border from last item */
+li:last-child {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+/* :nth-child(n) - Select specific child(ren) by position */
+/* Purpose: Create patterns (zebra stripes, every 3rd item, etc.) */
+
+/* Odd rows */
+tr:nth-child(odd) {
+  background-color: #f9f9f9;  /* Zebra striping for tables */
+}
+
+/* Even rows */
+tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+/* Every 3rd element */
+div:nth-child(3n) {
+  background-color: lightblue;
+}
+
+/* First 3 elements */
+li:nth-child(-n+3) {
+  color: red;
+}
+
+/* :nth-last-child(n) - Count from the end */
+/* Purpose: Style elements from the bottom up */
+p:nth-last-child(2) {
+  font-style: italic;  /* Second-to-last paragraph */
+}
+
+/* :first-of-type - First element of its type */
+/* Purpose: Style first occurrence regardless of other siblings */
+p:first-of-type {
+  font-size: 1.2em;  /* First paragraph bigger */
+}
+
+/* :last-of-type - Last element of its type */
+article p:last-of-type {
+  margin-bottom: 0;  /* Last paragraph no bottom margin */
+}
+
+/* :nth-of-type(n) - Select by type, not all children */
+/* Purpose: Pattern matching for specific element types */
+img:nth-of-type(3n+1) {
+  border: 2px solid gold;  /* Every 3rd image starting from 1st */
+}
+
+/* :only-child - Element is the only child */
+/* Purpose: Apply special styling when there's only one item */
+li:only-child {
+  list-style: none;
+  text-align: center;
+}
+
+/* :only-of-type - Only element of its type */
+/* Purpose: Style elements that have no siblings of the same type */
+p:only-of-type {
+  font-weight: bold;
+}
+
+
+/* ============================================ */
+/* 4) FORM & INPUT PSEUDO-CLASSES */
+/* ============================================ */
+/* Purpose: Style form elements based on their state */
+
+/* :checked - Radio buttons and checkboxes that are selected */
+/* Purpose: Show visual confirmation of selection */
+input[type="checkbox"]:checked {
+  accent-color: green;
+}
+
+input[type="radio"]:checked + label {
+  font-weight: bold;
+  color: blue;
+}
+
+/* :disabled - Form elements that are disabled */
+/* Purpose: Show that an element cannot be interacted with */
+input:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+/* :enabled - Form elements that are enabled (opposite of :disabled) */
+input:enabled {
+  border: 1px solid #ccc;
+}
+
+/* :required - Form fields with the 'required' attribute */
+/* Purpose: Highlight mandatory fields */
+input:required {
+  border-left: 3px solid red;
+}
+
+/* :optional - Form fields without 'required' attribute */
+input:optional {
+  border-left: 3px solid #ccc;
+}
+
+/* :valid - Form inputs with valid values */
+/* Purpose: Provide instant validation feedback */
+input:valid {
+  border-color: green;
+  background-image: url('checkmark.svg');
+}
+
+/* :invalid - Form inputs with invalid values */
+/* Purpose: Show validation errors */
+input:invalid {
+  border-color: red;
+  background-color: #fff0f0;
+}
+
+/* :in-range - Numeric inputs within min/max range */
+input[type="number"]:in-range {
+  border-color: green;
+}
+
+/* :out-of-range - Numeric inputs outside min/max range */
+input[type="number"]:out-of-range {
+  border-color: red;
+  background-color: #ffe0e0;
+}
+
+/* :read-only - Elements with readonly attribute */
+input:read-only {
+  background-color: #f5f5f5;
+  cursor: default;
+}
+
+/* :read-write - Elements that are editable */
+input:read-write {
+  background-color: white;
+}
+
+/* :placeholder-shown - Input with placeholder currently visible */
+/* Purpose: Style inputs when user hasn't typed yet */
+input:placeholder-shown {
+  border-style: dashed;
+}
+
+
+/* ============================================ */
+/* 5) NEGATION & MATCHES PSEUDO-CLASSES */
+/* ============================================ */
+/* Purpose: Exclude or match specific conditions */
+
+/* :not() - Exclude elements matching the selector */
+/* Purpose: Apply styles to everything EXCEPT certain elements */
+li:not(.special) {
+  color: gray;  /* All <li> except those with class="special" */
+}
+
+button:not(:disabled) {
+  cursor: pointer;  /* All enabled buttons */
+}
+
+p:not(:first-child) {
+  margin-top: 1em;  /* All paragraphs except the first */
+}
+
+/* :is() - Match any of the selectors in the list */
+/* Purpose: Simplify complex selector lists */
+:is(h1, h2, h3) {
+  font-family: 'Georgia', serif;  /* All headings h1, h2, h3 */
+}
+
+:is(.button, .btn, button) {
+  padding: 10px 20px;  /* Any of these button variations */
+}
+
+/* :where() - Like :is() but with 0 specificity */
+/* Purpose: Group selectors without affecting specificity */
+:where(h1, h2, h3) {
+  margin-top: 0;  /* Can be easily overridden */
+}
+
+/* :has() - Parent selector (contains specific children) */
+/* Purpose: Style parent based on its children - revolutionary! */
+div:has(img) {
+  border: 2px solid blue;  /* Divs that contain images */
+}
+
+article:has(> h2) {
+  padding-top: 20px;  /* Articles with direct h2 children */
+}
+
+li:has(+ li) {
+  margin-bottom: 10px;  /* List items that have a next sibling */
+}
+
+
+/* ============================================ */
+/* 6) CONTENT & LANGUAGE PSEUDO-CLASSES */
+/* ============================================ */
+/* Purpose: Target elements based on content or language */
+
+/* :empty - Elements with no children (not even text) */
+/* Purpose: Hide or style empty containers */
+div:empty {
+  display: none;  /* Hide empty divs */
+}
+
+p:empty::before {
+  content: "No content available";
+  color: gray;
+}
+
+/* :lang() - Elements with specific language */
+/* Purpose: Apply language-specific styles */
+:lang(fr) {
+  quotes: "«" "»";  /* French quotation marks */
+}
+
+:lang(en) {
+  quotes: """ """;  /* English quotation marks */
+}
+
+p:lang(ar) {
+  direction: rtl;  /* Right-to-left for Arabic */
+}
+
+
+/* ============================================ */
+/* 7) TARGET & LOCATION PSEUDO-CLASSES */
+/* ============================================ */
+/* Purpose: Style based on URL or page state */
+
+/* :target - Element whose ID matches the URL fragment */
+/* Purpose: Highlight sections when navigated via anchor links */
+section:target {
+  background-color: yellow;
+  border: 2px solid orange;
+  animation: highlight 1s ease;
+}
+
+#section1:target {
+  outline: 3px solid red;
+}
+
+/* :any-link - Any <a>, <area>, or <link> with href */
+/* Purpose: Style all link elements at once */
+:any-link {
+  text-decoration: none;
+}
+
+
+/* ============================================ */
+/* 8) ROOT & FULLSCREEN PSEUDO-CLASSES */
+/* ============================================ */
+/* Purpose: Target document/viewport state */
+
+/* :root - Document root element (html in HTML documents) */
+/* Purpose: Define CSS custom properties (variables) */
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --spacing: 16px;
+}
+
+/* :fullscreen - Element in fullscreen mode */
+/* Purpose: Style elements when in fullscreen (videos, games) */
+:fullscreen {
+  background-color: black;
+}
+
+video:fullscreen {
+  object-fit: contain;
+}
+
+
+/* ============================================ */
+/* PRACTICAL EXAMPLES & PATTERNS */
+/* ============================================ */
+
+/* Example 1: Styled checkbox (custom appearance) */
+input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 3px;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+input[type="checkbox"]:focus {
+  outline: 2px solid #80bdff;
+  outline-offset: 2px;
+}
+
+/* Example 2: Navigation with active state */
+nav a {
+  color: #333;
+  padding: 10px 15px;
+}
+
+nav a:hover {
+  background-color: #f0f0f0;
+}
+
+nav a:active {
+  background-color: #e0e0e0;
+}
+
+/* Example 3: Form validation styling */
+input[type="email"]:valid {
+  border-color: green;
+}
+
+input[type="email"]:invalid:not(:placeholder-shown) {
+  border-color: red;  /* Only show error after user types */
+}
+
+input[type="email"]:focus:invalid {
+  box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+}
+
+/* Example 4: Table row highlighting */
+table tr:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+table tr:first-child {
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+}
+
+/* Example 5: Accessible button states */
+.button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.button:focus-visible {
+  outline: 3px solid #80bdff;
+  outline-offset: 2px;
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+.button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+
+/* ============================================ */
+/* PSEUDO-CLASS COMBINATIONS */
+/* ============================================ */
+/* You can combine multiple pseudo-classes for precise targeting */
+
+/* Link that's hovered AND visited */
+a:visited:hover {
+  color: darkmagenta;
+}
+
+/* First child that's also hovered */
+li:first-child:hover {
+  font-size: 1.1em;
+}
+
+/* Checked input that's also focused */
+input[type="checkbox"]:checked:focus {
+  outline: 2px solid green;
+}
+
+/* Disabled button that still has hover (for cursor change) */
+button:disabled:hover {
+  cursor: not-allowed;
+}
+
+/* Not first child AND not last child (middle items) */
+li:not(:first-child):not(:last-child) {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+
+/* ============================================ */
+/* COMMON USE CASES SUMMARY */
+/* ============================================ */
+/*
+1. INTERACTIVITY: :hover, :active, :focus
+   → Provide visual feedback for user actions
+
+2. ACCESSIBILITY: :focus, :focus-visible, :focus-within
+   → Support keyboard navigation
+
+3. FORMS: :valid, :invalid, :required, :disabled, :checked
+   → Instant validation and state indication
+
+4. LAYOUT: :first-child, :last-child, :nth-child()
+   → Create patterns and handle edge cases
+
+5. CONTENT: :empty, :not(), :has()
+   → Conditional styling based on content
+
+6. NAVIGATION: :link, :visited, :target
+   → Link states and anchor navigation
+
+7. VALIDATION: :valid, :invalid, :in-range, :out-of-range
+   → Form input feedback
+
+8. STATE: :enabled, :disabled, :checked, :read-only
+   → Show element availability
+*/
+
+
+/* ============================================ */
+/* BROWSER SUPPORT NOTES */
+/* ============================================ */
+/*
+Well-supported (all modern browsers):
+- :hover, :active, :focus
+- :first-child, :last-child, :nth-child()
+- :not(), :checked, :disabled, :valid, :invalid
+
+Newer (check caniuse.com):
+- :focus-visible (mostly supported)
+- :focus-within (mostly supported)
+- :has() (newer, check compatibility)
+- :is(), :where() (mostly supported)
+
+Always test in target browsers!
+*/
+
+
+/* ============================================ */
+/* ===== CSS SPECIFICITY & CASCADE ===== */
+/* ============================================ */
+
+/*
+THE CASCADE: How CSS determines which rules apply when there are conflicts
+
+When multiple CSS rules target the same element and set the same property,
+the browser needs to decide which rule "wins". This decision process is
+called the "CASCADE" - CSS stands for Cascading Style Sheets!
+
+The cascade considers THREE factors (in this order):
+1. IMPORTANCE (!important and origin)
+2. SPECIFICITY (how specific is the selector?)
+3. SOURCE ORDER (which rule comes last in the code?)
+*/
+
+
+/* ============================================ */
+/* FACTOR 1: IMPORTANCE & ORIGIN */
+/* ============================================ */
+/*
+Rules are evaluated by their ORIGIN and IMPORTANCE in this order (highest to lowest):
+
+1. User agent !important (browser defaults marked important)
+2. User !important (user's custom styles marked important)
+3. Author !important (your CSS with !important) ← STRONGEST YOU CAN USE
+4. CSS Animations (currently animating properties)
+5. Author styles (your normal CSS rules) ← MOST COMMON
+6. User styles (user's custom CSS)
+7. User agent styles (browser defaults) ← WEAKEST
+
+Inline styles beat almost everything except !important
+*/
+
+/* Example of !important (use sparingly!) */
+.button {
+  background-color: blue !important;  /* This will override almost everything */
+}
+
+/* Even if you have this more specific rule, the !important wins: */
+#main-content .sidebar .button.primary[type="button"] {
+  background-color: red;  /* Won't apply - blue !important wins */
+}
+
+/* The ONLY way to override !important is with another !important later in the cascade */
+.button.override {
+  background-color: green !important;  /* This wins if both selectors apply */
+}
+
+/*
+⚠️ WARNING: Avoid !important if possible!
+- Makes debugging harder
+- Creates maintenance nightmares
+- Breaks the natural cascade
+
+Valid uses for !important:
+- Overriding third-party CSS you can't modify
+- Utility classes that should always apply (.hidden, .text-center)
+- Accessibility overrides
+*/
+
+
+/* ============================================ */
+/* FACTOR 2: SPECIFICITY (The Main Topic!) */
+/* ============================================ */
+
+/*
+WHAT IS SPECIFICITY?
+A numerical value that represents how specific a CSS selector is.
+More specific selectors beat less specific ones.
+
+SPECIFICITY CALCULATION:
+Think of specificity as a 4-part number: (a, b, c, d)
+
+a = Inline styles (style="...")                    → 1000 points
+b = IDs (#header, #nav)                            → 100 points each
+c = Classes, attributes, pseudo-classes            → 10 points each
+    (.button, [type="text"], :hover)
+d = Elements and pseudo-elements                   → 1 point each
+    (div, p, h1, ::before)
+
+* Universal selector (*), combinators (+, >, ~, space), :where() → 0 points
+*/
+
+
+/* ============================================ */
+/* SPECIFICITY EXAMPLES */
+/* ============================================ */
+
+/* Example 1: Element selector */
+p {
+  /* Specificity: (0, 0, 0, 1) = 1 point */
+  color: black;
+}
+
+/* Example 2: Class selector */
+.text {
+  /* Specificity: (0, 0, 1, 0) = 10 points */
+  color: blue;
+}
+
+/* Example 3: ID selector */
+#intro {
+  /* Specificity: (0, 1, 0, 0) = 100 points */
+  color: red;
+}
+
+/* Example 4: Combined selectors */
+div p {
+  /* Specificity: (0, 0, 0, 2) = 2 points (2 elements) */
+  color: gray;
+}
+
+.container p {
+  /* Specificity: (0, 0, 1, 1) = 11 points (1 class + 1 element) */
+  color: green;
+}
+
+#main .content p {
+  /* Specificity: (0, 1, 1, 1) = 111 points (1 ID + 1 class + 1 element) */
+  color: purple;
+}
+
+/* Example 5: Multiple classes */
+.header .title {
+  /* Specificity: (0, 0, 2, 0) = 20 points (2 classes) */
+  font-size: 24px;
+}
+
+.header.sticky .title {
+  /* Specificity: (0, 0, 3, 0) = 30 points (3 classes) */
+  font-size: 20px;
+}
+
+/* Example 6: Attribute selectors */
+input[type="text"] {
+  /* Specificity: (0, 0, 1, 1) = 11 points (1 attribute + 1 element) */
+  border: 1px solid gray;
+}
+
+/* Example 7: Pseudo-classes */
+a:hover {
+  /* Specificity: (0, 0, 1, 1) = 11 points (1 pseudo-class + 1 element) */
+  color: orange;
+}
+
+button:hover:focus {
+  /* Specificity: (0, 0, 2, 1) = 21 points (2 pseudo-classes + 1 element) */
+  outline: 2px solid blue;
+}
+
+/* Example 8: Pseudo-elements */
+p::before {
+  /* Specificity: (0, 0, 0, 2) = 2 points (1 element + 1 pseudo-element) */
+  content: "→ ";
+}
+
+
+/* ============================================ */
+/* SPECIFICITY BATTLE EXAMPLES */
+/* ============================================ */
+
+/* Given this HTML: <div id="container" class="box primary">Hello</div> */
+
+/* Rule A */
+div {
+  /* Specificity: (0, 0, 0, 1) = 1 */
+  color: black;
+}
+
+/* Rule B */
+.box {
+  /* Specificity: (0, 0, 1, 0) = 10 */
+  /* WINS over Rule A (10 > 1) */
+  color: blue;
+}
+
+/* Rule C */
+div.box {
+  /* Specificity: (0, 0, 1, 1) = 11 */
+  /* WINS over Rule B (11 > 10) */
+  color: green;
+}
+
+/* Rule D */
+#container {
+  /* Specificity: (0, 1, 0, 0) = 100 */
+  /* WINS over Rule C (100 > 11) */
+  color: red;
+}
+
+/* Rule E */
+.box.primary {
+  /* Specificity: (0, 0, 2, 0) = 20 */
+  /* LOSES to Rule D (20 < 100) - ID beats multiple classes! */
+  color: purple;
+}
+
+/* Final color: RED (Rule D wins) */
+
+
+/* ============================================ */
+/* SPECIAL CASES */
+/* ============================================ */
+
+/* Inline styles have highest specificity (1000) */
+/* <div style="color: orange;">Text</div> */
+/* This beats ALL selector-based rules (except !important) */
+
+/* Universal selector (*) has NO specificity */
+* {
+  /* Specificity: (0, 0, 0, 0) = 0 */
+  box-sizing: border-box;
+}
+
+/* Combinators don't add specificity */
+div > p {
+  /* Specificity: (0, 0, 0, 2) = 2 */
+  /* The > doesn't count, only the elements */
+  margin-top: 1em;
+}
+
+div + p {
+  /* Specificity: (0, 0, 0, 2) = 2 */
+  /* The + doesn't count */
+  margin-top: 0;
+}
+
+/* :not() itself has 0 specificity, but its argument counts */
+p:not(.special) {
+  /* Specificity: (0, 0, 1, 1) = 11 */
+  /* :not() is 0, but .special inside counts as a class */
+  color: gray;
+}
+
+/* :is() / :where() difference */
+:is(#id, .class) p {
+  /* Specificity: (0, 1, 0, 1) = 101 */
+  /* Takes the HIGHEST specificity from the list (#id = 100) */
+  font-weight: bold;
+}
+
+:where(#id, .class) p {
+  /* Specificity: (0, 0, 0, 1) = 1 */
+  /* :where() always has 0 specificity, only p counts */
+  font-weight: normal;
+}
+
+
+/* ============================================ */
+/* FACTOR 3: SOURCE ORDER */
+/* ============================================ */
+
+/*
+If two rules have the SAME specificity, the one that comes LAST wins.
+*/
+
+.button {
+  /* This rule... */
+  background-color: blue;
+}
+
+.button {
+  /* ...is overridden by this rule (same specificity, comes later) */
+  background-color: red;
+}
+/* Result: red background */
+
+
+/* ============================================ */
+/* THE CASCADE DECISION PROCESS */
+/* ============================================ */
+
+/*
+When multiple rules conflict, the browser decides in this order:
+
+STEP 1: Check ORIGIN & IMPORTANCE
+  → !important declarations win
+  → Inline styles beat external stylesheets (except !important)
+
+STEP 2: If equal importance, check SPECIFICITY
+  → Higher specificity wins
+  → ID (100) beats class (10) beats element (1)
+
+STEP 3: If equal specificity, check SOURCE ORDER
+  → Later rule wins
+  → Bottom of stylesheet beats top
+
+STEP 4: If still equal (rare), inherited values or browser defaults apply
+*/
+
+
+/* ============================================ */
+/* PRACTICAL EXAMPLES */
+/* ============================================ */
+
+/* Example 1: Realistic button styling */
+/* Base button */
+button {
+  /* Specificity: (0, 0, 0, 1) = 1 */
+  padding: 10px 20px;
+  background-color: gray;
+  color: white;
+}
+
+/* Primary button variant */
+.btn-primary {
+  /* Specificity: (0, 0, 1, 0) = 10 */
+  /* WINS: Changes background to blue */
+  background-color: blue;
+}
+
+/* Specific context button */
+#header button {
+  /* Specificity: (0, 1, 0, 1) = 101 */
+  /* WINS: Makes ALL buttons in #header green, even .btn-primary */
+  background-color: green;
+}
+
+/* To override the #header rule, you'd need higher specificity: */
+#header .btn-primary {
+  /* Specificity: (0, 1, 1, 0) = 110 */
+  /* WINS: Primary buttons in header stay blue */
+  background-color: blue;
+}
+
+
+/* Example 2: Responsive design considerations */
+.card {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .card {
+    /* Same specificity, but comes later */
+    /* On screens ≥768px, this wins */
+    width: 50%;
+  }
+}
+
+
+/* Example 3: State changes */
+a {
+  color: blue;
+}
+
+a:visited {
+  /* Same specificity as a:hover if both apply */
+  color: purple;
+}
+
+a:hover {
+  /* Comes after :visited, so if link is both visited AND hovered: */
+  /* This wins due to source order (LVHA rule) */
+  color: red;
+}
+
+
+/* ============================================ */
+/* INHERITANCE vs CASCADE */
+/* ============================================ */
+
+/*
+These are DIFFERENT concepts:
+
+CASCADE: Determines which rule wins when multiple rules target the SAME element
+INHERITANCE: Determines if a property passes from parent to child
+
+Some properties inherit (color, font-family, text-align)
+Some don't inherit (margin, padding, border, width, height)
+
+Example:
+*/
+
+.parent {
+  color: blue;        /* Inherits to children */
+  border: 1px solid;  /* Does NOT inherit */
+}
+
+.child {
+  /* color is blue (inherited) */
+  /* border is none (not inherited) */
+  padding: 10px;
+}
+
+
+/* ============================================ */
+/* COMMON PITFALLS */
+/* ============================================ */
+
+/* PITFALL 1: Over-specific selectors */
+/* ❌ BAD: Hard to override later */
+#main .content article.blog-post p.intro {
+  font-size: 18px;
+}
+
+/* ✅ GOOD: Lower specificity, easier to override */
+.blog-post-intro {
+  font-size: 18px;
+}
+
+
+/* PITFALL 2: Fighting specificity with !important */
+/* ❌ BAD: Creates an !important arms race */
+.button {
+  background-color: blue !important;
+}
+.button-primary {
+  background-color: red !important;  /* Now need this too! */
+}
+
+/* ✅ GOOD: Use proper specificity or reorder rules */
+.button {
+  background-color: blue;
+}
+.button-primary {
+  background-color: red;  /* Already wins (same specificity, later) */
+}
+
+
+/* PITFALL 3: Not understanding ID specificity weight */
+/* ❌ This won't work as expected: */
+.header .nav .item.active {
+  /* Specificity: (0, 0, 4, 0) = 40 */
+  color: red;
+}
+
+#main-nav li {
+  /* Specificity: (0, 1, 0, 1) = 101 */
+  /* WINS even though it looks less specific! */
+  /* 1 ID beats any number of classes */
+  color: blue;
+}
+
+
+/* ============================================ */
+/* BEST PRACTICES */
+/* ============================================ */
+
+/*
+✅ DO:
+1. Keep specificity as LOW as possible for maintainability
+2. Use classes more than IDs for styling
+3. Follow a methodology (BEM, SMACSS, etc.) to manage specificity
+4. Order selectors from generic to specific
+5. Use simple selectors when possible
+6. Put media queries and variants AFTER base styles
+7. Understand the cascade before reaching for !important
+
+❌ DON'T:
+1. Use IDs for styling (save them for JavaScript)
+2. Overuse !important
+3. Chain too many selectors unnecessarily
+4. Rely on source order when specificity would be clearer
+5. Fight specificity issues with more specificity
+*/
+
+
+/* ============================================ */
+/* BEM METHODOLOGY (Example of managing specificity) */
+/* ============================================ */
+
+/*
+BEM (Block Element Modifier) keeps specificity flat and predictable:
+All selectors have specificity (0, 0, 1, 0) = 10
+*/
+
+/* Block */
+.card {
+  border: 1px solid #ccc;
+}
+
+/* Element (inside block) */
+.card__title {
+  font-size: 20px;
+}
+
+/* Modifier (variant of block or element) */
+.card--featured {
+  border-color: gold;
+  border-width: 3px;
+}
+
+.card__title--large {
+  font-size: 24px;
+}
+
+/* All have same specificity, order and naming determine application */
+
+
+/* ============================================ */
+/* DEBUGGING SPECIFICITY */
+/* ============================================ */
+
+/*
+Tools to help debug specificity issues:
+
+1. Browser DevTools
+   - Inspect element
+   - See all rules that apply
+   - Crossed-out rules lost the specificity battle
+   - Hover over selector to see specificity
+
+2. Online calculators
+   - specificity.keegan.st
+   - Calculate specificity of any selector
+
+3. Visual indicators
+   - Rules higher in DevTools panel are more specific
+   - Inline styles shown at top
+   - !important marked clearly
+*/
+
+
+/* ============================================ */
+/* QUICK REFERENCE */
+/* ============================================ */
+
+/*
+SPECIFICITY VALUES (simplified):
+- Inline style          = 1000
+- ID (#id)              = 100
+- Class/attribute/      = 10
+  pseudo-class
+  (.class, [attr], :hover)
+- Element/pseudo-       = 1
+  element
+  (div, p, ::before)
+- * combinator,         = 0
+  :where()
+
+CASCADE ORDER:
+1. Origin & importance (!important, inline, author, user, browser)
+2. Specificity (higher number wins)
+3. Source order (last one wins)
+
+REMEMBER:
+- 1 ID beats 1000 classes!
+- Classes beat elements
+- Later rules beat earlier rules (if specificity is equal)
+- Avoid !important unless absolutely necessary
+- Keep specificity low for maintainability
+*/
+
+
+/* ============================================ */
+/* ===== CSS GRID LAYOUT IMPLEMENTATION ===== */
+/* ============================================ */
+
+/*
+CSS Grid is a 2-dimensional layout system for the web.
+It lets you layout content in rows AND columns simultaneously.
+
+KEY CONCEPTS:
+- Grid Container: Parent element with display: grid or display: inline-grid
+- Grid Items: Direct children of the grid container
+- Grid Lines: Dividing lines that make up the grid structure
+- Grid Track: Space between two grid lines (a row or column)
+- Grid Cell: Single unit of the grid (intersection of row and column)
+- Grid Area: Rectangular space made up of one or more grid cells
+
+Browser Support: All modern browsers (IE11 has partial support with -ms- prefix)
+*/
+
+
+/* ============================================ */
+/* 1. BASIC GRID - Creating Columns */
+/* ============================================ */
+
+/* HTML Example:
+<div class="grid-basic">
+  <div class="item">1</div>
+  <div class="item">2</div>
+  <div class="item">3</div>
+  <div class="item">4</div>
+  <div class="item">5</div>
+  <div class="item">6</div>
+</div>
+*/
+
+.grid-basic {
+  display: grid;
+  
+  /* Define 3 columns of equal width */
+  grid-template-columns: 1fr 1fr 1fr;
+  
+  /* Alternative ways to write the same thing: */
+  /* grid-template-columns: repeat(3, 1fr); */
+  /* grid-template-columns: 33.33% 33.33% 33.33%; */
+  
+  /* Gap between items */
+  gap: 20px;  /* shorthand for row-gap and column-gap */
+  
+  /* Styling */
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+.grid-basic .item {
+  background-color: #4CAF50;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-size: 24px;
+  border-radius: 4px;
+}
+
+
+/* ============================================ */
+/* 2. GRID WITH DIFFERENT COLUMN SIZES */
+/* ============================================ */
+
+.grid-mixed-columns {
+  display: grid;
+  
+  /* First column: 200px fixed, Second: 2 parts, Third: 1 part */
+  grid-template-columns: 200px 2fr 1fr;
+  
+  gap: 15px;
+}
+
+/* fr = "fraction unit" - divides remaining space proportionally */
+
+
+/* ============================================ */
+/* 3. DEFINING ROWS AND COLUMNS */
+/* ============================================ */
+
+.grid-rows-and-columns {
+  display: grid;
+  
+  /* 3 columns */
+  grid-template-columns: repeat(3, 1fr);
+  
+  /* 2 rows, each 100px tall */
+  grid-template-rows: 100px 100px;
+  
+  gap: 10px;
+}
+
+/* If you have more items than cells, Grid auto-creates new rows */
+
+
+/* ============================================ */
+/* 4. AUTO-FIT & AUTO-FILL (Responsive Grids) */
+/* ============================================ */
+
+/* AUTO-FILL: Creates as many columns as fit, even if empty */
+.grid-auto-fill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+/* AUTO-FIT: Creates columns but collapses empty ones */
+.grid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+/* minmax(min, max): Sets minimum and maximum size for tracks */
+/* Perfect for responsive cards that wrap automatically! */
+
+
+/* ============================================ */
+/* 5. GRID TEMPLATE AREAS (Named Grid Layout) */
+/* ============================================ */
+
+/* HTML Example:
+<div class="grid-layout">
+  <header class="header">Header</header>
+  <nav class="sidebar">Sidebar</nav>
+  <main class="content">Main Content</main>
+  <footer class="footer">Footer</footer>
+</div>
+*/
+
+.grid-layout {
+  display: grid;
+  
+  /* Define column sizes */
+  grid-template-columns: 200px 1fr;
+  
+  /* Define row sizes */
+  grid-template-rows: 80px 1fr 60px;
+  
+  /* Define named areas - visual representation! */
+  grid-template-areas:
+    "header  header"
+    "sidebar content"
+    "footer  footer";
+  
+  gap: 10px;
+  min-height: 100vh;
+}
+
+.header {
+  grid-area: header;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background-color: #f4f4f4;
+  padding: 20px;
+}
+
+.content {
+  grid-area: content;
+  background-color: white;
+  padding: 20px;
+}
+
+.footer {
+  grid-area: footer;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+
+/* ============================================ */
+/* 6. SPANNING ITEMS ACROSS MULTIPLE CELLS */
+/* ============================================ */
+
+/* HTML Example:
+<div class="grid-span">
+  <div class="item item-1">1 (spans 2 cols)</div>
+  <div class="item item-2">2</div>
+  <div class="item item-3">3</div>
+  <div class="item item-4">4 (spans 2 rows)</div>
+  <div class="item item-5">5</div>
+</div>
+*/
+
+.grid-span {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 100px;
+  gap: 10px;
+}
+
+.grid-span .item-1 {
+  /* Span across 2 columns */
+  grid-column: span 2;
+  background-color: #FF6B6B;
+}
+
+.grid-span .item-4 {
+  /* Span across 2 rows */
+  grid-row: span 2;
+  background-color: #4ECDC4;
+}
+
+
+/* ============================================ */
+/* 7. EXPLICIT GRID LINE PLACEMENT */
+/* ============================================ */
+
+.grid-explicit {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 100px);
+  gap: 10px;
+}
+
+/* Place item from column line 1 to 3, row line 1 to 2 */
+.grid-explicit .item-a {
+  grid-column: 1 / 3;  /* Start at line 1, end at line 3 */
+  grid-row: 1 / 2;
+  background-color: #FF6B6B;
+}
+
+/* Alternative shorthand */
+.grid-explicit .item-b {
+  grid-area: 2 / 2 / 4 / 4;  /* row-start / col-start / row-end / col-end */
+  background-color: #4ECDC4;
+}
+
+/* Span from line 1 to the end */
+.grid-explicit .item-c {
+  grid-column: 1 / -1;  /* -1 means last line */
+  background-color: #FFD93D;
+}
+
+
+/* ============================================ */
+/* 8. GRID GAP (Spacing) */
+/* ============================================ */
+
+.grid-gap-demo {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  
+  /* Different row and column gaps */
+  row-gap: 20px;
+  column-gap: 10px;
+  
+  /* Shorthand: gap: <row-gap> <column-gap> */
+  /* gap: 20px 10px; */
+  
+  /* Same gap for both: */
+  /* gap: 15px; */
+}
+
+
+/* ============================================ */
+/* 9. ALIGNMENT WITHIN GRID */
+/* ============================================ */
+
+.grid-alignment {
+  display: grid;
+  grid-template-columns: repeat(3, 150px);
+  grid-template-rows: repeat(2, 150px);
+  gap: 10px;
+  
+  /* Align ALL items horizontally within their cells */
+  justify-items: center;  /* start | end | center | stretch (default) */
+  
+  /* Align ALL items vertically within their cells */
+  align-items: center;    /* start | end | center | stretch (default) */
+  
+  /* Align the entire grid within the container (if extra space) */
+  justify-content: center; /* start | end | center | space-between | space-around | space-evenly */
+  align-content: center;   /* start | end | center | space-between | space-around | space-evenly */
+  
+  height: 500px;
+  background-color: #f0f0f0;
+}
+
+/* Override alignment for individual items */
+.grid-alignment .item-special {
+  justify-self: end;    /* Align this item horizontally */
+  align-self: start;    /* Align this item vertically */
+}
+
+
+/* ============================================ */
+/* 10. IMPLICIT GRID (Auto-generated rows/columns) */
+/* ============================================ */
+
+.grid-implicit {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  
+  /* Only 2 rows defined explicitly */
+  grid-template-rows: 100px 100px;
+  
+  /* Any additional rows will be auto-generated with this size */
+  grid-auto-rows: 80px;
+  
+  /* Or use minmax for flexible auto rows */
+  /* grid-auto-rows: minmax(80px, auto); */
+  
+  gap: 10px;
+}
+
+/* Control flow direction for auto-placed items */
+.grid-auto-flow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  
+  /* row (default): fill rows first */
+  /* column: fill columns first */
+  /* dense: fill gaps with smaller items */
+  grid-auto-flow: row dense;
+  
+  gap: 10px;
+}
+
+
+/* ============================================ */
+/* 11. NESTED GRIDS (Subgrid) */
+/* ============================================ */
+
+.grid-parent {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.grid-child {
+  /* This child is also a grid container */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  
+  /* Span across 2 columns in parent */
+  grid-column: span 2;
+}
+
+
+/* ============================================ */
+/* 12. PRACTICAL EXAMPLE: PHOTO GALLERY */
+/* ============================================ */
+
+/* HTML Example:
+<div class="photo-gallery">
+  <img src="photo1.jpg" class="gallery-item">
+  <img src="photo2.jpg" class="gallery-item featured">
+  <img src="photo3.jpg" class="gallery-item">
+  <!-- more images -->
+</div>
+*/
+
+.photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-auto-rows: 250px;
+  gap: 15px;
+  padding: 20px;
+}
+
+.gallery-item {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Featured image spans 2x2 */
+.gallery-item.featured {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+
+/* ============================================ */
+/* 13. PRACTICAL EXAMPLE: CARD LAYOUT */
+/* ============================================ */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  
+  /* Make card itself a grid for internal layout */
+  display: grid;
+  grid-template-rows: 200px auto 60px;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.card-footer {
+  padding: 15px 20px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #e0e0e0;
+}
+
+
+/* ============================================ */
+/* 14. PRACTICAL EXAMPLE: DASHBOARD LAYOUT */
+/* ============================================ */
+
+/* HTML Example:
+<div class="dashboard">
+  <div class="dash-header">Header</div>
+  <div class="dash-sidebar">Sidebar</div>
+  <div class="dash-widget-1">Widget 1</div>
+  <div class="dash-widget-2">Widget 2</div>
+  <div class="dash-widget-3">Widget 3</div>
+  <div class="dash-widget-4">Widget 4</div>
+  <div class="dash-footer">Footer</div>
+</div>
+*/
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 250px repeat(3, 1fr);
+  grid-template-rows: 80px repeat(2, 1fr) 60px;
+  grid-template-areas:
+    "header header header header"
+    "sidebar widget1 widget1 widget2"
+    "sidebar widget3 widget4 widget4"
+    "footer footer footer footer";
+  gap: 20px;
+  padding: 20px;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.dash-header { grid-area: header; background-color: #2c3e50; color: white; }
+.dash-sidebar { grid-area: sidebar; background-color: #34495e; color: white; }
+.dash-widget-1 { grid-area: widget1; background-color: white; }
+.dash-widget-2 { grid-area: widget2; background-color: white; }
+.dash-widget-3 { grid-area: widget3; background-color: white; }
+.dash-widget-4 { grid-area: widget4; background-color: white; }
+.dash-footer { grid-area: footer; background-color: #2c3e50; color: white; }
+
+.dash-header,
+.dash-sidebar,
+.dash-footer,
+[class^="dash-widget"] {
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+
+/* ============================================ */
+/* 15. RESPONSIVE GRID PATTERNS */
+/* ============================================ */
+
+/* Mobile-first responsive grid */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: 1fr;  /* 1 column on mobile */
+  gap: 20px;
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 768px) {
+  .responsive-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop: 4 columns */
+@media (min-width: 1024px) {
+  .responsive-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Responsive layout change */
+.responsive-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "header"
+    "content"
+    "sidebar"
+    "footer";
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .responsive-layout {
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header  header"
+      "sidebar content"
+      "footer  footer";
+  }
+}
+
+
+/* ============================================ */
+/* 16. GRID VS FLEXBOX - When to Use Grid */
+/* ============================================ */
+
+/*
+USE GRID WHEN:
+✅ You need 2-dimensional layout (rows AND columns)
+✅ You need precise control over both axes
+✅ You want to define a layout structure upfront
+✅ Items should align to a strict grid
+✅ You need overlapping items
+✅ Building page layouts (header, sidebar, main, footer)
+✅ Creating galleries, dashboards, or complex layouts
+
+USE FLEXBOX WHEN:
+✅ You need 1-dimensional layout (row OR column)
+✅ Content size determines layout
+✅ Items should flow and wrap naturally
+✅ Building navigation bars, toolbars
+✅ Centering items
+✅ Distributing space between items
+
+YOU CAN USE BOTH:
+Grid for overall page structure, Flexbox within grid items!
+*/
+
+
+/* ============================================ */
+/* 17. COMMON GRID PATTERNS */
+/* ============================================ */
+
+/* Holy Grail Layout (classic) */
+.holy-grail {
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header header header"
+    "left   main   right"
+    "footer footer footer";
+  min-height: 100vh;
+  gap: 10px;
+}
+
+/* Pancake Stack (header, stretchy main, footer) */
+.pancake-stack {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+
+/* 12-Column Grid System (like Bootstrap) */
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+}
+
+.col-6 { grid-column: span 6; }   /* Half width */
+.col-4 { grid-column: span 4; }   /* Third width */
+.col-3 { grid-column: span 3; }   /* Quarter width */
+.col-12 { grid-column: span 12; } /* Full width */
+
+
+/* ============================================ */
+/* 18. ADVANCED TECHNIQUES */
+/* ============================================ */
+
+/* Overlapping items */
+.grid-overlap {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 100px);
+}
+
+.overlap-item-1 {
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+  z-index: 1;
+}
+
+.overlap-item-2 {
+  grid-column: 2 / 4;
+  grid-row: 2 / 4;
+  z-index: 2;  /* This will be on top */
+}
+
+/* Dense packing (fills gaps) */
+.grid-dense {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-flow: dense;
+  gap: 10px;
+}
+
+/* Variable-sized items pack tightly */
+.grid-dense .item-wide {
+  grid-column: span 2;
+}
+
+
+/* ============================================ */
+/* QUICK REFERENCE - GRID PROPERTIES */
+/* ============================================ */
+
+/*
+CONTAINER PROPERTIES:
+display: grid | inline-grid
+grid-template-columns: <track-size>...
+grid-template-rows: <track-size>...
+grid-template-areas: "<area-name>..."
+gap: <row-gap> <column-gap>
+justify-items: start | end | center | stretch
+align-items: start | end | center | stretch
+justify-content: start | end | center | stretch | space-between | space-around | space-evenly
+align-content: start | end | center | stretch | space-between | space-around | space-evenly
+grid-auto-columns: <track-size>
+grid-auto-rows: <track-size>
+grid-auto-flow: row | column | dense
+
+ITEM PROPERTIES:
+grid-column: <start-line> / <end-line> | span <number>
+grid-row: <start-line> / <end-line> | span <number>
+grid-area: <name> | <row-start> / <col-start> / <row-end> / <col-end>
+justify-self: start | end | center | stretch
+align-self: start | end | center | stretch
+
+SIZING KEYWORDS:
+fr: Fraction unit (divides remaining space)
+auto: Size based on content
+min-content: Minimum size needed for content
+max-content: Maximum size content can take
+minmax(min, max): Range of sizes
+fit-content(size): Use content size up to max
+
+FUNCTIONS:
+repeat(count, size): Repeat pattern
+minmax(min, max): Flexible sizing
+fit-content(size): Content-based sizing
+
+HELPFUL TIPS:
+- Use fr units for flexible layouts
+- Use minmax() for responsive designs
+- Use auto-fit/auto-fill for automatic wrapping
+- Use grid-template-areas for readable layouts
+- Combine Grid and Flexbox for best results!
+*/
+
+
+/* ============================================ */
+/* ===== CSS SIZING UNITS: ABSOLUTE & RELATIVE ===== */
+/* ============================================ */
+
+/*
+┌─────────────────────────────────────────────────────────────┐
+│ WHAT ARE CSS UNITS?                                         │
+└─────────────────────────────────────────────────────────────┘
+
+CSS units define the SIZE of elements, text, spacing, and more.
+
+TWO MAIN CATEGORIES:
+1. ABSOLUTE UNITS - Fixed size, doesn't change based on context
+2. RELATIVE UNITS - Size relative to something else (parent, viewport, font, etc.)
+
+
+┌─────────────────────────────────────────────────────────────┐
+│ ABSOLUTE UNITS (Fixed Sizes)                                │
+└─────────────────────────────────────────────────────────────┘
+
+Absolute units are FIXED - they don't change based on screen size,
+parent element, or user settings.
+
+WHEN TO USE:
+✅ Print stylesheets (physical paper sizes)
+✅ When you need exact, unchanging sizes
+✅ Borders (1px border)
+❌ Generally AVOID for responsive web design
+
+*/
+
+/* ---------------- PX (Pixels) ---------------- */
+/*
+MOST COMMON absolute unit for web
+
+1px = 1 pixel on screen (CSS pixel, not device pixel)
+
+PROS:
+- Precise control
+- Easy to understand
+- Consistent across similar devices
+
+CONS:
+- Not responsive by default
+- Doesn't scale with user's font preferences
+- Doesn't adapt to different screen sizes
+
+BEST USE:
+- Small details (borders, shadows)
+- When you need pixel-perfect design
+- Icons, small images
+*/
+
+.example-px {
+    width: 300px;           /* Fixed width */
+    height: 200px;          /* Fixed height */
+    font-size: 16px;        /* Fixed text size */
+    padding: 20px;          /* Fixed padding */
+    border: 1px solid black; /* Very common for borders */
+    margin: 10px;
+}
+
+/* Example: Pixel values for layout */
+.fixed-layout {
+    width: 960px;           /* Old common desktop width */
+    max-width: 1200px;      /* Maximum width */
+    margin: 0 auto;         /* Center horizontally */
+    padding: 15px;
+}
+
+
+/* ---------------- PT (Points) ---------------- */
+/*
+1pt = 1/72 of an inch
+
+TRADITIONAL print unit
+
+WHEN TO USE:
+✅ Print stylesheets (@media print)
+❌ Rarely used for screen design
+
+IMPORTANT: 1pt ≈ 1.333px (depends on DPI)
+*/
+
+@media print {
+    body {
+        font-size: 12pt;    /* Good for print */
+        margin: 1in;        /* 1 inch margin */
+    }
+    
+    h1 {
+        font-size: 24pt;    /* Larger heading for print */
+    }
+}
+
+
+/* ---------------- CM, MM, IN (Physical Units) ---------------- */
+/*
+cm = centimeters
+mm = millimeters  
+in = inches
+
+WHEN TO USE:
+✅ Print stylesheets only
+❌ Never for screen design (inaccurate physical size)
+*/
+
+@media print {
+    .print-page {
+        width: 21cm;        /* A4 width */
+        height: 29.7cm;     /* A4 height */
+        margin: 2cm;        /* 2cm margins */
+    }
+    
+    .small-box {
+        width: 50mm;        /* 5 centimeters */
+        height: 30mm;       /* 3 centimeters */
+    }
+}
+
+
+/* ---------------- PC (Picas) ---------------- */
+/*
+1pc = 12 points = 1/6 inch
+
+WHEN TO USE:
+✅ Print design (rare)
+❌ Not common in modern CSS
+*/
+
+
+/*
+┌─────────────────────────────────────────────────────────────┐
+│ RELATIVE UNITS (Context-Dependent Sizes)                    │
+└─────────────────────────────────────────────────────────────┘
+
+Relative units change based on:
+- Parent element size
+- Root element size
+- Viewport dimensions
+- Font size
+
+WHEN TO USE:
+✅ Responsive design (highly recommended!)
+✅ Accessibility (scales with user preferences)
+✅ Flexible layouts
+✅ Modern web development
+*/
+
+
+/* =============================================== */
+/* FONT-RELATIVE UNITS */
+/* =============================================== */
+
+/* ---------------- EM (Relative to Parent Font Size) ---------------- */
+/*
+1em = Current font size of the PARENT element
+
+IMPORTANT: em is COMPOUNDING - it multiplies through nested elements!
+
+WHEN TO USE:
+✅ Padding/margin relative to text size
+✅ Component-level spacing
+✅ When you want sizing to scale with font size
+
+WATCH OUT:
+❌ Can get confusing with nested elements (compounds)
+❌ Hard to predict final size in deep nesting
+*/
+
+.parent-em {
+    font-size: 20px;        /* Base size */
+}
+
+.child-em {
+    font-size: 1.5em;       /* 1.5 × 20px = 30px */
+    padding: 1em;           /* 1 × 30px = 30px (uses OWN font-size) */
+    margin-bottom: 0.5em;   /* 0.5 × 30px = 15px */
+}
+
+.grandchild-em {
+    /* Parent font-size: 30px */
+    font-size: 1.5em;       /* 1.5 × 30px = 45px (COMPOUNDING!) */
+    padding: 1em;           /* 1 × 45px = 45px */
+}
+
+/* Example: Button with em spacing */
+.button-em {
+    font-size: 16px;
+    padding: 0.5em 1em;     /* Top/bottom: 8px, Left/right: 16px */
+    border-radius: 0.25em;  /* 4px - scales with button size */
+}
+
+.button-em-large {
+    font-size: 24px;        /* Larger button */
+    padding: 0.5em 1em;     /* Top/bottom: 12px, Left/right: 24px */
+    /* Same em values, but bigger because font-size is bigger! */
+}
+
+
+/* ---------------- REM (Relative to Root Font Size) ---------------- */
+/*
+1rem = Font size of the ROOT element (html or :root)
+       Default browser root size: 16px
+
+ADVANTAGES over em:
+✅ NO COMPOUNDING - always relative to root
+✅ Consistent and predictable
+✅ Easy to calculate
+✅ PREFERRED for modern responsive design
+
+WHEN TO USE:
+✅ Font sizes (highly recommended)
+✅ Spacing (margins, padding)
+✅ Component sizes
+✅ Any size that should be consistent across the site
+
+BEST PRACTICE:
+Set root font size as percentage for accessibility
+*/
+
+/* Best practice setup */
+:root {
+    font-size: 100%;        /* 16px on most browsers (user can change!) */
+    /* OR: font-size: 62.5%;  makes 1rem = 10px for easier math */
+}
+
+/* Alternative setup for easier calculation */
+html {
+    font-size: 62.5%;       /* Now 1rem = 10px */
+}
+
+body {
+    font-size: 1.6rem;      /* 16px (with 62.5% setup) */
+    line-height: 1.5;
+}
+
+.example-rem {
+    font-size: 1rem;        /* 16px (or 10px with 62.5% setup) */
+    padding: 1.5rem;        /* 24px (or 15px) */
+    margin-bottom: 2rem;    /* 32px (or 20px) */
+    border-radius: 0.5rem;  /* 8px (or 5px) */
+}
+
+/* Typography scale with rem */
+h1 { font-size: 3rem; }     /* 48px (or 30px) */
+h2 { font-size: 2.5rem; }   /* 40px (or 25px) */
+h3 { font-size: 2rem; }     /* 32px (or 20px) */
+h4 { font-size: 1.5rem; }   /* 24px (or 15px) */
+h5 { font-size: 1.25rem; }  /* 20px (or 12.5px) */
+h6 { font-size: 1rem; }     /* 16px (or 10px) */
+p  { font-size: 1rem; }     /* 16px (or 10px) */
+small { font-size: 0.875rem; } /* 14px (or 8.75px) */
+
+/* Spacing scale with rem */
+.spacing-scale {
+    margin: 1rem;           /* 16px */
+    padding: 2rem;          /* 32px */
+}
+
+.component-rem {
+    max-width: 60rem;       /* 960px - flexible container */
+    padding: 2rem;          /* 32px */
+    margin: 0 auto;
+    border-radius: 0.5rem;  /* 8px */
+}
+
+
+/* ---------------- EX & CH (Typography Units) ---------------- */
+/*
+ex = Height of lowercase 'x' in current font
+ch = Width of '0' (zero) character in current font
+
+RARE but useful for:
+- Text-based layouts
+- Monospace font adjustments
+- Precise typography control
+*/
+
+.example-ch {
+    width: 60ch;            /* Width of 60 '0' characters */
+    /* Great for readable text width! */
+}
+
+.example-ex {
+    border-bottom: 1ex solid blue; /* Underline scales with font */
+}
+
+
+/* =============================================== */
+/* VIEWPORT-RELATIVE UNITS */
+/* =============================================== */
+
+/* ---------------- VW (Viewport Width) ---------------- */
+/*
+1vw = 1% of viewport width
+
+100vw = full viewport width (including scrollbar!)
+
+WHEN TO USE:
+✅ Full-width sections
+✅ Fluid typography
+✅ Hero sections
+✅ Responsive without media queries
+
+WATCH OUT:
+❌ Can cause horizontal scrolling (100vw includes scrollbar)
+❌ Text can become too small on mobile or too large on desktop
+*/
+
+.full-width-vw {
+    width: 100vw;           /* Full viewport width */
+    margin-left: -50vw;     /* Trick to break out of container */
+    margin-right: -50vw;
+    left: 50%;
+    right: 50%;
+    position: relative;
+}
+
+.fluid-width {
+    width: 90vw;            /* 90% of viewport width */
+    max-width: 1200px;      /* But not too wide */
+    margin: 0 auto;
+}
+
+/* Fluid typography with vw */
+.fluid-heading {
+    font-size: calc(2rem + 2vw); /* Grows with viewport */
+    /* 2rem base + 2% of viewport width */
+}
+
+
+/* ---------------- VH (Viewport Height) ---------------- */
+/*
+1vh = 1% of viewport height
+
+100vh = full viewport height
+
+WHEN TO USE:
+✅ Full-screen sections
+✅ Hero sections
+✅ Splash screens
+✅ Modal overlays
+
+WATCH OUT:
+❌ Mobile browsers (address bar affects vh)
+❌ Can cause overflow issues
+*/
+
+.full-height-vh {
+    height: 100vh;          /* Full viewport height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-section {
+    min-height: 100vh;      /* At least full screen */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.half-screen {
+    height: 50vh;           /* Half viewport height */
+}
+
+
+/* ---------------- VMIN & VMAX ---------------- */
+/*
+vmin = 1% of viewport's SMALLER dimension
+vmax = 1% of viewport's LARGER dimension
+
+WHEN TO USE:
+✅ Square elements that scale
+✅ Responsive sizing based on screen orientation
+✅ Maintaining aspect ratios
+*/
+
+.square-vmin {
+    width: 50vmin;          /* 50% of smaller dimension */
+    height: 50vmin;         /* Always square! */
+    /* Works in both portrait and landscape */
+}
+
+.large-element-vmax {
+    font-size: 10vmax;      /* 10% of larger dimension */
+    /* Always scales to screen orientation */
+}
+
+
+/* ---------------- DVNH, SVHN, LVHN (New Viewport Units) ---------------- */
+/*
+NEW in modern browsers (2022+)
+
+dvh = Dynamic Viewport Height (changes with browser UI)
+svh = Small Viewport Height (minimum with UI visible)
+lvh = Large Viewport Height (maximum with UI hidden)
+
+Same for width: dvw, svw, lvw
+
+SOLVES: Mobile browser address bar problem!
+
+WHEN TO USE:
+✅ Modern mobile-first design
+✅ Full-height sections on mobile
+✅ When you need predictable vh on mobile
+*/
+
+.modern-full-height {
+    height: 100dvh;         /* Dynamic - adjusts to browser UI */
+    /* Better than vh on mobile! */
+}
+
+.always-visible {
+    height: 100svh;         /* Small - always fits even with UI */
+}
+
+.maximum-space {
+    height: 100lvh;         /* Large - uses max space when UI hidden */
+}
+
+
+/* =============================================== */
+/* PERCENTAGE (%) */
+/* =============================================== */
+
+/*
+% = Percentage of PARENT element's size
+
+DEPENDS ON PROPERTY:
+- width/height: % of parent's width/height
+- font-size: % of parent's font-size
+- padding/margin: % of parent's WIDTH (yes, even top/bottom!)
+- position (top/left): % of parent's dimensions
+
+WHEN TO USE:
+✅ Fluid layouts
+✅ Responsive columns
+✅ Aspect ratios
+✅ Flexible components
+*/
+
+.parent-percentage {
+    width: 1000px;
+    height: 500px;
+}
+
+.child-percentage {
+    width: 50%;             /* 500px (50% of parent's width) */
+    height: 30%;            /* 150px (30% of parent's height) */
+    padding: 5%;            /* 50px (5% of parent's WIDTH! Not height) */
+    font-size: 80%;         /* 80% of parent's font-size */
+}
+
+/* Responsive grid with percentages */
+.grid-percentage {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-50 {
+    width: 50%;             /* 2 columns */
+}
+
+.col-33 {
+    width: 33.333%;         /* 3 columns */
+}
+
+.col-25 {
+    width: 25%;             /* 4 columns */
+}
+
+/* Aspect ratio with padding trick */
+.aspect-ratio-box {
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio (9/16 = 0.5625) */
+    position: relative;
+    background: gray;
+}
+
+
+/* =============================================== */
+/* OTHER RELATIVE UNITS */
+/* =============================================== */
+
+/* ---------------- FR (Fractional Unit - Grid Only) ---------------- */
+/*
+fr = Fraction of AVAILABLE SPACE in Grid container
+
+Only works with CSS Grid!
+
+WHEN TO USE:
+✅ CSS Grid layouts
+✅ Flexible columns/rows
+✅ Distributing space evenly
+*/
+
+.grid-fr {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr; /* 25% 50% 25% of available space */
+    gap: 1rem;
+}
+
+.grid-fr-mixed {
+    display: grid;
+    grid-template-columns: 200px 1fr 2fr; /* Fixed, then flexible */
+    /* 200px, then remaining space split 1:2 */
+}
+
+
+/* ---------------- AUTO ---------------- */
+/*
+auto = Automatic sizing (browser calculates)
+
+DEPENDS ON CONTEXT:
+- width/height: Fits content
+- margin: Fills available space (centering trick)
+- grid: Takes available space
+*/
+
+.auto-width {
+    width: auto;            /* Default - fits content */
+}
+
+.centered-auto {
+    width: 500px;
+    margin: 0 auto;         /* Horizontal centering */
+}
+
+.grid-auto {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    /* Sidebars fit content, center takes remaining space */
+}
+
+
+/* =============================================== */
+/* CALC() FUNCTION */
+/* =============================================== */
+
+/*
+calc() = Combine different units with math!
+
+OPERATIONS: + - * /
+
+WHEN TO USE:
+✅ Mix different unit types
+✅ Precise calculations
+✅ Responsive sizing with offsets
+✅ Complex layouts
+
+IMPORTANT: Must have spaces around + and -
+*/
+
+.calc-examples {
+    /* Mixing units */
+    width: calc(100% - 40px);       /* Full width minus fixed padding */
+    height: calc(100vh - 60px);     /* Full height minus header */
+    font-size: calc(1rem + 2vw);    /* Fluid typography */
+    
+    /* Complex calculations */
+    padding: calc((100% - 960px) / 2); /* Center content */
+    margin-top: calc(2rem * 1.5);   /* 3rem (multiply) */
+    width: calc(100% / 3);          /* One third */
+    
+    /* Nested calc */
+    width: calc(100% - calc(2rem * 2)); /* 100% - 4rem */
+}
+
+.sidebar-layout {
+    width: calc(100% - 250px);      /* Width minus sidebar */
+    margin-left: 250px;
+}
+
+.responsive-grid {
+    width: calc(33.333% - 1rem);    /* 3 columns with gap */
+    margin: 0.5rem;
+}
+
+
+/* =============================================== */
+/* MIN(), MAX(), CLAMP() FUNCTIONS */
+/* =============================================== */
+
+/* ---------------- MIN() ---------------- */
+/*
+min() = Use the SMALLEST value
+
+WHEN TO USE:
+✅ Responsive max-width without media queries
+✅ Preventing elements from getting too large
+*/
+
+.min-example {
+    width: min(100%, 600px);        /* Never wider than 600px */
+    /* Same as: width: 100%; max-width: 600px; */
+    
+    font-size: min(5vw, 32px);      /* Fluid but not too big */
+    padding: min(5%, 40px);         /* Flexible but capped */
+}
+
+
+/* ---------------- MAX() ---------------- */
+/*
+max() = Use the LARGEST value
+
+WHEN TO USE:
+✅ Ensuring minimum sizes
+✅ Preventing elements from getting too small
+*/
+
+.max-example {
+    width: max(50%, 300px);         /* At least 300px wide */
+    /* Same as: width: 50%; min-width: 300px; */
+    
+    font-size: max(1rem, 12px);     /* Never smaller than 12px */
+    padding: max(2rem, 5%);         /* Flexible but minimum size */
+}
+
+
+/* ---------------- CLAMP() ---------------- */
+/*
+clamp(MIN, PREFERRED, MAX) = Value between min and max
+
+BEST for fluid responsive sizing!
+
+WHEN TO USE:
+✅ Fluid typography (highly recommended!)
+✅ Responsive spacing
+✅ Flexible layouts without media queries
+
+SYNTAX: clamp(minimum, preferred, maximum)
+*/
+
+.clamp-typography {
+    /* Fluid font size between 16px and 32px */
+    font-size: clamp(1rem, 2.5vw, 2rem);
+    /*
+    - Minimum: 1rem (16px)
+    - Preferred: 2.5vw (grows with viewport)
+    - Maximum: 2rem (32px)
+    */
+}
+
+.clamp-spacing {
+    padding: clamp(1rem, 5vw, 4rem);
+    /* Padding grows with screen but stays between 1rem and 4rem */
+}
+
+.clamp-width {
+    width: clamp(300px, 50vw, 800px);
+    /* Width is 50% of viewport but never smaller than 300px or larger than 800px */
+}
+
+/* Real-world example: Responsive heading */
+h1.responsive-heading {
+    font-size: clamp(2rem, 5vw + 1rem, 5rem);
+    /* Small: 2rem, Medium: grows, Large: 5rem */
+}
+
+
+/* =============================================== */
+/* UNIT COMPARISON & RECOMMENDATIONS */
+/* =============================================== */
+
+/*
+┌─────────────────────────────────────────────────────────────┐
+│ QUICK REFERENCE: WHEN TO USE WHICH UNIT                     │
+└─────────────────────────────────────────────────────────────┘
+
+FONT SIZES:
+✅ rem - BEST (consistent, accessible, scales with user settings)
+✅ em - Good for component-relative sizing
+✅ clamp() - BEST for fluid typography
+❌ px - Avoid (doesn't scale with user preferences)
+
+SPACING (padding, margin):
+✅ rem - BEST (consistent)
+✅ em - Good for component spacing
+✅ % - Good for percentage-based spacing
+❌ px - OK for small values (1-5px)
+
+WIDTH/HEIGHT:
+✅ % - BEST for flexible layouts
+✅ vw/vh - BEST for viewport-based sizing
+✅ rem - Good for max-width
+✅ fr - BEST for Grid layouts
+❌ px - Only for fixed sizes
+
+BORDERS, SHADOWS, SMALL DETAILS:
+✅ px - BEST (precise)
+✅ rem - Alternative for scaling borders
+
+MEDIA QUERIES:
+✅ em or rem - BEST (relative to user settings)
+❌ px - Common but less accessible
+
+RESPONSIVE DESIGN:
+✅ rem - Typography and spacing
+✅ % - Flexible widths
+✅ vw/vh - Viewport-based
+✅ clamp() - Fluid sizing
+✅ calc() - Complex calculations
+
+
+┌─────────────────────────────────────────────────────────────┐
+│ MODERN BEST PRACTICES (2024+)                               │
+└─────────────────────────────────────────────────────────────┘
+
+1. Use rem for almost everything
+   - Font sizes
+   - Spacing (padding, margin)
+   - Component dimensions
+
+2. Use clamp() for fluid typography
+   font-size: clamp(1rem, 2.5vw, 2.5rem);
+
+3. Use % or vw for flexible widths
+   width: min(90%, 1200px);
+
+4. Use vh/dvh for full-height sections
+   min-height: 100dvh; (better than vh on mobile)
+
+5. Use px sparingly
+   - Borders (1px, 2px)
+   - Small shadows
+   - Pixel-perfect details
+
+6. Avoid em for font-size (compounds)
+   - Use em for spacing that should scale with text
+   - Use rem for font sizes
+
+7. Use calc() to mix units
+   width: calc(100% - 2rem);
+
+8. Use Grid fr units for grid layouts
+   grid-template-columns: 1fr 2fr 1fr;
+
+
+┌─────────────────────────────────────────────────────────────┐
+│ UNIT CONVERSION REFERENCE                                   │
+└─────────────────────────────────────────────────────────────┘
+
+ASSUMING default root font-size of 16px:
+
+PIXELS TO REM:
+16px = 1rem
+24px = 1.5rem
+32px = 2rem
+48px = 3rem
+64px = 4rem
+
+PERCENTAGE TO DECIMAL:
+100% = 1.0
+50% = 0.5
+25% = 0.25
+10% = 0.1
+
+VIEWPORT:
+100vw = Full viewport width
+100vh = Full viewport height
+50vmin = 50% of smaller dimension
+50vmax = 50% of larger dimension
+
+HELPFUL FORMULAS:
+px to rem: px ÷ 16 = rem
+rem to px: rem × 16 = px
+% of parent: (desired ÷ parent) × 100 = %
+
+
+┌─────────────────────────────────────────────────────────────┐
+│ COMMON MISTAKES & SOLUTIONS                                 │
+└─────────────────────────────────────────────────────────────┘
+
+❌ MISTAKE: Using px for everything
+✅ SOLUTION: Use rem for fonts and spacing
+
+❌ MISTAKE: Using em for font-sizes (compounds)
+✅ SOLUTION: Use rem instead
+
+❌ MISTAKE: 100vw causing horizontal scroll
+✅ SOLUTION: Use 100% or min(100vw, 100%)
+
+❌ MISTAKE: Using vh on mobile (address bar issue)
+✅ SOLUTION: Use dvh (dynamic viewport height)
+
+❌ MISTAKE: Forgetting spaces in calc()
+✅ SOLUTION: calc(100% - 2rem) NOT calc(100%-2rem)
+
+❌ MISTAKE: Using px in media queries
+✅ SOLUTION: Use em or rem
+
+❌ MISTAKE: Percentage padding/margin confusion
+✅ SOLUTION: Remember: % always relative to parent's WIDTH
+
+❌ MISTAKE: Not setting root font-size
+✅ SOLUTION: html { font-size: 100%; } for accessibility
+*/
+
+
+/* =============================================== */
+/* PRACTICAL EXAMPLES */
+/* =============================================== */
+
+/* Example 1: Modern responsive card component */
+.modern-card {
+    /* Width: flexible but constrained */
+    width: min(90%, 600px);
+    
+    /* Spacing: rem for consistency */
+    padding: clamp(1rem, 3vw, 2rem);
+    margin: 2rem auto;
+    
+    /* Typography: fluid with clamp */
+    font-size: clamp(0.875rem, 2vw, 1rem);
+    
+    /* Border: px for precision */
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    
+    /* Shadow: rem for scaling */
+    box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1);
+}
+
+/* Example 2: Responsive layout */
+.responsive-layout {
+    /* Container: flexible width with max */
+    max-width: min(90vw, 1200px);
+    margin: 0 auto;
+    
+    /* Spacing: rem for consistency */
+    padding: clamp(1rem, 5vw, 3rem);
+    
+    /* Grid: fr units for flexibility */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+/* Example 3: Fluid typography scale */
+.fluid-typography {
+    /* All scale smoothly with viewport */
+    --h1: clamp(2rem, 5vw + 1rem, 4rem);
+    --h2: clamp(1.5rem, 4vw + 0.5rem, 3rem);
+    --h3: clamp(1.25rem, 3vw + 0.5rem, 2rem);
+    --body: clamp(1rem, 2vw, 1.125rem);
+}
+
+/* Example 4: Full-screen hero with modern units */
+.hero-modern {
+    /* Height: dynamic viewport (better for mobile) */
+    min-height: 100dvh;
+    
+    /* Padding: rem for consistency */
+    padding: clamp(2rem, 10vh, 6rem);
+    
+    /* Typography: fluid */
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    
+    /* Layout: flexbox */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Example 5: Sidebar layout with calc */
+.layout-with-sidebar {
+    display: flex;
+}
+
+.sidebar-fixed {
+    width: 250px;           /* Fixed sidebar */
+    padding: 1.5rem;
+}
+
+.main-content-calc {
+    /* Main takes remaining space */
+    width: calc(100% - 250px - 3rem); /* Full - sidebar - gap */
+    padding: 2rem;
+}
+
+/*
+┌─────────────────────────────────────────────────────────────┐
+│ SUMMARY                                                      │
+└─────────────────────────────────────────────────────────────┘
+
+ABSOLUTE UNITS (fixed):
+- px: Pixels (most common, use sparingly)
+- pt, cm, mm, in: Physical units (print only)
+
+RELATIVE UNITS (flexible):
+- rem: Relative to root font (BEST for most things)
+- em: Relative to parent font (good for component spacing)
+- %: Percentage of parent
+- vw, vh: Viewport width/height
+- vmin, vmax: Viewport min/max dimension
+- dvh, svh, lvh: Dynamic viewport heights (modern)
+- fr: Fraction of grid space (Grid only)
+
+FUNCTIONS:
+- calc(): Math with mixed units
+- min(): Smallest value
+- max(): Largest value
+- clamp(): Value between min and max
+
+GOLDEN RULES:
+1. Use rem for fonts and spacing
+2. Use clamp() for fluid typography
+3. Use % or vw for flexible widths
+4. Use dvh instead of vh on mobile
+5. Use px only for tiny details
+6. Mix units with calc() when needed
+7. Always consider accessibility!
+*/
+
