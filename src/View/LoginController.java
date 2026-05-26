@@ -1,9 +1,10 @@
 package View;
 
-import Model.AuthenticationService;
-import Model.AuthenticationService.AuthenticationResult;
+import Model.Admin;
+import Model.Client;
+import Model.PropertyOwner;
 import ViewModel.LoginViewModel;
-import javafx.application.Platform;
+import ViewModel.ViewModelFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,38 +15,27 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
 public class LoginController {
 
-    @FXML
-    private TextField usernameField;
-    @FXML
-    private PasswordField passwordField;
-    @FXML
-    private Button adminAccessBtn;
-    @FXML
-    private Label errorLabel;
+    @FXML private TextField     usernameField;
+    @FXML private PasswordField passwordField;
+    @FXML private Button        adminAccessBtn;
+    @FXML private Label         errorLabel;
 
-    private final LoginViewModel viewModel = new LoginViewModel();
-    private final AuthenticationService authService = new AuthenticationService();
+    private LoginViewModel viewModel;
 
     @FXML
     private void initialize() {
-        // Bind text fields to view model
+        viewModel = ViewModelFactory.getInstance().getLoginViewModel();
+
         usernameField.textProperty().bindBidirectional(viewModel.usernameProperty());
         passwordField.textProperty().bindBidirectional(viewModel.passwordProperty());
-        
-        // Create error label if not defined in FXML
-        if (errorLabel == null) {
-            errorLabel = new Label();
-            errorLabel.setStyle("-fx-text-fill: #B71C1C; -fx-font-family: 'Cambria'; -fx-font-size: 13px;");
-            errorLabel.setVisible(false);
-            errorLabel.setManaged(false);
-        }
-        
-        // Bind error message
-        viewModel.errorMessageProperty().addListener((obs, oldVal, newVal) -> {
+
+        // Show/hide error label
+        viewModel.errorMessageProperty().addListener((obs, o, newVal) -> {
             if (newVal != null && !newVal.isEmpty()) {
                 errorLabel.setText(newVal);
                 errorLabel.setVisible(true);
@@ -55,66 +45,36 @@ public class LoginController {
                 errorLabel.setManaged(false);
             }
         });
-        
-        // Clear error when user types
-        usernameField.textProperty().addListener((obs, oldVal, newVal) -> viewModel.clearError());
-        passwordField.textProperty().addListener((obs, oldVal, newVal) -> viewModel.clearError());
-        
-        // Handle Enter key in password field
-        passwordField.setOnAction(e -> handleLogin());
-    }
 
-    @FXML
-    private void handleLogin() {
-        viewModel.clearError();
-        
-        String username = viewModel.getUsername();
-        String password = viewModel.getPassword();
-        
-        // Validate input
-        if (username == null || username.trim().isEmpty()) {
-            viewModel.setErrorMessage("Please enter a username");
-            return;
-        }
-        
-        if (password == null || password.trim().isEmpty()) {
-            viewModel.setErrorMessage("Please enter a password");
-            return;
-        }
-        
-        // Perform authentication in background to avoid UI freeze
-        Platform.runLater(() -> {
+        // Clear error on keystroke
+        usernameField.textProperty().addListener((obs, o, n) -> viewModel.clearError());
+        passwordField.textProperty().addListener((obs, o, n) -> viewModel.clearError());
+        passwordField.setOnAction(e -> handleLogin());
+
+        // React to successful login (fires on JavaFX thread via Platform.runLater in ViewModel)
+        viewModel.loggedInUserTypeProperty().addListener((obs, o, type) -> {
+            if (type == null || type.isEmpty()) return;
             try {
-                AuthenticationResult result = authService.authenticate(username, password);
-                
-                if (result.isSuccess()) {
-                    // Clear password from memory
-                    viewModel.clearFields();
-                    
-                    // Navigate to main view with user object
-                    navigateToMainView(result);
-                } else {
-                    // Show error message
-                    viewModel.setErrorMessage(result.getErrorMessage());
-                }
-            } catch (Exception e) {
-                viewModel.setErrorMessage("An unexpected error occurred: " + e.getMessage());
-                e.printStackTrace();
+                navigateToMainView(type, viewModel.loggedInUserProperty().get());
+                viewModel.resetLoginState();
+            } catch (IOException e) {
+                viewModel.errorMessageProperty().set("Navigation error: " + e.getMessage());
             }
         });
     }
 
     @FXML
+    private void handleLogin() {
+        viewModel.login();
+    }
+
+    @FXML
     private void handleRegister() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/RegistrationView.fxml"));
-            Parent registrationRoot = loader.load();
-            
-            // Get the current scene and update its root
-            usernameField.getScene().setRoot(registrationRoot);
+            Parent root = FXMLLoader.load(getClass().getResource("/View/RegistrationView.fxml"));
+            usernameField.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
-            viewModel.setErrorMessage("Failed to load registration form");
         }
     }
 
@@ -134,11 +94,11 @@ public class LoginController {
         popupScene.getStylesheets().add(getClass().getResource("/View/styles.css").toExternalForm());
         popup.setScene(popupScene);
 
+        // Admin bypass: navigate directly without hitting the server
         popupController.setOnEnter(userType -> {
             try {
-                // Create a mock AuthenticationResult for dev bypass
-                AuthenticationResult mockResult = new AuthenticationResult(true, userType, null, null);
-                navigateToMainView(mockResult);
+                navigateToMainView(userType, null);
+                popup.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -146,17 +106,12 @@ public class LoginController {
 
         popup.showAndWait();
     }
-    
-    /**
-     * Navigate to the main application view with authentication result
-     */
-    private void navigateToMainView(AuthenticationResult result) throws IOException {
+
+    private void navigateToMainView(String userType, Object user) throws IOException {
         FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/View/MainView.fxml"));
         Parent mainRoot = mainLoader.load();
         MainController mainController = mainLoader.getController();
-        mainController.init(result.getUserType(), result.getUser());
-        
-        // Get the current scene and update its root
+        mainController.init(userType, user);
         usernameField.getScene().setRoot(mainRoot);
     }
 }

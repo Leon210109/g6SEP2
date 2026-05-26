@@ -1,232 +1,132 @@
 package View;
 
 import Model.Admin;
-import Model.Client;
 import Model.Date;
 import Model.OwnerApplication;
-import Model.PropertyOwner;
-import Persistence.ClientDAO;
-import Persistence.OwnerApplicationDAO;
-import Persistence.PropertyOwnerDAO;
+import ViewModel.AdminViewModel;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
-
-public class AdminController {
-
+public class AdminController
+{
     @FXML private ScrollPane applicationsScrollPane;
-    @FXML private TilePane applicationsTilePane;
-    @FXML private Label statusLabel;
+    @FXML private TilePane   applicationsTilePane;
+    @FXML private Label      statusLabel;
 
     private Admin admin;
-    private final OwnerApplicationDAO applicationDAO = new OwnerApplicationDAO();
-    private final ClientDAO clientDAO = new ClientDAO();
-    private final PropertyOwnerDAO ownerDAO = new PropertyOwnerDAO();
+    private AdminViewModel adminVM;
 
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
+    public void setAdmin(Admin admin) { this.admin = admin; }
+
+    @FXML
+    private void initialize()
+    {
+        adminVM = new AdminViewModel();
+        statusLabel.textProperty().bind(adminVM.statusMessageProperty());
+        adminVM.getApplications().addListener(
+            (javafx.collections.ListChangeListener<OwnerApplication>) c -> rebuildCards());
+        adminVM.loadApplications();
     }
 
     @FXML
-    private void initialize() {
-        // Data loaded when setAdmin is called (or directly if admin bypass)
-        loadApplications();
+    private void handleRefresh() { adminVM.loadApplications(); }
+
+    private void rebuildCards()
+    {
+        applicationsTilePane.getChildren().clear();
+        for (OwnerApplication app : adminVM.getApplications())
+            applicationsTilePane.getChildren().add(createApplicationCard(app));
     }
 
-    @FXML
-    private void handleRefresh() {
-        loadApplications();
-    }
-
-    private void loadApplications() {
-        try {
-            ArrayList<OwnerApplication> applications = applicationDAO.getAllApplications();
-
-            applicationsTilePane.getChildren().clear();
-
-            if (applications.isEmpty()) {
-                statusLabel.setText("No owner applications found.");
-                return;
-            }
-
-            for (OwnerApplication app : applications) {
-                applicationsTilePane.getChildren().add(createApplicationCard(app));
-            }
-
-            statusLabel.setText(applications.size() + " application(s) total");
-
-        } catch (Exception e) {
-            statusLabel.setText("Error loading applications: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    private VBox createApplicationCard(OwnerApplication app) {
+    private VBox createApplicationCard(OwnerApplication app)
+    {
         VBox card = new VBox(10);
         card.setPrefWidth(420);
         card.setPadding(new Insets(20));
-        card.setStyle(
-            "-fx-background-color: white;" +
-            "-fx-background-radius: 8;" +
-            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 10, 0, 0, 2);"
-        );
+        card.setStyle("-fx-background-color: white; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 10, 0, 0, 2);");
 
-        // Status badge color
         String badgeColor = switch (app.getStatus().toLowerCase()) {
-            case "approved" -> "#1A5F3F";
-            case "rejected" -> "#B22222";
-            default -> "#8B7355"; // pending
+            case "approved" -> "#1A5F3F"; case "rejected" -> "#B22222"; default -> "#8B7355";
         };
-
-        Text statusBadge = new Text("● " + app.getStatus().toUpperCase());
+        Text statusBadge = new Text("\u25CF " + app.getStatus().toUpperCase());
         statusBadge.setStyle("-fx-fill: " + badgeColor + "; -fx-font-size: 11px; -fx-font-weight: bold;");
 
-        Text appIdText = new Text("Application #" + app.getApplicationId());
-        appIdText.setStyle("-fx-fill: #143D29; -fx-font-size: 16px; -fx-font-weight: bold;");
+        Text appId = new Text("Application #" + app.getApplicationId());
+        appId.setStyle("-fx-fill: #143D29; -fx-font-size: 16px; -fx-font-weight: bold;");
 
-        Label clientLabel = new Label("Client ID: " + app.getClientId());
-        clientLabel.setStyle("-fx-text-fill: #666666; -fx-font-size: 12px;");
+        Label clientLbl = new Label("Client ID: " + app.getClientId());
+        clientLbl.setStyle("-fx-text-fill: #666666; -fx-font-size: 12px;");
 
-        // Try to load client name
-        try {
-            Client client = clientDAO.getClientById(app.getClientId());
-            if (client != null) {
-                clientLabel.setText("Applicant: " + client.getFirstName() + " " + client.getLastName()
-                    + " (" + client.getEmail() + ")");
-            }
-        } catch (Exception ignored) {}
+        Label addrLbl = new Label("Property: " + app.getPropertyAddress());
+        addrLbl.setStyle("-fx-text-fill: #143D29; -fx-font-size: 13px; -fx-font-weight: bold;");
+        addrLbl.setWrapText(true);
 
-        Label addressLabel = new Label("Property: " + app.getPropertyAddress());
-        addressLabel.setStyle("-fx-text-fill: #143D29; -fx-font-size: 13px; -fx-font-weight: bold;");
-        addressLabel.setWrapText(true);
-
-        Label regLabel = new Label("Reg. No: " + app.getPropertyRegistrationNumber());
-        regLabel.setStyle("-fx-text-fill: #555555; -fx-font-size: 12px;");
+        Label regLbl = new Label("Reg. No: " + app.getPropertyRegistrationNumber());
+        regLbl.setStyle("-fx-text-fill: #555555; -fx-font-size: 12px;");
 
         Date d = app.getSubmissionDate();
-        Label dateLabel = new Label(String.format("Submitted: %02d/%02d/%d",
-            d.getDay(), d.getMonth(), d.getYear()));
-        dateLabel.setStyle("-fx-text-fill: #8B7355; -fx-font-size: 11px;");
+        Label dateLbl = new Label(String.format("Submitted: %02d/%02d/%d", d.getDay(), d.getMonth(), d.getYear()));
+        dateLbl.setStyle("-fx-text-fill: #8B7355; -fx-font-size: 11px;");
 
-        card.getChildren().addAll(statusBadge, appIdText, clientLabel, addressLabel, regLabel, dateLabel);
+        card.getChildren().addAll(statusBadge, appId, clientLbl, addrLbl, regLbl, dateLbl);
 
-        // Action buttons only for pending applications
+        HBox btns = new HBox(10);
+        btns.setAlignment(Pos.CENTER_LEFT);
+        btns.setPadding(new Insets(8, 0, 0, 0));
+
         if ("pending".equalsIgnoreCase(app.getStatus())) {
-            HBox buttonBox = new HBox(10);
-            buttonBox.setAlignment(Pos.CENTER_LEFT);
-            buttonBox.setPadding(new Insets(8, 0, 0, 0));
+            Button approveBtn = new Button("\u2713 Approve");
+            approveBtn.setStyle("-fx-background-color: #1A5F3F; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 7 18; -fx-cursor: hand;");
+            approveBtn.setOnAction(e -> handleApprove(app));
 
-            Button approveBtn = new Button("✓ Approve");
-            approveBtn.setStyle(
-                "-fx-background-color: #1A5F3F; -fx-text-fill: white;" +
-                "-fx-font-size: 12px; -fx-font-weight: bold;" +
-                "-fx-background-radius: 5; -fx-padding: 7 18; -fx-cursor: hand;"
-            );
-            approveBtn.setOnAction(e -> handleApprove(app, card, statusBadge));
+            Button rejectBtn = new Button("\u2717 Reject");
+            rejectBtn.setStyle("-fx-background-color: #B22222; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 7 18; -fx-cursor: hand;");
+            rejectBtn.setOnAction(e -> handleReject(app));
 
-            Button rejectBtn = new Button("✗ Reject");
-            rejectBtn.setStyle(
-                "-fx-background-color: #B22222; -fx-text-fill: white;" +
-                "-fx-font-size: 12px; -fx-font-weight: bold;" +
-                "-fx-background-radius: 5; -fx-padding: 7 18; -fx-cursor: hand;"
-            );
-            rejectBtn.setOnAction(e -> handleReject(app, card, statusBadge, buttonBox));
-
-            buttonBox.getChildren().addAll(approveBtn, rejectBtn);
-            card.getChildren().add(buttonBox);
+            btns.getChildren().addAll(approveBtn, rejectBtn);
         }
 
+        Button removeBtn = new Button("\uD83D\uDDD1 Remove");
+        removeBtn.setStyle("-fx-background-color: #555555; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 7 18; -fx-cursor: hand;");
+        removeBtn.setOnAction(e -> handleRemove(app));
+        btns.getChildren().add(removeBtn);
+        card.getChildren().add(btns);
         return card;
     }
 
-    private void handleApprove(OwnerApplication app, VBox card, Text statusBadge) {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Approve Application");
-        confirm.setHeaderText("Approve application #" + app.getApplicationId() + "?");
-        confirm.setContentText("The client will be registered as a Property Owner.");
-
-        confirm.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                try {
-                    // 1. Fetch client
-                    Client client = clientDAO.getClientById(app.getClientId());
-
-                    // 2. Create PropertyOwner from Client data (only if not already a PropertyOwner)
-                    if (client != null && ownerDAO.getPropertyOwnerByUsername(client.getUsername()) == null) {
-                        PropertyOwner newOwner = new PropertyOwner(
-                            client.getFirstName(),
-                            client.getLastName(),
-                            client.getEmail(),
-                            client.getPhoneNumber(),
-                            client.getUsername(),
-                            client.getPassword(),
-                            client.getDOB(),
-                            client.getGender(),
-                            client.getNationality()
-                        );
-                        ownerDAO.CreatePropertyOwner(newOwner);
-                    }
-
-                    // 3. Update application status (only after PropertyOwner is ready)
-                    if (admin != null) {
-                        applicationDAO.updateApplicationStatusAndAdmin(app.getApplicationId(), "Approved", admin.getID());
-                    } else {
-                        applicationDAO.updateApplicationStatus(app.getApplicationId(), "Approved");
-                    }
-
-                    // 4. Update card UI
-                    statusBadge.setText("● APPROVED");
-                    statusBadge.setStyle("-fx-fill: #1A5F3F; -fx-font-size: 11px; -fx-font-weight: bold;");
-                    // Remove the button row (last child)
-                    if (!card.getChildren().isEmpty()) {
-                        card.getChildren().remove(card.getChildren().size() - 1);
-                    }
-                    statusLabel.setText("Application approved successfully.");
-
-                } catch (Exception e) {
-                    statusLabel.setText("Error approving application: " + e.getMessage());
-                    e.printStackTrace();
-                }
-            }
+    private void handleApprove(OwnerApplication app)
+    {
+        Alert c = new Alert(Alert.AlertType.CONFIRMATION,
+            "Approve application #" + app.getApplicationId() + "? The client will become a Property Owner.",
+            ButtonType.OK, ButtonType.CANCEL);
+        c.setTitle("Approve Application");
+        c.showAndWait().ifPresent(r -> {
+            if (r == ButtonType.OK)
+                adminVM.approveApplication(app.getApplicationId(), admin != null ? admin.getID() : 0);
         });
     }
 
-    private void handleReject(OwnerApplication app, VBox card, Text statusBadge, HBox buttonBox) {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Reject Application");
-        confirm.setHeaderText("Reject application #" + app.getApplicationId() + "?");
-        confirm.setContentText("The application will be marked as rejected.");
+    private void handleReject(OwnerApplication app)
+    {
+        Alert c = new Alert(Alert.AlertType.CONFIRMATION,
+            "Reject application #" + app.getApplicationId() + "?",
+            ButtonType.OK, ButtonType.CANCEL);
+        c.setTitle("Reject Application");
+        c.showAndWait().ifPresent(r -> { if (r == ButtonType.OK) adminVM.rejectApplication(app.getApplicationId()); });
+    }
 
-        confirm.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                try {
-                    if (admin != null) {
-                        applicationDAO.updateApplicationStatusAndAdmin(app.getApplicationId(), "Rejected", admin.getID());
-                    } else {
-                        applicationDAO.updateApplicationStatus(app.getApplicationId(), "Rejected");
-                    }
-
-                    statusBadge.setText("● REJECTED");
-                    statusBadge.setStyle("-fx-fill: #B22222; -fx-font-size: 11px; -fx-font-weight: bold;");
-                    card.getChildren().remove(buttonBox);
-                    statusLabel.setText("Application rejected.");
-
-                } catch (Exception e) {
-                    statusLabel.setText("Error rejecting application: " + e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-        });
+    private void handleRemove(OwnerApplication app)
+    {
+        Alert c = new Alert(Alert.AlertType.CONFIRMATION,
+            "Remove application #" + app.getApplicationId() + "? Cannot be undone.",
+            ButtonType.OK, ButtonType.CANCEL);
+        c.setTitle("Remove Application");
+        c.showAndWait().ifPresent(r -> { if (r == ButtonType.OK) adminVM.removeApplication(app.getApplicationId()); });
     }
 }

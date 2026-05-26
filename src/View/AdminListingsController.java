@@ -3,8 +3,8 @@ package View;
 import Model.Admin;
 import Model.Listing;
 import Model.PropertyOwner;
-import Persistence.ListingDAO;
-import Persistence.PropertyOwnerDAO;
+import ViewModel.ListingViewModel;
+import ViewModel.ViewModelFactory;
 import Util.ImageConverter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,48 +28,43 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Optional;
 
 public class AdminListingsController {
 
     @FXML private ScrollPane listingsScrollPane;
-    @FXML private TilePane listingsTilePane;
-    @FXML private Label statusLabel;
+    @FXML private TilePane   listingsTilePane;
+    @FXML private Label      statusLabel;
 
-    private final ListingDAO listingDAO = new ListingDAO();
-    private final PropertyOwnerDAO ownerDAO = new PropertyOwnerDAO();
+    private ListingViewModel listingViewModel;
     private Admin admin;
 
     public void setAdmin(Admin admin) {
         this.admin = admin;
-        loadListings();
     }
 
     @FXML
     private void initialize() {
-        loadListings();
+        listingViewModel = ViewModelFactory.getInstance().getListingViewModel();
+        listingViewModel.getListings().addListener(
+            (javafx.collections.ListChangeListener<Listing>) c -> rebuildTiles());
+        listingViewModel.loadListings();
+        // When owner lookup resolves, open edit dialog
+        listingViewModel.ownerResultProperty().addListener((obs, o, owner) -> {
+            if (owner != null && pendingEditListing != null) {
+                openEditListing(pendingEditListing, owner);
+                pendingEditListing = null;
+            }
+        });
     }
 
-    private void loadListings() {
-        try {
-            listingsTilePane.getChildren().clear();
-            ArrayList<Listing> listings = listingDAO.getAllListings();
+    private Listing pendingEditListing = null;
 
-            if (listings.isEmpty()) {
-                statusLabel.setText("No listings in the system.");
-                return;
-            }
-
-            for (Listing listing : listings) {
-                listingsTilePane.getChildren().add(createListingCard(listing));
-            }
-            statusLabel.setText(listings.size() + " listing(s) total");
-
-        } catch (Exception e) {
-            statusLabel.setText("Error loading listings: " + e.getMessage());
-            e.printStackTrace();
-        }
+    private void rebuildTiles() {
+        listingsTilePane.getChildren().clear();
+        if (listingViewModel.getListings().isEmpty()) { statusLabel.setText("No listings in the system."); return; }
+        statusLabel.setText(listingViewModel.getListings().size() + " listing(s) total");
+        for (Listing l : listingViewModel.getListings())
+            listingsTilePane.getChildren().add(createListingCard(l));
     }
 
     private VBox createListingCard(Listing listing) {
@@ -77,127 +72,59 @@ public class AdminListingsController {
         card.setAlignment(Pos.TOP_CENTER);
         card.setPadding(new Insets(15));
         card.setPrefWidth(280);
-        card.setStyle(
-            "-fx-background-color: white;" +
-            "-fx-background-radius: 10;" +
-            "-fx-border-color: #D4C4B0;" +
-            "-fx-border-radius: 10;" +
-            "-fx-border-width: 2;" +
-            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);"
-        );
+        card.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #D4C4B0; -fx-border-radius: 10; -fx-border-width: 2;");
 
-        ImageView imageView = new ImageView();
-        imageView.setFitWidth(250);
-        imageView.setFitHeight(140);
-        imageView.setPreserveRatio(true);
-        loadImage(imageView, listing.getStreet());
+        ImageView iv = new ImageView(); iv.setFitWidth(250); iv.setFitHeight(140); iv.setPreserveRatio(true);
+        loadImage(iv, listing.getStreet());
 
-        Text streetText = new Text(listing.getStreet());
-        streetText.setStyle(
-            "-fx-fill: #143D29; -fx-font-family: 'Palatino Linotype';" +
-            "-fx-font-size: 17px; -fx-font-weight: bold;"
-        );
-
-        // Owner info
-        String ownerName = "Unknown Owner";
-        try {
-            PropertyOwner owner = ownerDAO.getPropertyOwnerById(listing.getOwnerId());
-            if (owner != null) {
-                ownerName = owner.getFirstName() + " " + owner.getLastName();
-            }
-        } catch (Exception ignored) { }
-        Text ownerText = new Text("Owner: " + ownerName);
-        ownerText.setStyle("-fx-fill: #8B7355; -fx-font-family: 'Cambria'; -fx-font-size: 12px;");
-
-        Text locationText = new Text(listing.getRegion() + ", " + listing.getCountry());
-        locationText.setStyle("-fx-fill: #8B7355; -fx-font-family: 'Cambria'; -fx-font-size: 12px;");
-
-        Text detailsText = new Text(
-            listing.getNumberOfRooms() + " rooms · " +
-            listing.getSurfaceArea() + "m² · " +
-            listing.getPrice() + " DKK/month"
-        );
-        detailsText.setStyle(
-            "-fx-fill: #1A5F3F; -fx-font-family: 'Cambria';" +
-            "-fx-font-size: 12px; -fx-font-weight: bold;"
-        );
-
-        HBox buttonRow = new HBox(8);
-        buttonRow.setAlignment(Pos.CENTER);
+        Text street = new Text(listing.getStreet()); street.setStyle("-fx-fill: #143D29; -fx-font-size: 17px; -fx-font-weight: bold;");
+        Text loc = new Text(listing.getRegion() + ", " + listing.getCountry()); loc.setStyle("-fx-fill: #8B7355; -fx-font-size: 12px;");
+        Text details = new Text(listing.getNumberOfRooms() + " rooms \u00b7 " + listing.getSurfaceArea() + "m\u00b2 \u00b7 " + listing.getPrice() + " DKK/month");
+        details.setStyle("-fx-fill: #1A5F3F; -fx-font-size: 12px; -fx-font-weight: bold;");
 
         Button editBtn = new Button("Edit");
-        editBtn.setStyle(
-            "-fx-background-color: #6B4A2A; -fx-text-fill: white;" +
-            "-fx-font-family: 'Cambria'; -fx-font-size: 12px;" +
-            "-fx-background-radius: 5; -fx-padding: 6 18; -fx-cursor: hand;"
-        );
-        editBtn.setOnAction(e -> openEditListing(listing));
+        editBtn.setStyle("-fx-background-color: #6B4A2A; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 6 18; -fx-cursor: hand;");
+        editBtn.setOnAction(e -> { pendingEditListing = listing; listingViewModel.loadOwnerById(listing.getOwnerId()); });
 
         Button deleteBtn = new Button("Delete");
-        deleteBtn.setStyle(
-            "-fx-background-color: #8B0000; -fx-text-fill: white;" +
-            "-fx-font-family: 'Cambria'; -fx-font-size: 12px;" +
-            "-fx-background-radius: 5; -fx-padding: 6 18; -fx-cursor: hand;"
-        );
-        deleteBtn.setOnAction(e -> handleDelete(listing, card));
+        deleteBtn.setStyle("-fx-background-color: #8B0000; -fx-text-fill: white; -fx-background-radius: 5; -fx-padding: 6 18; -fx-cursor: hand;");
+        deleteBtn.setOnAction(e -> handleDelete(listing));
 
-        buttonRow.getChildren().addAll(editBtn, deleteBtn);
-        card.getChildren().addAll(imageView, streetText, ownerText, locationText, detailsText, buttonRow);
+        HBox btns = new HBox(8, editBtn, deleteBtn); btns.setAlignment(Pos.CENTER);
+        card.getChildren().addAll(iv, street, loc, details, btns);
         return card;
     }
 
-    private void openEditListing(Listing listing) {
+    private void openEditListing(Listing listing, PropertyOwner owner) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("EditListingView.fxml"));
             Parent root = loader.load();
             EditListingController ctrl = loader.getController();
-            // Pass null as owner — admin is editing, owner details not needed for update
-            PropertyOwner owner = null;
-            try { owner = ownerDAO.getPropertyOwnerById(listing.getOwnerId()); } catch (Exception ignored) { }
             ctrl.setListing(listing, owner);
-            ctrl.setOnSuccess(() -> loadListings());
-
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Edit Listing - " + listing.getStreet());
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            statusLabel.setText("Error opening edit form: " + e.getMessage());
-        }
+            ctrl.setOnSuccess(() -> listingViewModel.loadListings());
+            Stage s = new Stage();
+            s.initModality(Modality.APPLICATION_MODAL);
+            s.setTitle("Edit Listing - " + listing.getStreet());
+            s.setScene(new Scene(root));
+            s.show();
+        } catch (IOException e) { statusLabel.setText("Error opening edit form: " + e.getMessage()); }
     }
 
-    private void handleDelete(Listing listing, VBox card) {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Delete Listing");
-        confirm.setHeaderText("Delete listing at " + listing.getStreet() + "?");
-        confirm.setContentText("This action cannot be undone. All associated bookings and favourites will also be removed.");
-        Optional<ButtonType> result = confirm.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            listingDAO.deleteListing(listing.getId());
-            listingsTilePane.getChildren().remove(card);
-            int remaining = listingsTilePane.getChildren().size();
-            statusLabel.setText(remaining + " listing(s) total");
-        }
+    private void handleDelete(Listing listing) {
+        Alert c = new Alert(Alert.AlertType.CONFIRMATION, "Delete listing at " + listing.getStreet() + "? Cannot be undone.", ButtonType.OK, ButtonType.CANCEL);
+        c.setTitle("Delete Listing");
+        c.showAndWait().ifPresent(r -> { if (r == ButtonType.OK) listingViewModel.removeListing(listing.getId()); });
     }
 
-    private void loadImage(ImageView imageView, String streetName) {
+    private void loadImage(ImageView iv, String streetName) {
         try {
             File folder = new File("room_rental_img/" + streetName);
-            if (folder.exists() && folder.isDirectory()) {
+            if (folder.exists()) {
                 ImageConverter.convertWebPFilesInFolder(folder.getAbsolutePath());
-                File[] files = folder.listFiles((dir, name) -> {
-                    String lower = name.toLowerCase();
-                    return lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".png");
-                });
-                if (files != null && files.length > 0) {
-                    imageView.setImage(new Image(files[0].toURI().toString()));
-                    return;
-                }
+                File[] files = folder.listFiles((d, n) -> n.toLowerCase().matches(".*\\.(jpg|jpeg|png)"));
+                if (files != null && files.length > 0) { iv.setImage(new Image(files[0].toURI().toString())); return; }
             }
-            imageView.setStyle("-fx-background-color: #E0E0E0;");
-        } catch (Exception e) {
-            imageView.setStyle("-fx-background-color: #E0E0E0;");
-        }
+        } catch (Exception ignored) {}
+        iv.setStyle("-fx-background-color: #E0E0E0;");
     }
 }

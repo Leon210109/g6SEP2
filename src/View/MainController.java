@@ -4,10 +4,13 @@ import ViewModel.AdminViewModel;
 import ViewModel.AppViewModel;
 import ViewModel.ClientViewModel;
 import ViewModel.PropertyOwnerViewModel;
+import ViewModel.ViewModelFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
@@ -28,6 +31,8 @@ public class MainController {
     @FXML
     private Button backToLoginBtn;
     @FXML
+    private Button deleteAccountBtn;
+    @FXML
     private MenuButton navMenu;
     @FXML
     private StackPane contentArea;
@@ -36,7 +41,7 @@ public class MainController {
 
     private AppViewModel vm;
     private String userType;
-    private Object currentUser; // Client, PropertyOwner, or Admin object
+    private Object currentUser;
 
     @FXML
     private void initialize() {
@@ -105,6 +110,10 @@ public class MainController {
             backToLoginBtn.setVisible(isHome);
             backToLoginBtn.setManaged(isHome);
 
+            boolean showDelete = isHome && !(currentUser instanceof Model.Admin);
+            deleteAccountBtn.setVisible(showDelete);
+            deleteAccountBtn.setManaged(showDelete);
+
             if (isHome) {
                 buildHomeView();
                 contentArea.getChildren().setAll(homeView);
@@ -112,6 +121,22 @@ public class MainController {
                 contentArea.getChildren().setAll(loadSectionView(newVal));
             }
         });
+
+        // Bind delete-account success back to login
+        if (vm instanceof ClientViewModel clientVM) {
+            clientVM.accountDeletedProperty().addListener((obs, o, deleted) -> {
+                if (deleted) navigateBackToLogin();
+            });
+        } else if (vm instanceof PropertyOwnerViewModel ownerVM) {
+            ownerVM.accountDeletedProperty().addListener((obs, o, deleted) -> {
+                if (deleted) navigateBackToLogin();
+            });
+        }
+
+        // Show delete account button on home for non-admin users
+        boolean showDelete = !(currentUser instanceof Model.Admin);
+        deleteAccountBtn.setVisible(showDelete);
+        deleteAccountBtn.setManaged(showDelete);
 
         // Build initial home view (adds Apply button for clients, etc.)
         buildHomeView();
@@ -144,6 +169,32 @@ public class MainController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/LoginView.fxml"));
         Parent loginRoot = loader.load();
         backToLoginBtn.getScene().setRoot(loginRoot);
+    }
+
+    @FXML
+    private void handleDeleteAccount() {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete Account");
+        confirm.setHeaderText("Permanently delete your account?");
+        confirm.setContentText("This cannot be undone. All your data will be removed.");
+
+        confirm.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                if (vm instanceof ClientViewModel clientVM && currentUser instanceof Model.Client client) {
+                    clientVM.deleteAccount(client.getID());
+                } else if (vm instanceof PropertyOwnerViewModel ownerVM && currentUser instanceof Model.PropertyOwner owner) {
+                    ownerVM.deleteAccount(owner.getID());
+                }
+            }
+        });
+    }
+
+    private void navigateBackToLogin() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/LoginView.fxml"));
+            Parent loginRoot = loader.load();
+            deleteAccountBtn.getScene().setRoot(loginRoot);
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
     // ── Section view loader ───────────────────────────────────────────────────

@@ -1,4 +1,5 @@
 {
+    "java.debug.settings.vmArgs": "--add-opens java.base/java.time=ALL-UNNAMED",
     "java.project.sourcePaths": ["src"],
     "java.project.outputPath": "out",
     "java.project.referencedLibraries": [

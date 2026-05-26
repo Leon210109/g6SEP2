@@ -2,152 +2,73 @@ package ViewModel;
 
 import Model.Booking;
 import Model.RentalModel;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import javafx.application.Platform;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class BookingViewModel implements PropertyChangeListener
-{
-  private RentalModel model;
-  private ObservableList<Booking> bookings;
+public class BookingViewModel implements PropertyChangeListener {
 
-  private ObjectProperty<Booking> selectedBooking;
+    private final RentalModel model;
+    private final Gson gson = new Gson();
 
-  private StringProperty errorMessage;
+    private final ObservableList<Booking> bookings = FXCollections.observableArrayList();
+    private final BooleanProperty bookingAddedSuccess = new SimpleBooleanProperty(false);
 
-  public BookingViewModel(RentalModel model)
-  {
-    this.model = model;
-
-    bookings = FXCollections.observableArrayList();
-
-    selectedBooking = new SimpleObjectProperty<>();
-
-    errorMessage = new SimpleStringProperty();
-
-    model.addPropertyChangeListener(this);
-  }
-  public void loadBookings()
-  {
-    model.getAllBookings();
-  }
-  public void addBooking(
-      Booking booking)
-  {
-    model.addBooking(booking);
-  }
-  public void removeBooking()
-  {
-    if(selectedBooking.get() == null)
-    {
-      errorMessage.set(
-          "Select booking first");
-
-      return;
+    public BookingViewModel(RentalModel model) {
+        this.model = model;
+        model.addPropertyChangeListener(this);
     }
 
-    model.removeBooking(
-        selectedBooking.get().getClientId(),
-        selectedBooking.get().getListingId());
-  }
-  @Override
-  public void propertyChange(
-      PropertyChangeEvent evt)
-  {
-    switch(evt.getPropertyName())
-    {
-      case "GET_ALL_BOOKINGS":
-      {
-        bookings.clear();
+    private final StringProperty errorMessage = new SimpleStringProperty("");
 
-        bookings.addAll(
-            (ArrayList<Booking>)
-                evt.getNewValue());
+    public ObservableList<Booking> getBookings()         { return bookings; }
+    public BooleanProperty bookingAddedSuccessProperty() { return bookingAddedSuccess; }
+    public void resetBookingAddedSuccess()               { bookingAddedSuccess.set(false); }
+    public void resetBookingSuccess()                    { bookingAddedSuccess.set(false); }
+    public StringProperty errorMessageProperty()         { return errorMessage; }
 
-        break;
-      }
+    public void loadBookings()                   { model.getAllBookings(); }
+    public void loadBookingsByClient(int clientId) { model.getBookingsByClient(clientId); }
+    public void addBooking(Booking b)            { model.addBooking(b); }
+    public void removeBooking(int clientId, int listingId) { model.removeBooking(clientId, listingId); }
 
-      case "BookingAdded":
-      {
-        Booking booking =
-            (Booking)
-                evt.getNewValue();
-
-        bookings.add(booking);
-
-        break;
-      }
-
-      case "BookingRemoved":
-      {
-        int bookingId =
-            (int)
-                evt.getNewValue();
-
-        bookings.removeIf(
-            b -> b.getId()
-                == bookingId);
-
-        break;
-      }
-
-      case "BookingUpdated":
-      {
-        Booking updatedBooking =
-            (Booking)
-                evt.getNewValue();
-
-        for(int i = 0;
-            i < bookings.size();
-            i++)
-        {
-          if(bookings.get(i).getId()
-              ==
-              updatedBooking.getId())
-          {
-            bookings.set(
-                i,
-                updatedBooking);
-
-            break;
-          }
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        switch (evt.getPropertyName()) {
+            case "GET_ALL_BOOKINGS", "BOOKINGS_BY_CLIENT" -> {
+                Type t = new TypeToken<ArrayList<Booking>>(){}.getType();
+                ArrayList<Booking> list = gson.fromJson(gson.toJson(evt.getNewValue()), t);
+                Platform.runLater(() -> { bookings.clear(); bookings.addAll(list); });
+            }
+            case "BookingAdded" -> {
+                Booking b = gson.fromJson(gson.toJson(evt.getNewValue()), Booking.class);
+                Platform.runLater(() -> {
+                    bookings.add(b);
+                    bookingAddedSuccess.set(true);
+                });
+            }
+            case "BookingRemoved" -> {
+                int[] ids = gson.fromJson(gson.toJson(evt.getNewValue()), int[].class);
+                int clientId = ids[0]; int listingId = ids[1];
+                Platform.runLater(() -> bookings.removeIf(b -> b.getClientId() == clientId && b.getListingId() == listingId));
+            }
+            case "BookingUpdated" -> {
+                Booking updated = gson.fromJson(gson.toJson(evt.getNewValue()), Booking.class);
+                Platform.runLater(() -> {
+                    for (int i = 0; i < bookings.size(); i++) {
+                        if (bookings.get(i).getListingId() == updated.getListingId()) { bookings.set(i, updated); break; }
+                    }
+                });
+            }
+            case "ERROR" -> Platform.runLater(() -> errorMessage.set(evt.getNewValue() != null ? evt.getNewValue().toString() : "Error"));
         }
-
-        break;
-      }
-
-      case "ERROR":
-      {
-        errorMessage.set(
-            (String)
-                evt.getNewValue());
-
-        break;
-      }
     }
-  }
-  public ObservableList<Booking>
-  getBookings()
-  {
-    return bookings;
-  }
-
-  public ObjectProperty<Booking>
-  selectedBookingProperty()
-  {
-    return selectedBooking;
-  }
-
-  public StringProperty
-  errorMessageProperty()
-  {
-    return errorMessage;
-  }
 }

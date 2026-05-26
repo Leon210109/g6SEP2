@@ -85,6 +85,24 @@
                          -fx-font-size: 18px;"/>
         </VBox>
 
+        <!-- Delete Account button — bottom-left, shown only on home page for non-admin users -->
+        <Button fx:id="deleteAccountBtn" text="⚠ Delete Account" onAction="#handleDeleteAccount"
+                visible="false" managed="false"
+                StackPane.alignment="BOTTOM_LEFT"
+                style="-fx-background-color: transparent;
+                       -fx-text-fill: #B22222;
+                       -fx-font-family: 'Cambria';
+                       -fx-font-size: 12px;
+                       -fx-border-color: #B22222;
+                       -fx-border-radius: 5;
+                       -fx-background-radius: 5;
+                       -fx-padding: 5 14;
+                       -fx-cursor: hand;">
+            <StackPane.margin>
+                <Insets bottom="20" left="20"/>
+            </StackPane.margin>
+        </Button>
+
     </StackPane>
 
 </VBox>
