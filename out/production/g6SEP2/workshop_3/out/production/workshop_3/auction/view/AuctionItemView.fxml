@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="auction.view.AuctionItemViewController"
+      spacing="12" alignment="CENTER"
+      prefWidth="380" prefHeight="320">
+
+    <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
+
+    <!-- Auction item name -->
+    <Label fx:id="itemNameLabel" text="Item"
+           style="-fx-font-size:20px; -fx-font-weight:bold;"/>
+
+    <!-- Current bid -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label fx:id="bidTitleLabel" text="Current bid:"
+               style="-fx-font-weight:bold;"/>
+        <Label fx:id="currentBidLabel" text="0"/>
+    </HBox>
+
+    <!-- Current bidder -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Current bidder:" style="-fx-font-weight:bold;"/>
+        <Label fx:id="currentBidderLabel" text="None"/>
+    </HBox>
+
+    <!-- Timer -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Time left:" style="-fx-font-weight:bold;"/>
+        <Label fx:id="timeLabel" text="120"
+               style="-fx-padding:2 6 2 6; -fx-border-color:gray; -fx-border-radius:3;"/>
+    </HBox>
+
+    <Separator/>
+
+    <!-- Bid input -->
+    <HBox spacing="10" alignment="CENTER">
+        <Label text="Your bid:"/>
+        <TextField fx:id="bidTextField" promptText="Enter amount" prefWidth="130"/>
+        <Button fx:id="bidButton" text="Place Bid" onAction="#onBidButtonClicked"/>
+    </HBox>
+
+    <!-- Status / error message -->
+    <Label fx:id="statusLabel" text="" style="-fx-text-fill:red;"/>
+
+</VBox>

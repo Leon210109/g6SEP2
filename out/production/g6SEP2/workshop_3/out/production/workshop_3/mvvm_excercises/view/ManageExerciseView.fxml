@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="mvvm_excercises.view.ManageExerciseViewController"
+      spacing="14" prefWidth="400" prefHeight="320">
+
+    <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
+
+    <Label fx:id="headerLabel" text=""
+           style="-fx-font-size:16px; -fx-font-weight:bold;"/>
+
+    <Separator/>
+
+    <GridPane hgap="12" vgap="10">
+        <Label text="Number:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="numberField" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="220"/>
+
+        <Label text="Topic:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="topicField" GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="220"/>
+
+        <Label text="Completed:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <RadioButton fx:id="completedRadio" text="Yes"
+                     GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    </GridPane>
+
+    <Label fx:id="errorLabel" text="" style="-fx-text-fill: red;"/>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="confirmButton" text="Confirm" onAction="#onConfirm" prefWidth="90"/>
+        <Button text="Cancel" onAction="#onCancel" prefWidth="90"/>
+    </HBox>
+
+</VBox>
+

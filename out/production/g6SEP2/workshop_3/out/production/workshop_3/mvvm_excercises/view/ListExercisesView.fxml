@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="mvvm_excercises.view.ListExercisesViewController"
+      spacing="12" prefWidth="550" prefHeight="400">
+
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <Label text="SDJ Exercises"
+           style="-fx-font-size:18px; -fx-font-weight:bold;"/>
+
+    <TableView fx:id="exercisesTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="numberColumn"    text="Number"    prefWidth="80"/>
+            <TableColumn fx:id="topicColumn"     text="Topic"     prefWidth="300"/>
+            <TableColumn fx:id="completedColumn" text="Completed" prefWidth="100"/>
+        </columns>
+        <placeholder><Label text="No exercises found."/></placeholder>
+    </TableView>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="editAddButton" text="Edit/Add" onAction="#onEditAdd" prefWidth="90"/>
+        <Button fx:id="removeButton"  text="Remove"   onAction="#onRemove"  prefWidth="90"/>
+    </HBox>
+
+</VBox>
+
