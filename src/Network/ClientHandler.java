@@ -279,7 +279,11 @@ public class ClientHandler
         ((Double) request.getArgs()[0])
             .intValue();
 
-    model.removeBooking(bookingId);
+    int clientId =
+        ((Double) request.getArgs()[1])
+            .intValue();
+
+    model.removeBooking(bookingId, clientId);
   }
 
   private void handleUpdateBooking(

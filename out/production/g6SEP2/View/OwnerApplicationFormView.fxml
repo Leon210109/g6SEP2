@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="View.OwnerApplicationFormController"
+      spacing="18"
+      style="-fx-background-color: #F5F0E8;"
+      prefWidth="560" prefHeight="420">
+
+    <padding>
+        <Insets top="30" right="40" bottom="30" left="40"/>
+    </padding>
+
+    <!-- Header -->
+    <Text text="Apply as Property Owner"
+          style="-fx-fill: #143D29;
+                 -fx-font-family: 'Palatino Linotype';
+                 -fx-font-size: 28px;
+                 -fx-font-weight: bold;"/>
+    <Text text="Submit your application for admin review"
+          style="-fx-fill: #8B7355;
+                 -fx-font-family: 'Cambria';
+                 -fx-font-size: 14px;"/>
+
+    <Separator style="-fx-background-color: #D4C4B0;"/>
+
+    <!-- Form fields -->
+    <GridPane hgap="15" vgap="14">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="40"/>
+            <ColumnConstraints percentWidth="60"/>
+        </columnConstraints>
+
+        <Label text="Property Address *" GridPane.rowIndex="0" GridPane.columnIndex="0"
+               style="-fx-text-fill: #143D29; -fx-font-family: 'Cambria'; -fx-font-weight: bold; -fx-font-size: 13px;"/>
+        <TextField fx:id="propertyAddressField" promptText="e.g., Niels Juels Gade 5, Copenhagen"
+                  GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Registration Number *" GridPane.rowIndex="1" GridPane.columnIndex="0"
+               style="-fx-text-fill: #143D29; -fx-font-family: 'Cambria'; -fx-font-weight: bold; -fx-font-size: 13px;"/>
+        <TextField fx:id="registrationNumberField" promptText="e.g., BBR-12345678"
+                  GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <!-- Message -->
+    <Label fx:id="messageLabel" text=""
+           style="-fx-font-family: 'Cambria'; -fx-font-size: 13px; -fx-wrap-text: true;"
+           maxWidth="480"/>
+
+    <!-- Buttons -->
+    <HBox spacing="12" alignment="CENTER_RIGHT">
+        <VBox.margin><Insets top="10"/></VBox.margin>
+        <Button text="Cancel" onAction="#handleCancel"
+                style="-fx-background-color: #D4C4B0;
+                       -fx-text-fill: #143D29;
+                       -fx-font-family: 'Cambria';
+                       -fx-font-size: 13px;
+                       -fx-background-radius: 6;
+                       -fx-padding: 10 24;
+                       -fx-cursor: hand;"/>
+        <Button text="Submit Application" onAction="#handleSubmit"
+                style="-fx-background-color: #1A5F3F;
+                       -fx-text-fill: white;
+                       -fx-font-family: 'Cambria';
+                       -fx-font-size: 13px;
+                       -fx-font-weight: bold;
+                       -fx-background-radius: 6;
+                       -fx-padding: 10 24;
+                       -fx-cursor: hand;"/>
+    </HBox>
+
+</VBox>
