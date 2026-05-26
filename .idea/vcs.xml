@@ -2,5 +2,18 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../SEP2 (failed)" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../SEP2 (failed)/src/SEP2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../SEP2_new" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../SEP2_new/g6SEP2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../SU2-v8.0.1-win64-mpi/week 2.1/src" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../SU2-v8.0.1-win64-mpi/week 2.1/src/SEP" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../SU2-v8.0.1-win64-mpi/week 2.1/src/SEP/g7sep" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../SU2-v8.0.1-win64-mpi/week 2.1/src/html_projects/first assingment" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../SU2-v8.0.1-win64-mpi/week 2.1/src/html_projects/first_assignment_dark" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../SU2-v8.0.1-win64-mpi/week 2.1/src/html_projects/gambling" vcs="Git" />
+    <mapping directory="$USER_HOME$/StudioProjects/Robot" vcs="Git" />
+    <mapping directory="$USER_HOME$/StudioProjects/TeamDoorn" vcs="Git" />
+    <mapping directory="$USER_HOME$/java/Robot" vcs="Git" />
   </component>
 </project>
