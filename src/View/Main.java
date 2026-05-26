@@ -4,6 +4,7 @@ import Model.ClientModelManager;
 import Network.Server;
 import Network.SocketClient;
 import ViewModel.ViewModelFactory;
+import Model.RentalModel;
 import com.google.gson.Gson;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -26,8 +27,8 @@ public class Main extends Application {
         // Initialise the client-server stack
         Gson gson = new Gson();
         SocketClient socketClient = new SocketClient(gson);
-        ClientModelManager clientModelManager = new ClientModelManager(socketClient);
-        ViewModelFactory.init(clientModelManager);
+        RentalModel rentalModel = new ClientModelManager(socketClient);
+        ViewModelFactory.init(rentalModel);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/LoginView.fxml"));
         Parent root = loader.load();
