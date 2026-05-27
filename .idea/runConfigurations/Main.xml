@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Main" type="Application" factoryName="Application" singleton="true">
+    <option name="MAIN_CLASS_NAME" value="View.Main" />
+    <module name="g6SEP2" />
+    <option name="VM_PARAMETERS" value="--module-path &quot;C:\Program Files\openjfx-26.0.1_windows-x64_bin-sdk\javafx-sdk-26.0.1\lib&quot; --add-modules javafx.controls,javafx.fxml --add-opens java.base/java.time=ALL-UNNAMED" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="dataSourceStorageLocal" created-in="DB-261.24374.56">
+  <component name="dataSourceStorageLocal" created-in="DB-253.30387.92">
     <data-source name="postgres@localhost" uuid="200b6174-299f-48cf-82de-1bada1344c59">
-      <database-info product="PostgreSQL" version="18.4" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.7.3" dbms="POSTGRES" exact-version="18.4" exact-driver-version="42.7">
+      <database-info product="PostgreSQL" version="18.1" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.7.3" dbms="POSTGRES" exact-version="18.1" exact-driver-version="42.7">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
@@ -11,15 +11,14 @@
       <schema-mapping>
         <introspection-scope>
           <node negative="1">
-            <node kind="database" negative="1" />
-            <node kind="database" qname="postgres">
-              <node kind="schema">
-                <name qname="public" />
-                <name qname="sep2" />
-              </node>
+            <node kind="database" negative="1">
+              <name qname="roomrental" />
+              <name qname="postgres" />
             </node>
-            <node kind="database" qname="roomrental">
-              <node kind="schema" negative="1" />
+            <node kind="database">
+              <name qname="roomrental" />
+              <name qname="postgres" />
+              <node kind="schema" qname="sep2" />
             </node>
           </node>
         </introspection-scope>

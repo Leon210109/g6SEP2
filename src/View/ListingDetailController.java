@@ -258,7 +258,7 @@ public class ListingDetailController {
 
     private void openBookingDialog() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("BookingDialogView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/BookingDialogView.fxml"));
             Parent root = loader.load();
             BookingDialogController controller = loader.getController();
             controller.setBookingInfo(listing, client);
@@ -277,7 +277,7 @@ public class ListingDetailController {
 
     private void openTenancyApplicationForm() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("TenancyApplicationFormView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/TenancyApplicationFormView.fxml"));
             Parent root = loader.load();
             TenancyApplicationFormController ctrl = loader.getController();
             ctrl.setApplicationInfo(listing, client);

@@ -6,6 +6,7 @@
 -- ---------------------------------------------------------------
 -- Schema
 -- ---------------------------------------------------------------
+create database roomrental;
 CREATE SCHEMA IF NOT EXISTS sep2;
 SET SCHEMA 'sep2';
 
@@ -57,7 +58,7 @@ CREATE TABLE client (
 CREATE TABLE ownerApplication (
     applicationId              SERIAL PRIMARY KEY,
     clientId                   INTEGER      NOT NULL REFERENCES client(id),
-    adminId                    INTEGER      NOT NULL REFERENCES admin(id),
+    adminId                    INTEGER      REFERENCES admin(id),
     submissionDate             DATE         NOT NULL,
     status                     VARCHAR(50)  NOT NULL,
     propertyAddress            VARCHAR(100) NOT NULL,
@@ -88,7 +89,7 @@ CREATE TABLE listing (
 
 CREATE TABLE Booking (
     clientId        INTEGER NOT NULL REFERENCES client(id),
-    listingId       INTEGER NOT NULL REFERENCES listing(id),
+    listingId       INTEGER NOT NULL REFERENCES listing(id) ON DELETE CASCADE,
     start_Date      DATE,
     end_Date        DATE,
     check_in_time   TIME    NOT NULL,
@@ -168,8 +169,9 @@ INSERT INTO listing
      last_Renovated, max_number_of_people, country, region, street, room_number, floor,
      postal_code, check_in_time, check_out_time, listing_type)
 VALUES
-    (1, 3, 2, TRUE, 95, 6800, '2022-08-15', 4, 'Denmark', 'Copenhagen', 'Niels Juels Gade', '12A', 3, '1054', '15:00:00', '11:00:00', 'SHORT_TERM'),
-    (2, 2, 1, TRUE, 71, 6295, '2025-04-03', 2, 'Denmark', 'Horsens',    'Sundvej',          '2',   3, '8700', '15:00:00', '11:00:00', 'LONG_TERM');
+    (1, 3, 2, TRUE,  95,  6800, '2022-08-15', 4, 'Denmark', 'Copenhagen', 'Niels Juels Gade', '12A', 3, '1054', '15:00:00', '11:00:00', 'SHORT_TERM'),
+    (2, 2, 1, TRUE,  71,  6295, '2025-04-03', 2, 'Denmark', 'Horsens',   'Sundvej',           '2',  3, '8700', '15:00:00', '11:00:00', 'LONG_TERM'),
+    (3, 4, 2, FALSE, 110, 7500, '2023-06-20', 5, 'Denmark', 'Copenhagen', 'Ameliegade',       '5B', 2, '1000', '14:00:00', '10:00:00', 'SHORT_TERM');
 
 -- Bookings (listing 1 is SHORT_TERM; listing 2 is LONG_TERM and uses tenancy_application)
 INSERT INTO Booking

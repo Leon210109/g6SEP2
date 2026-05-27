@@ -1,73 +1,66 @@
 package ViewModel;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import Model.Admin;
+import Model.Client;
+import Model.PropertyOwner;
+import Model.RentalModel;
+import javafx.application.Platform;
+import javafx.beans.property.*;
 
-/**
- * ViewModel for the login screen.
- * Tracks login credentials and user type selection.
- */
-public class LoginViewModel {
-    private final StringProperty username = new SimpleStringProperty("");
-    private final StringProperty password = new SimpleStringProperty("");
-    private final StringProperty errorMessage = new SimpleStringProperty("");
-    private final StringProperty selectedUserType = new SimpleStringProperty("Client");
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-    public StringProperty usernameProperty() {
-        return username;
+public class LoginViewModel implements PropertyChangeListener {
+
+    private final RentalModel model;
+
+    private final StringProperty username         = new SimpleStringProperty("");
+    private final StringProperty password         = new SimpleStringProperty("");
+    private final StringProperty errorMessage     = new SimpleStringProperty("");
+    private final StringProperty loggedInUserType = new SimpleStringProperty("");
+    private final ObjectProperty<Object> loggedInUser = new SimpleObjectProperty<>(null);
+
+    public LoginViewModel(RentalModel model) {
+        this.model = model;
+        model.addPropertyChangeListener(this);
     }
 
-    public String getUsername() {
-        return username.get();
+    public void login() {
+        model.login(username.get(), password.get());
     }
 
-    public void setUsername(String username) {
-        this.username.set(username);
-    }
-
-    public StringProperty passwordProperty() {
-        return password;
-    }
-
-    public String getPassword() {
-        return password.get();
-    }
-
-    public void setPassword(String password) {
-        this.password.set(password);
-    }
-
-    public StringProperty errorMessageProperty() {
-        return errorMessage;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage.get();
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage.set(errorMessage);
-    }
-
-    public void clearError() {
-        this.errorMessage.set("");
-    }
-
-    public StringProperty selectedUserTypeProperty() {
-        return selectedUserType;
-    }
-
-    public String getSelectedUserType() {
-        return selectedUserType.get();
-    }
-
-    public void setSelectedUserType(String type) {
-        selectedUserType.set(type);
-    }
-
-    public void clearFields() {
-        username.set("");
+    public void resetLoginState() {
+        loggedInUserType.set("");
+        loggedInUser.set(null);
         password.set("");
-        errorMessage.set("");
+    }
+
+    public void clearError() { errorMessage.set(""); }
+
+    public StringProperty usernameProperty()         { return username; }
+    public StringProperty passwordProperty()         { return password; }
+    public StringProperty errorMessageProperty()     { return errorMessage; }
+    public StringProperty loggedInUserTypeProperty() { return loggedInUserType; }
+    public ObjectProperty<Object> loggedInUserProperty() { return loggedInUser; }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        switch (evt.getPropertyName()) {
+            case "LOGIN_SUCCESS_CLIENT" -> Platform.runLater(() -> {
+                loggedInUser.set(evt.getNewValue());
+                loggedInUserType.set("Client");
+            });
+            case "LOGIN_SUCCESS_OWNER" -> Platform.runLater(() -> {
+                loggedInUser.set(evt.getNewValue());
+                loggedInUserType.set("Property Owner");
+            });
+            case "LOGIN_SUCCESS_ADMIN" -> Platform.runLater(() -> {
+                loggedInUser.set(evt.getNewValue());
+                loggedInUserType.set("Admin");
+            });
+            case "ERROR" -> Platform.runLater(() ->
+                errorMessage.set(evt.getNewValue() != null ? evt.getNewValue().toString() : "Login failed.")
+            );
+        }
     }
 }

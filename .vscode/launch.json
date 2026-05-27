@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main.Main",
+            "projectName": "g6SEP2_d020fd22"
+        },
+        {
+            "type": "java",
             "name": "DatabaseDiagnostic",
             "request": "launch",
             "mainClass": "Persistence.DatabaseDiagnostic",
@@ -20,7 +27,7 @@
             "name": "Run Main (JavaFX)",
             "request": "launch",
             "mainClass": "View.Main",
-            "vmArgs": "--module-path \"C:\\Program Files\\openjfx-26.0.1_windows-x64_bin-sdk\\javafx-sdk-26.0.1\\lib\" --add-modules javafx.controls,javafx.fxml"
+            "vmArgs": "--module-path \"C:\\Program Files\\openjfx-26.0.1_windows-x64_bin-sdk\\javafx-sdk-26.0.1\\lib\" --add-modules javafx.controls,javafx.fxml --add-opens java.base/java.time=ALL-UNNAMED"
         }
     ]
 }

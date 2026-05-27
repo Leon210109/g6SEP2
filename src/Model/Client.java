@@ -27,8 +27,8 @@ public class Client
     this.username=username;
     this.password=password;
     this.DOB = DOB;
-    this.Gender = Gender;
-    this.Nationality = Nationality;
+    this.Gender = gender;
+    this.Nationality = nationality;
   }
 
   public Client(String firstName, String lastName, String email,
