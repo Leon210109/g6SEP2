@@ -50,16 +50,18 @@ public class ListingViewModel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
             case "GET_ALL_LISTINGS", "AVAILABLE_LISTINGS", "LISTINGS_BY_OWNER" -> {
-                Type t = new TypeToken<ArrayList<Listing>>(){}.getType();
-                ArrayList<Listing> list = gson.fromJson(gson.toJson(evt.getNewValue()), t);
+              ArrayList<Listing> list =
+                  (ArrayList<Listing>) evt.getNewValue();
                 Platform.runLater(() -> { listings.clear(); listings.addAll(list); });
             }
             case "ListingAdded" -> {
-                Listing l = gson.fromJson(gson.toJson(evt.getNewValue()), Listing.class);
+              Listing l =
+                  (Listing) evt.getNewValue();
                 Platform.runLater(() -> { listings.add(l); addSuccess.set(true); });
             }
             case "ListingUpdated" -> {
-                Listing updated = gson.fromJson(gson.toJson(evt.getNewValue()), Listing.class);
+              Listing updated =
+                  (Listing) evt.getNewValue();
                 Platform.runLater(() -> {
                     for (int i = 0; i < listings.size(); i++) {
                         if (listings.get(i).getId() == updated.getId()) { listings.set(i, updated); break; }
@@ -68,7 +70,8 @@ public class ListingViewModel implements PropertyChangeListener {
                 });
             }
             case "ListingRemoved" -> {
-                int id = gson.fromJson(gson.toJson(evt.getNewValue()), Integer.class);
+              int id =
+                  (int) evt.getNewValue();
                 Platform.runLater(() -> listings.removeIf(l -> l.getId() == id));
             }
             case "OWNER_BY_ID" -> {

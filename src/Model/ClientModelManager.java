@@ -3,13 +3,16 @@ package Model;
 import Client.SocketClient;
 import Shared.Request;
 import Shared.RequestType;
+import Util.LocalTimeAdapter;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.Type;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class ClientModelManager implements RentalModel, PropertyChangeListener {
@@ -19,7 +22,11 @@ public class ClientModelManager implements RentalModel, PropertyChangeListener {
 
   public ClientModelManager(SocketClient socketClient) {
     this.socketClient = socketClient;
-    this.gson = new Gson();
+     gson = new GsonBuilder()
+        .registerTypeAdapter(
+            LocalTime.class,
+            new LocalTimeAdapter())
+        .create();
     this.support = new PropertyChangeSupport(this);
     socketClient.addPropertyChangeListener(this);
     socketClient.connect();

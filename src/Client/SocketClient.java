@@ -3,7 +3,10 @@ package Client;
 import Shared.Request;
 import Shared.RequestType;
 import Shared.Response;
+import Util.LocalTimeAdapter;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -12,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.time.LocalTime;
 
 public class SocketClient implements Runnable {
   private Socket socket;
@@ -22,7 +26,8 @@ public class SocketClient implements Runnable {
   private boolean running;
 
   public SocketClient(Gson gson) {
-    this.gson = gson;
+    this.gson = new GsonBuilder().registerTypeAdapter(LocalTime.class
+    ,new LocalTimeAdapter()).create();
     support = new PropertyChangeSupport(this);
   }
 

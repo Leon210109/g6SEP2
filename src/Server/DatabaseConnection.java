@@ -9,7 +9,7 @@ public class DatabaseConnection {
 
     private static final String user = "postgres";
 
-    private static final String password = "1234_VIA";
+    private static final String password = "sonim";
 
     public static Connection getConnection()
             throws SQLException {

@@ -4,7 +4,9 @@ import Model.*;
 import Shared.Request;
 import Shared.RequestType;
 import Shared.Response;
+import Util.LocalTimeAdapter;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.time.LocalTime;
 
 public class ClientHandler implements Runnable, PropertyChangeListener {
   private final Socket socket;
@@ -25,7 +28,8 @@ public class ClientHandler implements Runnable, PropertyChangeListener {
   public ClientHandler(Socket socket, RentalModel model) {
     this.socket = socket;
     this.model = model;
-    this.gson = new Gson();
+    this.gson = new GsonBuilder().registerTypeAdapter(LocalTime.class
+        ,new LocalTimeAdapter()).create();
     this.running = true;
     model.addPropertyChangeListener(this);
     try {
