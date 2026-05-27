@@ -2,8 +2,7 @@ package ViewModel;
 
 import Model.RentalModel;
 import Model.TenancyApplication;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -14,7 +13,7 @@ import javafx.collections.ObservableList;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.lang.reflect.Type;
+
 import java.util.ArrayList;
 
 public class TenancyViewModel implements PropertyChangeListener
@@ -23,7 +22,7 @@ public class TenancyViewModel implements PropertyChangeListener
   private final ObservableList<TenancyApplication> applications;
   private final StringProperty errorMessage;
   private final BooleanProperty submissionSuccess;
-  private final Gson gson;
+
 
   public TenancyViewModel(RentalModel model)
   {
@@ -31,7 +30,6 @@ public class TenancyViewModel implements PropertyChangeListener
     this.applications      = FXCollections.observableArrayList();
     this.errorMessage      = new SimpleStringProperty();
     this.submissionSuccess = new SimpleBooleanProperty(false);
-    this.gson              = new Gson();
     model.addPropertyChangeListener(this);
   }
 
@@ -51,8 +49,9 @@ public class TenancyViewModel implements PropertyChangeListener
       }
       case "TENANCY_APPS_BY_OWNER":
       case "TENANCY_APPS_BY_CLIENT": {
-        Type t = new TypeToken<ArrayList<TenancyApplication>>(){}.getType();
-        ArrayList<TenancyApplication> list = gson.fromJson(gson.toJson(evt.getNewValue()), t);
+        ArrayList<TenancyApplication> list =
+            (ArrayList<TenancyApplication>)
+                evt.getNewValue();
         Platform.runLater(() -> {
           applications.clear();
           applications.addAll(list);

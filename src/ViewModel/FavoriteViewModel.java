@@ -20,14 +20,12 @@ public class FavoriteViewModel implements PropertyChangeListener
   private final RentalModel model;
   private final ObservableList<Listing> favorites;
   private final StringProperty errorMessage;
-  private final Gson gson;
 
   public FavoriteViewModel(RentalModel model)
   {
     this.model        = model;
     this.favorites    = FXCollections.observableArrayList();
     this.errorMessage = new SimpleStringProperty();
-    this.gson         = new Gson();
     model.addPropertyChangeListener(this);
   }
 
@@ -51,8 +49,8 @@ public class FavoriteViewModel implements PropertyChangeListener
   {
     switch (evt.getPropertyName()) {
       case "FAVORITES_BY_CLIENT": {
-        Type type = new TypeToken<ArrayList<Listing>>(){}.getType();
-        ArrayList<Listing> list = gson.fromJson(gson.toJson(evt.getNewValue()), type);
+        ArrayList<Listing> list =
+            (ArrayList<Listing>) evt.getNewValue();
         Platform.runLater(() -> {
           favorites.clear();
           favorites.addAll(list);

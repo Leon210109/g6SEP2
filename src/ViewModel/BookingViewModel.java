@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class BookingViewModel implements PropertyChangeListener {
 
     private final RentalModel model;
-    private final Gson gson = new Gson();
+
 
     private final ObservableList<Booking> bookings = FXCollections.observableArrayList();
     private final BooleanProperty bookingAddedSuccess = new SimpleBooleanProperty(false);
@@ -44,24 +44,27 @@ public class BookingViewModel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
             case "GET_ALL_BOOKINGS", "BOOKINGS_BY_CLIENT" -> {
-                Type t = new TypeToken<ArrayList<Booking>>(){}.getType();
-                ArrayList<Booking> list = gson.fromJson(gson.toJson(evt.getNewValue()), t);
+              ArrayList<Booking> list =
+                  (ArrayList<Booking>) evt.getNewValue();
                 Platform.runLater(() -> { bookings.clear(); bookings.addAll(list); });
             }
             case "BookingAdded" -> {
-                Booking b = gson.fromJson(gson.toJson(evt.getNewValue()), Booking.class);
+              Booking b =
+                  (Booking) evt.getNewValue();
                 Platform.runLater(() -> {
                     bookings.add(b);
                     bookingAddedSuccess.set(true);
                 });
             }
             case "BookingRemoved" -> {
-                int[] ids = gson.fromJson(gson.toJson(evt.getNewValue()), int[].class);
+              int[] ids =
+                  (int[]) evt.getNewValue();
                 int clientId = ids[0]; int listingId = ids[1];
                 Platform.runLater(() -> bookings.removeIf(b -> b.getClientId() == clientId && b.getListingId() == listingId));
             }
             case "BookingUpdated" -> {
-                Booking updated = gson.fromJson(gson.toJson(evt.getNewValue()), Booking.class);
+              Booking updated =
+                  (Booking) evt.getNewValue();
                 Platform.runLater(() -> {
                     for (int i = 0; i < bookings.size(); i++) {
                         if (bookings.get(i).getListingId() == updated.getListingId()) { bookings.set(i, updated); break; }
